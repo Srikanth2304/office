@@ -1,16 +1,18 @@
 {
-  "aggs": {
-    "date_histogram": {
-      "field": "@timestamp",
-      "interval": "1m",
-      "min_doc_count": 1
-    },
-    "aggs": {
-      "sum_timeTaken": {
-        "sum": {
-          "field": "timeTaken"
+  "aggs": [
+    {
+      "date_histogram": {
+        "field": "@timestamp",
+        "interval": "1m",
+        "min_doc_count": 1
+      },
+      "aggs": {
+        "avg_timeTaken": {
+          "avg": {
+            "field": "timeTaken"
+          }
         }
       }
     }
-  }
+  ]
 }

@@ -1,1 +1,3 @@
 1/5/2024#18:00:36:987 #API#RequestAndResponseLoggingFilter#NA#NA#NA#-#SG#default task-24402#PRD_SG_eBBSINT##uetr:: null##18:00:36#O#-#-#-#APIServices#-#21#-##GET//rcb-api/rcb/api/v1/balances/ filter%5Bcasa-number%5D=0100779956&filter%5Bcasa-currency-code%5D=SGD
+
+message:"#O#-#-#-#APIServices#-#" AND message:#-(\d+)

@@ -1,0 +1,25 @@
+Time EndTime = scb.util.Utility.convertTimeToUserTZ(new Time(System.currentTimeMillis()));
+long EndLongtime = EndTime.getTime();
+
+//Created a TimeTaken variable for storing the total time taken for the transaction request
+long TimeTaken = EndLongtime - currentLongTime;
+
+String transactionDetails = "Transaction Request completed at: " + (EndTime != null ? EndTime.toString() + "/" + EndLongtime : "End time is empty");
+transactionDetails += " | Transaction Monitoring Details: ";
+
+if (ChannelId != null && !ChannelId.isEmpty()) {
+    transactionDetails += ChannelId;
+}
+transactionDetails += "#";
+
+if (interfaceChannelEntityWrapper != null && interfaceChannelEntityWrapper.getTranTypeCode() != null && !interfaceChannelEntityWrapper.getTranTypeCode().isEmpty()) {
+    transactionDetails += interfaceChannelEntityWrapper.getTranTypeCode();
+}
+transactionDetails += "#";
+
+if (response != null && response.getExternalSystemKey() != null && !response.getExternalSystemKey().isEmpty()) {
+    transactionDetails += response.getExternalSystemKey();
+}
+transactionDetails += "#" + TimeTaken;
+
+log.println(transactionDetails);

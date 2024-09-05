@@ -1,0 +1,36 @@
+import java.util.HashMap;
+import java.util.Map;
+
+public class JsonConverter {
+	
+	String headerParameters = "headerParameters";
+	Integer startTime = 300;
+	String typeofTrn = "O";
+	String APIServices = "APIServices";
+	String timeTaken = "timeTaken";
+	String getMethod  = "getMethod";
+	String getRequestURI = "getRequestURI";
+	String getQueryString = "getQueryString";
+	String company_ID = "kfslk32";
+	String message_Sender = "IMTP";
+	
+	String Logdetails = headerParameters + "#" + new java.sql.Time(startTime) + "#" + "O" + "#" +APIServices + "#" + timeTaken + "#" + getMethod + "#" + getRequestURI + "#" + getQueryString + "#" + company_ID + "#" + message_Sender;
+	String[] data = Logdetails.split("#");
+	Map<String,String> map = new HashMap<>();
+	map.put("headerParameters" , data[0]);
+	map.put("startTime" , data[1]);
+	map.put("typeofTrn" , data[2]);
+	map.put("APIServices" , data[3]);
+	map.put("timeTaken" , data[4]);
+	map.put("getMethod" , data[5]);
+	map.put("getRequestURI" , data[6]);
+	map.put("getQueryString" , data[7]);
+	map.put("company_ID" , data[8]);
+	map.put("message_Sender" , data[8]);
+	
+	try{
+		ObjectMapper objectMapper = new ObjectMapper();
+		string json = objectMapper.writeValueAsString(map);
+		logWriter.println(json);
+	}
+}

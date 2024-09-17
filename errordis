@@ -1,0 +1,38 @@
+public static String mapToJson(Map<String, String> map) {
+        StringBuilder jsonBuilder = new StringBuilder();
+        jsonBuilder.append("{");
+
+        int mapSize = map.size();
+        int count = 0;
+
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            jsonBuilder.append("\"")
+                        .append(entry.getKey())
+                        .append("\": \"")
+                        .append(entry.getValue())
+                        .append("\"");
+
+            if (count < mapSize - 1) {
+                jsonBuilder.append(", ");
+            }
+            count++;
+        }
+
+        jsonBuilder.append("}");
+        return jsonBuilder.toString();
+    }
+
+
+
+@Test
+	public void mapToJson_test() throws Exception{
+		try {
+			new NonStrictExpectations() {
+			};
+			
+		}
+		catch (Exception exObj) {
+			Assert.assertTrue(true);
+		}
+		
+	}

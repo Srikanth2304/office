@@ -1,0 +1,69 @@
+1.  Objective :
+Summarize the process of changes made in  the Grafana monitoring tool
+Explaining purpose of changes and adding logs in files
+2. Scope of changes :
+List of files that were changed 
+
+DownloadsBusinessSessionBean
+FileTransferObjectIMFT_Solace
+MultipleFilesTransferObject_Solace
+ParallelTransactionUpload
+PostTransactionProcess
+RequestAndResponseLoggingFilter
+MessageHelper
+SolaceRequestMessageBean
+
+
+
+3.Process Overview:
+
+3.1 Pull Request (PR) Submission
+
+
+After commiting the changes into the feature branch , raise a approval to merge the source code into respective develop branch
+
+
+3.2 Approval Workflow
+Raise a work item with the PR including in it
+add merging branch details and description describing effect of these changes  
+
+share the work item to respective person for getting approval and merging the PR
+After the code got merged , look for the latest build and check  the changes are reflecting in class file or not
+For knowing the process of checking the changes in respective class file follow this link :
+
+
+
+
+
+If changes are found , create a deployment request for deploying the latest source changes
+
+
+
+Get approval from the RM team and share the deployment PR to respective person
+Check if logs are reflecting  are not in putty
+reference link:
+
+
+4. Impact Assessment:
+We used this process for adding logs and changes into respective files 
+Converting logs into json format
+the variables added in the logs are used in grafana monitoring tool ,for picking the values and showing them in dashboards
+5.Next Steps:
+Grafana picks the values in logs , if those are in json format.
+For AE the logs cant be converted into json directly , so we are using logstash file for converting them into json format
+6.References:
+reference for how to write a logstash file :
+reference for how deploy the logstash file :
+
+
+
+
+This structured format ensures all essential aspects of the changes and workflow are documented clearly. 
+
+
+
+
+
+
+
+

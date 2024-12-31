@@ -43,3 +43,5 @@ For AE, logs cannot be converted directly into JSON. Hence, a Logstash file is u
 
 Reference for writing a Logstash file: link
 Reference for deploying a Logstash file: link
+
+Grafana Monitoring Configuration Updates: Submission, Approval, and Execution Workflow

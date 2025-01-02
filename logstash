@@ -1,0 +1,83 @@
+1.  Objective :
+deploying logstash file ,for converting the logs into json formate for grafana
+2. Scope of changes :
+List of files that were changed :
+
+
+
+14147-rcb-atlas-cloud-elk   → logstash.conf
+
+
+
+
+
+3.Process Overview:
+
+3.1 Pull Request (PR) Submission
+
+
+After adding the new logstash file into the feature branch, raise a request for approval to merge the source code into the main branch.
+
+
+3.2 Approval Workflow
+Create a work item and include the PR in it.
+Add details of the merging branch and a description explaining the effect of these changes.
+Share the work item with the respective person to obtain approval and proceed with merging the PR.
+After the code is merged, check for the pipeline and run it as shown in the images
+
+
+
+
+
+
+After the pipeline runs successfully ,  check for the latest build
+
+
+
+
+
+Go to 14147-sc-aws-atlas-uae-tf12-hk and update the logstash file name in elk-logstash.sh 
+
+update build link in yellow highlighted line
+
+update build number in green highlighted line
+
+update logstash file name in orange highlighted area
+
+
+
+
+commit the change into feature branch and raise a pr to hotfix/ecr/AE_ELK_DEPLOY 
+go to pipeline and search the repo name as shown in the image
+
+
+
+run the pipeline by changing the branch name main to hotfix/ecr/AE_ELK_DEPLOY
+
+
+
+
+Run the pipe line till dev , it asks permission for running at dev , get the permisson from the respective person
+Logstash file gets deployed after following these steps
+4. Impact Assessment:
+The process was used for deploying logstash file.
+logstash files converts the logs into json format and grafana picks the variables values form the json logs.
+5.Next Steps:
+verify the values are reflecting in grafana dashborads or not.
+6.References:
+Reference for writing a Logstash file: :
+Reference Git commands and process for commit the code:
+
+
+
+
+7.Conclusion:
+This structured format ensures all essential aspects of the changes and workflow are documented clearly. 
+
+
+
+
+
+
+
+

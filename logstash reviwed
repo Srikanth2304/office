@@ -1,0 +1,47 @@
+1. Objective:
+The objective is to deploy a Logstash configuration file to convert logs into JSON format for Grafana visualization.
+
+2. Scope of Changes:
+**List of files that were changed:**
+- **14147-rcb-atlas-cloud-elk** → **logstash.conf**
+
+3. Process Overview:
+
+**3.1 Pull Request (PR) Submission:**
+- After adding the new Logstash file into the feature branch, raise a request for approval to merge the source code into the main branch.
+
+**3.2 Approval Workflow:**
+- Create a work item and include the PR in it.
+- Add details of the merging branch and a description explaining the effect of these changes.
+- Share the work item with the respective approver to obtain approval and proceed with merging the PR.
+- After the code is merged, check the pipeline and execute it as shown in the referenced images.
+
+**3.3 Post-Merge Updates:**
+- After the pipeline runs successfully, verify the latest build.
+- Navigate to **14147-sc-aws-atlas-uae-tf12-hk** and update the Logstash file name in **elk-logstash.sh** as follows:
+  - Update the build link in the yellow highlighted line.
+  - Update the build number in the green highlighted line.
+  - Update the Logstash file name in the orange highlighted area.
+- Commit the changes into the feature branch and raise a PR to **hotfix/ecr/AE_ELK_DEPLOY**.
+- Access the pipeline and search for the repository name as shown in the referenced image.
+- Run the pipeline by changing the branch name from **main** to **hotfix/ecr/AE_ELK_DEPLOY**.
+
+**3.4 Deployment Process:**
+- Execute the pipeline up to the **dev** environment. Approval is required to run the pipeline at **dev**.
+- Obtain permission from the respective approver to proceed.
+- The Logstash file gets deployed successfully after following these steps.
+
+4. Impact Assessment:
+- The process is used for deploying the Logstash file.
+- Logstash files convert logs into JSON format, enabling Grafana to pick variable values from the JSON logs.
+
+5. Next Steps:
+- Verify whether the values are reflecting correctly in Grafana dashboards.
+
+6. References:
+- Reference for writing a Logstash file.
+- Git commands and process references for committing the code.
+
+7. Conclusion:
+This structured format ensures all essential aspects of the changes and workflow are documented clearly.
+

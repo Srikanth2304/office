@@ -1,0 +1,10 @@
+2013176@INN38Q2YW3 MINGW64 ~/SCB/rcb_api_devlop/14147-rcb-vh-ebbs (feature/grafanAErev1)
+$ git fetch --all
+Fetching origin
+remote: Azure Repos
+remote: Found 19872 objects to send. (3450 ms)
+error: RPC failed; curl 56 OpenSSL SSL_read: Connection was reset, errno 10054
+fatal: the remote end hung up unexpectedly
+fatal: early EOF
+fatal: index-pack failed
+error: Could not fetch origin

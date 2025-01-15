@@ -1,8 +1,44 @@
+log.println("Grafana_Solace#" + "TimeTaken#" + timeTaken + "messageSender#" + messageSender + "ReqType#"+ reqType + "responseMsg#" + responseDescription + "msgStatus#" + msgStatus + "#resCode#"+ responseCode + "trntype#" + trntype+"#ResponseMsg#LOG"+messageWrapper.responseMsg);
+				String logDetails = timeTaken + "#" + messageSender + "#" + reqType + "#" + responseDescription + "#" + msgStatus + "#" + responseCode + "#" + trntype + "#" + messageWrapper.responseMsg;
+				String[] data = logDetails.split("#");
+		        Map<String, String> map = new HashMap<>();
+		        map.put("Grafana_Solace:TimeTaken", data[0]);
+		        map.put("messageSender", data[1]);
+		        map.put("ReqType", data[2]);
+		        map.put("responseMsg", data[3]);
+		        map.put("msgStatus", data[4]);
+		        map.put("resCode", data[5]);
+		        map.put("trntype", data[6]);
+		        map.put("ResponseMsg#KAR", data[7]);
+		        String json = mapToJson(map);
+		        jsonLog.println("Solace Mointoring"+json);
+
+public static String mapToJson(Map<String, String> map) {
+        StringBuilder jsonBuilder = new StringBuilder();
+        jsonBuilder.append("{");
+        int mapSize = map.size();
+        int count = 0;
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            jsonBuilder.append("\"")
+                        .append(entry.getKey())
+                        .append("\": \"")
+                        .append(entry.getValue())
+                        .append("\"");
+            if (count < mapSize - 1) {
+                jsonBuilder.append(", ");
+            }
+            count++;
+        }
+        jsonBuilder.append("}");
+        return jsonBuilder.toString();
+    }
+
+
 {"Grafana_Solace:TimeTaken": "359",
   "ReqType": "post-transaction",
   "trntype": "AIN", 
   "messageSender": "SCPAY",
   "resCode": "", 
-  "ResponseMsg#KAR": "{"data":{"id":"52f8dce8-7949-41d3-b23f-16ea2d54bbeb","type":"post-transaction","attributes":{"response":{"external-system-key":"9861d8441e8e4dabbc43e60f0e3a091e","response-code":"TXN00000","response-description":"Success"}}}}",
+  "ResponseMsg#KAR": {"data":{"id":"52f8dce8-7949-41d3-b23f-16ea2d54bbeb","type":"post-transaction","attributes":{"response":{"external-system-key":"9861d8441e8e4dabbc43e60f0e3a091e","response-code":"TXN00000","response-description":"Success"}}}},
   "msgStatus": "S", 
   "responseMsg": ""}

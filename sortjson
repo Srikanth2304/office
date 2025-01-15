@@ -1,0 +1,115 @@
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class JsonConvert {
+
+    public static void main(String[] args) {
+    	
+    	String headerParameters = "headerParameters";
+        long startTime = 300L;  
+        String typeofTrn = "O";
+        String APIServices = "APIServices";
+        String timeTaken = "timeTaken";
+        String getMethod  = "getMethod";
+        String getRequestURI = "getRequestURI";
+        String getQueryString = "getQueryString";
+        String company_ID = "kfslk32";
+        String message_Sender = "IMTP";
+        String j1 = {"data":{"id":"52f8dce8-7949-41d3-b23f-16ea2d54bbeb","type":"post-transaction","attributes":{"response":{"external-system-key":"9861d8441e8e4dabbc43e60f0e3a091e","response-code":"TXN00000","response-description":"Success"}}}};
+      //added for grafana monitoring dashboard 2013176
+        System.out.println("Grafana-JSON Converter check starts");
+        
+        String Logdetails = headerParameters + "#" + new java.sql.Time(startTime) + "#" + typeofTrn + "#" 
+                + APIServices + "#" + timeTaken + "#" + getMethod + "#" + getRequestURI + "#" 
+                + getQueryString + "#" + company_ID + "#" + message_Sender+ "#" + j1;
+        
+       
+        String[] data = Logdetails.split("#");
+        Map<String, String> map = new HashMap<>();
+        
+        map.put("headerParameters", data[0]);
+        map.put("startTime", data[1]);
+        map.put("typeofTrn", data[2]);
+        map.put("APIServices", data[3]);
+        map.put("timeTaken", data[4]);
+        map.put("getMethod", data[5]);
+        map.put("getRequestURI", data[6]);
+        map.put("getQueryString", data[7]);
+        map.put("company_ID", data[8]);
+        map.put("message_Sender", data[9]);
+        map.put("j1", data[10]);
+        String json = mapToJson(map);
+        jsonLog.println(json);
+        logwriter.println("Grafana-JSON Converter check ends:"+json);
+        String json = mapToJson(map);
+        System.out.println(json);
+        System.out.println("Grafana-JSON Converter check ends");
+    }
+    
+    
+    public static String mapToJson(Map<String, String> map) {
+        StringBuilder jsonBuilder = new StringBuilder();
+        jsonBuilder.append("{");
+        int mapSize = map.size();
+        int count = 0;
+
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            jsonBuilder.append("\"")
+                        .append(entry.getKey())
+                        .append("\": ");
+            String value = entry.getValue();
+            
+            // Check if the value is a valid JSON (nested object or array)
+            if (isJson(value)) {
+                jsonBuilder.append(value); // Append without quotes
+            } else {
+                jsonBuilder.append("\"")
+                            .append(value)
+                            .append("\""); // Append with quotes
+            }
+
+            if (count < mapSize - 1) {
+                jsonBuilder.append(", ");
+            }
+            count++;
+        }
+
+        jsonBuilder.append("}");
+        return jsonBuilder.toString();
+    }
+
+    // Helper method to check if a string is a valid JSON object or array
+    public static boolean isJson(String value) {
+        value = value.trim();
+        return (value.startsWith("{") && value.endsWith("}")) || 
+               (value.startsWith("[") && value.endsWith("]"));
+    }
+
+//    public static String mapToJson(Map<String, String> map) {
+//        StringBuilder jsonBuilder = new StringBuilder();
+//        jsonBuilder.append("{");
+//
+//        int mapSize = map.size();
+//        int count = 0;
+//
+//        for (Map.Entry<String, String> entry : map.entrySet()) {
+//            jsonBuilder.append("\"")
+//                        .append(entry.getKey())
+//                        .append("\": \"")
+//                        .append(entry.getValue())
+//                        .append("\"");
+//
+//            if (count < mapSize - 1) {
+//                jsonBuilder.append(", ");
+//            }
+//            count++;
+//        }
+//
+//        jsonBuilder.append("}");
+//        return jsonBuilder.toString();
+//    }
+}
+
+
+

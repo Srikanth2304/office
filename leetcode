@@ -2,7 +2,7 @@
 class Solution {
 public:
 
-    bool comp(const string&a , const string&b){
+    static bool comp(const string&a , const string&b){
         if(a.size() != b.size()){
             return a.size() - b.size();
         }

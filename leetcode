@@ -1,28 +1,28 @@
 class Solution {
-private:
-    int count_helper(vector<int>& nums,int mid){
-        int c=0;
-        for(int& ele:nums){
-            if(ele>mid){c++;}
-        }
-        return c;
-    }
 public:
-    int findKthLargest(vector<int>& nums, int k) {
-        int low=INT_MAX,high=INT_MIN;
-        for(int& ele:nums){
-            low=min(low,ele);
-            high=max(high,ele);
+    void wiggleSort(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        vector<int>arr1 , arr2;
+        int mid = nums.size() / 2;
+        for( int i = 0 ; i < mid ; i++){
+            arr1[i] = nums[i];
+        } 
+        for( int i = nums.size() - 1 ; i > mid ; i--){
+            arr2[i] = nums[i];
         }
-        while(low<high){
-            int mid=low+(high-low)/2;
-            if(count_helper(nums,mid)>=k){
-                low=mid+1;
+        int j = 0 , k = 0 , i = 0;
+        while(1){
+            if(j < arr1.size()){
+                nums[i] = arr1[j];
+                i++;
+                j++;
             }
-            else{
-                high=mid;
+            if(k < arr2.size()){
+                nums[i] = arr2[k];
+                i++;
+                k++;
             }
         }
-        return high;
+        
     }
 };

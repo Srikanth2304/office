@@ -1,15 +1,17 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
+using namespace std;
+
 class Solution {
 public:
-
-    static bool comp(const string&a , const string&b){
-        if(a.size() != b.size()){
-            return a.size() - b.size();
+    static bool comp(const string& a, const string& b) {
+        if (a.size() != b.size()) {
+            return a.size() < b.size(); // Compare by length
         }
-        return a < b;
+        return a < b; // Compare lexicographically
     }
+
     string kthLargestNumber(vector<string>& nums, int k) {
-        sort(nums.begin() , nums.end() , comp);
+        sort(nums.begin(), nums.end(), comp);
         return nums[nums.size() - k];
     }
 };

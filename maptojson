@@ -130,3 +130,27 @@ public static String mapToJson(Map<String, String> map) {
 
 
 LogWriter jsonLog = new LogWriter("Monitoring", "Monitoring", "Monitoring", "Monitoring", true);
+
+
+
+
+
+
+public static String mapToJson(Map<String, String> map) {
+    StringBuilder jsonBuilder = new StringBuilder("{");
+    int count = 0, mapSize = map.size();
+    for (Map.Entry<String, String> entry : map.entrySet()) {
+        jsonBuilder.append("\"").append(entry.getKey()).append("\": ");
+        String value = entry.getValue();
+        jsonBuilder.append(isJson(value) ? value : "\"" + value + "\"");
+        if (count++ < mapSize - 1) jsonBuilder.append(", ");
+    }
+    return jsonBuilder.append("}").toString();
+}
+
+public static boolean isJson(String value) {
+    value = value.trim();
+    return (value.startsWith("{") && value.endsWith("}")) || 
+           (value.startsWith("[") && value.endsWith("]"));
+}
+

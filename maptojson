@@ -127,3 +127,6 @@ public static String mapToJson(Map<String, String> map) {
         return (value.startsWith("{") && value.endsWith("}")) || 
                (value.startsWith("[") && value.endsWith("]"));
     }
+
+
+LogWriter jsonLog = new LogWriter("Monitoring", "Monitoring", "Monitoring", "Monitoring", true);

@@ -1,4 +1,27 @@
- public static String mapToJson(Map<String, String> map) {
+package com.example.utils;
+
+import java.util.Map;
+
+/**
+ * Utility class for JSON operations.
+ */
+public final class JsonUtils {
+
+    // Private constructor to prevent instantiation
+    private JsonUtils() {}
+
+    /**
+     * Converts a map to a JSON-formatted string.
+     *
+     * @param map The map to convert.
+     * @return The JSON string representation of the map.
+     * @throws IllegalArgumentException if the map is null.
+     */
+    public static String mapToJson(Map<String, String> map) {
+        if (map == null) {
+            throw new IllegalArgumentException("Map cannot be null");
+        }
+
         StringBuilder jsonBuilder = new StringBuilder();
         jsonBuilder.append("{");
         int mapSize = map.size();
@@ -9,14 +32,13 @@
                         .append(entry.getKey())
                         .append("\": ");
             String value = entry.getValue();
-            
-            
+
             if (isJson(value)) {
-                jsonBuilder.append(value); 
+                jsonBuilder.append(value);
             } else {
                 jsonBuilder.append("\"")
-                            .append(value)
-                            .append("\""); 
+                            .append(escapeJson(value))
+                            .append("\"");
             }
 
             if (count < mapSize - 1) {
@@ -29,9 +51,35 @@
         return jsonBuilder.toString();
     }
 
-    
+    /**
+     * Checks if a string is a valid JSON object or array.
+     *
+     * @param value The string to check.
+     * @return true if the string is JSON; false otherwise.
+     */
     public static boolean isJson(String value) {
+        if (value == null) {
+            return false;
+        }
         value = value.trim();
         return (value.startsWith("{") && value.endsWith("}")) || 
                (value.startsWith("[") && value.endsWith("]"));
     }
+
+    /**
+     * Escapes special characters in a string for JSON compatibility.
+     *
+     * @param value The string to escape.
+     * @return The escaped string.
+     */
+    private static String escapeJson(String value) {
+        if (value == null) {
+            return "";
+        }
+        return value.replace("\\", "\\\\")
+                    .replace("\"", "\\\"")
+                    .replace("\n", "\\n")
+                    .replace("\r", "\\r")
+                    .replace("\t", "\\t");
+    }
+}

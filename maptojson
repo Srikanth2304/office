@@ -1,0 +1,37 @@
+ public static String mapToJson(Map<String, String> map) {
+        StringBuilder jsonBuilder = new StringBuilder();
+        jsonBuilder.append("{");
+        int mapSize = map.size();
+        int count = 0;
+
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            jsonBuilder.append("\"")
+                        .append(entry.getKey())
+                        .append("\": ");
+            String value = entry.getValue();
+            
+            
+            if (isJson(value)) {
+                jsonBuilder.append(value); 
+            } else {
+                jsonBuilder.append("\"")
+                            .append(value)
+                            .append("\""); 
+            }
+
+            if (count < mapSize - 1) {
+                jsonBuilder.append(", ");
+            }
+            count++;
+        }
+
+        jsonBuilder.append("}");
+        return jsonBuilder.toString();
+    }
+
+    
+    public static boolean isJson(String value) {
+        value = value.trim();
+        return (value.startsWith("{") && value.endsWith("}")) || 
+               (value.startsWith("[") && value.endsWith("]"));
+    }

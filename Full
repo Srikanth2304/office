@@ -1,1 +1,20 @@
-I have been working on a data monitoring tool called Grafana, where we utilize logs from Elastic as the data source. Last month, I focused on enhancing the functionality by adding logs to the source code in the TransactionServiceHostBean.java file. This involved printing channel ID, transaction type, external system key, and total time taken in Elastic, with the goal of creating a failure rate dashboard in Grafana.
+/ado-agent-workdir/1/s/***-rcb-atlas-interface-online/src/main/java/scb/ebbs/req/com/PostTransactionProcess.java:1499: error: incompatible types: short cannot be converted to String
+			        map.put("Grafana_eBranch Status:", transactionBatchWrapper.batchStatus);
+			                                                                  ^
+/ado-agent-workdir/1/s/***-rcb-atlas-interface-online/src/main/java/scb/ebbs/req/com/PostTransactionProcess.java:1502: error: incompatible types: Date cannot be converted to String
+			        map.put("BatchEntryDate:", transactionBatchWrapper.batchEntryDate);
+			                                                          ^
+/ado-agent-workdir/1/s/***-rcb-atlas-interface-online/src/main/java/scb/ebbs/req/com/PostTransactionProcess.java:1505: error: incompatible types: Time cannot be converted to String
+			        map.put("Time Taken:", ( scb.util.Utility.convertTimeToUserTZ(new Time(endTime-stTime))));
+
+ Map<String, String> map = new HashMap<>();
+			        map.put("Grafana_eBranch Status:", transactionBatchWrapper.batchStatus);
+			        map.put("BatchNo:", transactionBatchWrapper.batchNo);
+			        map.put("ChannelID:", transactionBatchWrapper.channelID);
+			        map.put("BatchEntryDate:", transactionBatchWrapper.batchEntryDate);
+			        map.put("Branch:", transactionBatchWrapper.transactionBranch);
+			        map.put("TrnType:", transactionBatchWrapper.transactionType);
+			        map.put("Time Taken:", ( scb.util.Utility.convertTimeToUserTZ(new Time(endTime-stTime))));
+			        String json = jsonLogWriter.mapToJson(map);
+			        jsonLog.printGrafanaLog(json);
+			        log.println("Grafana-JSON Converter check ends:"+json);

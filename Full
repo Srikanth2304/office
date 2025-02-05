@@ -18,3 +18,31 @@
 			        String json = jsonLogWriter.mapToJson(map);
 			        jsonLog.printGrafanaLog(json);
 			        log.println("Grafana-JSON Converter check ends:"+json);
+
+
+
+
+
+
+
+
+
+
+Map<String, String> map = new HashMap<>();
+map.put("Grafana_eBranch Status:", String.valueOf(transactionBatchWrapper.batchStatus));
+map.put("BatchNo:", transactionBatchWrapper.batchNo);
+map.put("ChannelID:", transactionBatchWrapper.channelID);
+
+// Format Date properly
+SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+map.put("BatchEntryDate:", dateFormat.format(transactionBatchWrapper.batchEntryDate));
+
+map.put("Branch:", transactionBatchWrapper.transactionBranch);
+map.put("TrnType:", transactionBatchWrapper.transactionType);
+
+// Convert Time to String properly
+map.put("Time Taken:", scb.util.Utility.convertTimeToUserTZ(new Time(endTime - stTime)).toString());
+
+String json = jsonLogWriter.mapToJson(map);
+jsonLog.printGrafanaLog(json);
+log.println("Grafana-JSON Converter check ends:" + json);

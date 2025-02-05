@@ -1,48 +1,5 @@
-/ado-agent-workdir/1/s/***-rcb-atlas-interface-online/src/main/java/scb/ebbs/req/com/PostTransactionProcess.java:1499: error: incompatible types: short cannot be converted to String
-			        map.put("Grafana_eBranch Status:", transactionBatchWrapper.batchStatus);
-			                                                                  ^
-/ado-agent-workdir/1/s/***-rcb-atlas-interface-online/src/main/java/scb/ebbs/req/com/PostTransactionProcess.java:1502: error: incompatible types: Date cannot be converted to String
-			        map.put("BatchEntryDate:", transactionBatchWrapper.batchEntryDate);
-			                                                          ^
-/ado-agent-workdir/1/s/***-rcb-atlas-interface-online/src/main/java/scb/ebbs/req/com/PostTransactionProcess.java:1505: error: incompatible types: Time cannot be converted to String
-			        map.put("Time Taken:", ( scb.util.Utility.convertTimeToUserTZ(new Time(endTime-stTime))));
-
- Map<String, String> map = new HashMap<>();
-			        map.put("Grafana_eBranch Status:", transactionBatchWrapper.batchStatus);
-			        map.put("BatchNo:", transactionBatchWrapper.batchNo);
-			        map.put("ChannelID:", transactionBatchWrapper.channelID);
-			        map.put("BatchEntryDate:", transactionBatchWrapper.batchEntryDate);
-			        map.put("Branch:", transactionBatchWrapper.transactionBranch);
-			        map.put("TrnType:", transactionBatchWrapper.transactionType);
-			        map.put("Time Taken:", ( scb.util.Utility.convertTimeToUserTZ(new Time(endTime-stTime))));
-			        String json = jsonLogWriter.mapToJson(map);
-			        jsonLog.printGrafanaLog(json);
-			        log.println("Grafana-JSON Converter check ends:"+json);
-
-
-
-
-
-
-
-
-
-
-Map<String, String> map = new HashMap<>();
-map.put("Grafana_eBranch Status:", String.valueOf(transactionBatchWrapper.batchStatus));
-map.put("BatchNo:", transactionBatchWrapper.batchNo);
-map.put("ChannelID:", transactionBatchWrapper.channelID);
-
-// Format Date properly
-SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-map.put("BatchEntryDate:", dateFormat.format(transactionBatchWrapper.batchEntryDate));
-
-map.put("Branch:", transactionBatchWrapper.transactionBranch);
-map.put("TrnType:", transactionBatchWrapper.transactionType);
-
-// Convert Time to String properly
-map.put("Time Taken:", scb.util.Utility.convertTimeToUserTZ(new Time(endTime - stTime)).toString());
-
-String json = jsonLogWriter.mapToJson(map);
-jsonLog.printGrafanaLog(json);
-log.println("Grafana-JSON Converter check ends:" + json);
+/ado-agent-workdir/1/s/***-rcb-atlas-upload/src/main/java/scb/general/client/ParallelTransactionUpload.java:855: error: incompatible types: Date cannot be converted to String
+                map.put("batchProcessedDate", tbWrapper.batchProcessedDate); 
+                                                       ^
+/ado-agent-workdir/1/s/***-rcb-atlas-upload/src/main/java/scb/general/client/ParallelTransactionUpload.java:856: error: incompatible types: Time cannot be converted to String
+                map.put("batchProcessedTime", tbWrapper.batchProcessedTime); 

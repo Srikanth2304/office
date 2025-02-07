@@ -21,4 +21,8 @@ map.put("batchProcessedDate", tbWrapper.batchProcessedDate.toString());
 Add comment856Plus                  map.put("batchProcessedTime", tbWrapper.batchProcessedTime.toString());
 getting null pointer in this line 
 when we insert first time in INTTRN we will not get batchProcessedDate & batchProcessedTime
- 
+
+
+map.put("batchProcessedDate", tbWrapper.batchProcessedDate != null ? tbWrapper.batchProcessedDate.toString() : "N/A");
+map.put("batchProcessedTime", tbWrapper.batchProcessedTime != null ? tbWrapper.batchProcessedTime.toString() : "N/A");
+

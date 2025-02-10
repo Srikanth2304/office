@@ -1,28 +1,9 @@
-tbWrapper.batchNo = transactionProcessingSystemSession.getNextBatchNumber(tbWrapper.transactionBranch, tbWrapper.channelID, tbWrapper.batchEntryDate);
-				//added for grafana monitoring dashboard 2013176
-				out.println("GrafanaTest_upload--> " + "channelID : " + tbWrapper.channelID + " batchNo : " + tbWrapper.batchNo + " batchProcessedDate : " + tbWrapper.batchProcessedDate + " batchProcessedTime : " + tbWrapper.batchProcessedTime + " transactionType : " + tbWrapper.transactionType + " upLoadId : " + upLoadId + "SeqNo: " +seqNo);
-//				String logDetails = tbWrapper.channelID + "#" + tbWrapper.batchNo + "#" + tbWrapper.batchProcessedDate + "#" + tbWrapper.batchProcessedTime + "#" + tbWrapper.transactionType + "#" + upLoadId + "#" + seqNo;
-//				String[] data = logDetails.split("#");
+hi ⁠
 
-	            Map<String, String> map = new HashMap<>();
-	            map.put("GrafanaTest_upload : channelID", tbWrapper.channelID); 
-	            map.put("batchNo", tbWrapper.batchNo); 
-                map.put("batchProcessedDate", tbWrapper.batchProcessedDate.toString()); 
-                map.put("batchProcessedTime", tbWrapper.batchProcessedTime.toString()); 
-                map.put("transactionType", tbWrapper.transactionType); 
-                map.put("upLoadId", upLoadId);
-                map.put("SeqNo", seqNo);
-                String json = jsonLogWriter.mapToJson(map);
-                jsonLog.printGrafanaLog(json);
+Subramaniyan,
 
+ 
 
-getting null pointer in this line 
-map.put("batchProcessedDate", tbWrapper.batchProcessedDate.toString());
-Add comment856Plus                  map.put("batchProcessedTime", tbWrapper.batchProcessedTime.toString());
-getting null pointer in this line 
-when we insert first time in INTTRN we will not get batchProcessedDate & batchProcessedTime
+Ganesan
 
-
-map.put("batchProcessedDate", tbWrapper.batchProcessedDate != null ? tbWrapper.batchProcessedDate.toString() : "N/A");
-map.put("batchProcessedTime", tbWrapper.batchProcessedTime != null ? tbWrapper.batchProcessedTime.toString() : "N/A");
-
+ , as our source code changes for grafana is showing nullpointer exception in ParallelTransactionUpload.java. i have reveted all the changes . but still showing same error  

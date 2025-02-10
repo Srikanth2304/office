@@ -1,9 +1,3 @@
-hi ⁠
+Our source code changes for Grafana were showing a NullPointerException in ParallelTransactionUpload.java. I have reverted all my changes, but the error still persists. It might be due to changes made by someone else.
 
-Subramaniyan,
-
- 
-
-Ganesan
-
- , as our source code changes for grafana is showing nullpointer exception in ParallelTransactionUpload.java. i have reveted all the changes . but still showing same error  
+Could you please check this?

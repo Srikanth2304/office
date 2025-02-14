@@ -8,3 +8,7 @@ private Time currTime =new Time(scb.util.Utility.convertCurrentTimeToUserTZ(Syst
 	        map.put("idNumber", idNumber);
 	        String json = jsonLogWriter.mapToJson(map);
 	        jsonLog.printGrafanaLog(json);
+
+
+
+map.put("currTime", (currTime != null) ? currTime.toString() : null);

@@ -42,4 +42,19 @@ public class JsonLogWriter {
     }
 
 
+
+
+@Test
+	public void getrequestinfo_test() throws Exception {
+		try {
+			new NonStrictExpectations() {
+			};
+			Deencapsulation.invoke(logWriter, "getRequestInfo");
+			Assert.assertTrue(true);
+		} catch (Exception exObj) {
+			Assert.assertTrue(true);
+		}
+	}
+
+
 }

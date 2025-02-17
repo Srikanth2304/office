@@ -1,14 +1,45 @@
-private Time currTime =new Time(scb.util.Utility.convertCurrentTimeToUserTZ(System.currentTimeMillis()));
- Map<String, String> map = new HashMap<>();
-	        map.put("GrafanaFTData: eodDate", eodDate);
-	        map.put("currTime", currTime);
-	        map.put("finalStatusFlag", finalStatusFlag);
-	        map.put("finalStatusDesc", finalStatusDesc);
-	        map.put("finalFTFID", finalFTFID);
-	        map.put("idNumber", idNumber);
-	        String json = jsonLogWriter.mapToJson(map);
-	        jsonLog.printGrafanaLog(json);
+package scb.util;
+
+import java.util.Map;
+
+public class JsonLogWriter {
+	
+	public String mapToJson(Map<String, String> map) {
+        StringBuilder jsonBuilder = new StringBuilder();
+        jsonBuilder.append("{");
+        int mapSize = map.size();
+        int count = 0;
+
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            jsonBuilder.append("\"")
+                        .append(entry.getKey())
+                        .append("\": ");
+            String value = entry.getValue();
+            
+            
+            if (isJson(value)) {
+                jsonBuilder.append(value); 
+            } else {
+                jsonBuilder.append("\"")
+                            .append(value)
+                            .append("\""); 
+            }
+
+            if (count < mapSize - 1) {
+                jsonBuilder.append(", ");
+            }
+            count++;
+        }
+
+        jsonBuilder.append("}");
+        return jsonBuilder.toString();
+    }
+	
+	public boolean isJson(String value) {
+        value = value.trim();
+        return (value.startsWith("{") && value.endsWith("}")) || 
+               (value.startsWith("[") && value.endsWith("]"));
+    }
 
 
-
-map.put("currTime", (currTime != null) ? currTime.toString() : null);
+}

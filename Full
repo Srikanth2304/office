@@ -58,3 +58,48 @@ public class JsonLogWriter {
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+........
+
+
+
+
+
+
+package scb.util;
+
+import org.junit.Test;
+import org.junit.Assert;
+import java.util.HashMap;
+import java.util.Map;
+
+public class JsonLogWriterTest {
+
+    @Test
+    public void mapToJson_test() {
+        JsonLogWriter logWriter = new JsonLogWriter();
+        Map<String, String> map = new HashMap<>();
+        map.put("key1", "value1");
+        map.put("key2", "{\"nestedKey\": \"nestedValue\"}");
+        
+        String json = logWriter.mapToJson(map);
+        Assert.assertNotNull(json);
+    }
+
+    @Test
+    public void isJson_test() {
+        JsonLogWriter logWriter = new JsonLogWriter();
+        Assert.assertTrue(logWriter.isJson("{\"key\": \"value\"}"));
+        Assert.assertFalse(logWriter.isJson("plain text"));
+    }
+}

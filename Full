@@ -1,28 +1,25 @@
-ackage scb.util;
+package scb.util;
 
 import java.util.Map;
 
 public class JsonLogWriter {
-	
-	public String mapToJson(Map<String, String> map) {
+
+    public String mapToJson(Map<String, String> map) {
         StringBuilder jsonBuilder = new StringBuilder();
         jsonBuilder.append("{");
         int mapSize = map.size();
         int count = 0;
 
         for (Map.Entry<String, String> entry : map.entrySet()) {
-            jsonBuilder.append("\"")
-                        .append(entry.getKey())
-                        .append("\": ");
+            jsonBuilder.append("\"").append(entry.getKey()).append("\": ");
             String value = entry.getValue();
-            
-            
-            if (isJson(value)) {
-                jsonBuilder.append(value); 
+
+            if (value == null) {
+                jsonBuilder.append("null"); // Handle null values explicitly
+            } else if (isJson(value)) {
+                jsonBuilder.append(value);
             } else {
-                jsonBuilder.append("\"")
-                            .append(value)
-                            .append("\""); 
+                jsonBuilder.append("\"").append(value).append("\"");
             }
 
             if (count < mapSize - 1) {
@@ -34,28 +31,13 @@ public class JsonLogWriter {
         jsonBuilder.append("}");
         return jsonBuilder.toString();
     }
-	
-	public boolean isJson(String value) {
+
+    public boolean isJson(String value) {
+        if (value == null) {
+            return false; // Treat null as non-JSON
+        }
         value = value.trim();
         return (value.startsWith("{") && value.endsWith("}")) || 
                (value.startsWith("[") && value.endsWith("]"));
     }
-
-
 }
-
-
-
-
-
-
-
-
-25/02/2025 18:22:00,940 INFO  [stdout] (EJB default-timer - 2#eBBS#NP#C4CRU#NA#NA#NA#) connection changed to false
-25/02/2025 18:22:01,235 ERROR [stderr] (EJB default-timer - 2#eBBS#NP#C4CRU#NA#NA#NA#) java.lang.NullPointerException
-25/02/2025 18:22:01,235 ERROR [stderr] (EJB default-timer - 2#eBBS#NP#C4CRU#NA#NA#NA#)  at scb.util.JsonLogWriter.isJson(JsonLogWriter.java:47)
-25/02/2025 18:22:01,235 ERROR [stderr] (EJB default-timer - 2#eBBS#NP#C4CRU#NA#NA#NA#)  at scb.util.JsonLogWriter.mapToJson(JsonLogWriter.java:28)
-25/02/2025 18:22:01,235 ERROR [stderr] (EJB default-timer - 2#eBBS#NP#C4CRU#NA#NA#NA#)  at scb.general.client.ParallelTransactionUpload.doProcess(ParallelTransactionUpload.java:859)
-25/02/2025 18:22:01,235 ERROR [stderr] (EJB default-timer - 2#eBBS#NP#C4CRU#NA#NA#NA#)  at scb.general.ejb.UploadTimerSessionBean.ejbTimeout(UploadTimerSessionBean.java:283)
-25/02/2025 18:22:01,235 ERROR [stderr] (EJB default-timer - 2#eBBS#NP#C4CRU#NA#NA#NA#)  at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-25/02/2025 18:22:01,235 ERROR [stderr] (EJB default-timer - 2#eBBS#NP#C4CRU#NA#NA#NA#)  at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.jav

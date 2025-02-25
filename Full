@@ -1,4 +1,4 @@
-package scb.util;
+ackage scb.util;
 
 import java.util.Map;
 
@@ -42,21 +42,6 @@ public class JsonLogWriter {
     }
 
 
-
-
-@Test
-	public void getrequestinfo_test() throws Exception {
-		try {
-			new NonStrictExpectations() {
-			};
-			Deencapsulation.invoke(logWriter, "getRequestInfo");
-			Assert.assertTrue(true);
-		} catch (Exception exObj) {
-			Assert.assertTrue(true);
-		}
-	}
-
-
 }
 
 
@@ -66,40 +51,11 @@ public class JsonLogWriter {
 
 
 
-
-
-
-........
-
-
-
-
-
-
-package scb.util;
-
-import org.junit.Test;
-import org.junit.Assert;
-import java.util.HashMap;
-import java.util.Map;
-
-public class JsonLogWriterTest {
-
-    @Test
-    public void mapToJson_test() {
-        JsonLogWriter logWriter = new JsonLogWriter();
-        Map<String, String> map = new HashMap<>();
-        map.put("key1", "value1");
-        map.put("key2", "{\"nestedKey\": \"nestedValue\"}");
-        
-        String json = logWriter.mapToJson(map);
-        Assert.assertNotNull(json);
-    }
-
-    @Test
-    public void isJson_test() {
-        JsonLogWriter logWriter = new JsonLogWriter();
-        Assert.assertTrue(logWriter.isJson("{\"key\": \"value\"}"));
-        Assert.assertFalse(logWriter.isJson("plain text"));
-    }
-}
+25/02/2025 18:22:00,940 INFO  [stdout] (EJB default-timer - 2#eBBS#NP#C4CRU#NA#NA#NA#) connection changed to false
+25/02/2025 18:22:01,235 ERROR [stderr] (EJB default-timer - 2#eBBS#NP#C4CRU#NA#NA#NA#) java.lang.NullPointerException
+25/02/2025 18:22:01,235 ERROR [stderr] (EJB default-timer - 2#eBBS#NP#C4CRU#NA#NA#NA#)  at scb.util.JsonLogWriter.isJson(JsonLogWriter.java:47)
+25/02/2025 18:22:01,235 ERROR [stderr] (EJB default-timer - 2#eBBS#NP#C4CRU#NA#NA#NA#)  at scb.util.JsonLogWriter.mapToJson(JsonLogWriter.java:28)
+25/02/2025 18:22:01,235 ERROR [stderr] (EJB default-timer - 2#eBBS#NP#C4CRU#NA#NA#NA#)  at scb.general.client.ParallelTransactionUpload.doProcess(ParallelTransactionUpload.java:859)
+25/02/2025 18:22:01,235 ERROR [stderr] (EJB default-timer - 2#eBBS#NP#C4CRU#NA#NA#NA#)  at scb.general.ejb.UploadTimerSessionBean.ejbTimeout(UploadTimerSessionBean.java:283)
+25/02/2025 18:22:01,235 ERROR [stderr] (EJB default-timer - 2#eBBS#NP#C4CRU#NA#NA#NA#)  at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+25/02/2025 18:22:01,235 ERROR [stderr] (EJB default-timer - 2#eBBS#NP#C4CRU#NA#NA#NA#)  at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.jav

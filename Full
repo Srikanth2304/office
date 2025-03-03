@@ -1,47 +1,14 @@
-private boolean isAPIMsgstoreLoggingEnabled() {
-		LogWriter out = LogWriter.getInstance("RequestAndResponseLoggingFilter", "isAPIMsgstoreLoggingEnabled");
-		boolean msgStoreFlag = false;
-		out.println("inside isAPIMsgstoreLoggingEnabled >>> ");
-		if ((SCBPARAMCache.getInstance().getCache("ENABLE_API_MSGSTORE_LOGGING") != null)
-				&& (SCBPARAMCache.getInstance().getCache("ENABLE_API_MSGSTORE_LOGGING").trim()
-						.equals("Y"))) {
-			msgStoreFlag = true;
-			out.println("return value >>> " + msgStoreFlag);
-		}
+private boolean isGrafanaLoggingEnabled() {
+    LogWriter out = LogWriter.getInstance("RequestAndResponseLoggingFilter", "isGrafanaLoggingEnabled");
+    boolean grafanaLogFlag = false;
+    out.println("inside isGrafanaLoggingEnabled >>> ");
 
-		return msgStoreFlag;
-	}
+    if ((SCBPARAMCache.getInstance().getCache("ENABLE_GRAFANA_LOGGING") != null)
+            && (SCBPARAMCache.getInstance().getCache("ENABLE_GRAFANA_LOGGING").trim().equals("Y"))) {
+        grafanaLogFlag = true;
+        out.println("return value >>> " + grafanaLogFlag);
+    }
 
-String responsePayload = afterRequest(request, response);
-            response.copyBodyToResponse();
-            long timeTaken = System.currentTimeMillis() - startTime;
-            String company_ID=request.getHeader("request-country");
-            String message_Sender=request.getHeader("message-sender");
-            try{
-				if(isAPIMsgstoreLoggingEnabled() || isAPIEnqstoreLoggingEnabled()){
-					out.println("Before Calling MsgStoreTableEntry>>>> ");
-					msgStoreTableEntry(startTime, request, response, resourceName, timeTaken, responsePayload, headerHashMap);
-				}
-            }catch(Exception e){
-            	out.println("msgStoreTableEntry >>>>"+e);
-            }
-
-logWriter.println("GrafanaTest: headerParameters: "+"headerParameters"+"##" +new java.sql.Time(startTime)+"#"+"O"+"#"+"-"+"#"+"-"+"#"+"-"+"#"+"APIServices"+"#"+"-"+"#"+timeTaken+"#"+"-"+"#"+"#"+""+request.getMethod() +"/"+ request.getRequestURI() +"/ " + request.getQueryString() + "companyID:" + company_ID +" messageSender: "+message_Sender+" errorDescription: "+errorDescription+"Response Status: "+response.getStatus()+"Response StatusCode: "+response.getStatusCode()+"uetrKey: "+uetrKey);  
-                Map<String, String> map = new HashMap<>();
-                map.put("GrafanaTest", "headerParameters"); 
-                map.put("startTime",  new java.sql.Time(startTime).toString()); 
-                map.put("typeofTrn", "O"); 
-                map.put("timeTaken", Long.toString(timeTaken));
-                map.put("getMethod", request.getMethod()); 
-                map.put("getRequestURI", request.getRequestURI());
-                map.put("getQueryString", request.getQueryString());
-                map.put("company_ID", company_ID);
-                map.put("message_Sender", message_Sender);
-                map.put("errorDescription", errorDescription);
-                map.put("getStatus", Integer.toString(response.getStatus()));
-                map.put("getStatusCode", Integer.toString(response.getStatusCode()));
-                String json = jsonLogWriter.mapToJson(map);
-                logJson.printGrafanaLog(json);
-                logWriter.println("Grafana-JSON Converter check ends:"+json);
-
+    return grafanaLogFlag;
+}
 

@@ -1,26 +1,16 @@
-private boolean isMointorLoggingEnabled() {
-    LogWriter out = LogWriter.getInstance("RequestAndResponseLoggingFilter", "isMointorLoggingEnabled");
-    boolean monitorLog = false;
-    out.println("inside isMointorLoggingEnabled >>> ");
-    
-    // Check if SCBPARAMCache instance is null
-    SCBPARAMCache cacheInstance = SCBPARAMCache.getInstance();
-    if (cacheInstance == null) {
-        out.println("SCBPARAMCache instance is null.");
-        return false;
-    }
+Please form the URL as like below got health check.
 
-    // Check if cache value is null
-    String cacheValue = cacheInstance.getCache("ENABLE_MOINTOR_LOGGING");
-    if (cacheValue == null) {
-        out.println("ENABLE_MOINTOR_LOGGING cache value is null.");
-        return false;
-    }
+https://qaatlas.14147.app.standardchartered.com:8082/SCB/scb/page/HealthCheck.jsp
 
-    if (cacheValue.trim().equals("Y")) {
-        monitorLog = true;
-    }
 
-    out.println("return value >>> " + monitorLog);
-    return monitorLog;
-}
+
+DNS details:
+
+saatlas.14147.app.standardchartered.com
+qaatlas.14147.app.standardchartered.com
+egatlas.14147.app.standardchartered.com
+gbatlas.14147.app.standardchartered.com
+bdatlas.14147.app.standardchartered.com
+thatlas.15064.app.standardchartered.com
+twatlas.15064.app.standardchartered.com
+hkatlas.15064.app.standardchartered.com

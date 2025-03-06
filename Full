@@ -35,3 +35,10 @@ private boolean isMointorLoggingEnabled() {
 		}
 		return monitorLog;
 	}
+
+
+
+[3/6/2025#13:23:32:004] #API#RequestAndResponseLoggingFilter#NA#NA#NA#-#HK#default task-1#HK_eBBSINT_01##GrafanaTest: headerParameters: headerParameters##13:23:29#O#-#-#-#APIServices#-#2606#-##POST//rcb-api/rcb/api/v1/create-casas/ nullcompanyID:HK messageSender: RTOB errorDescription: ##Response Status: 201Response StatusCode: 201uetrKey: null
+[3/6/2025#13:23:32:004] #API#RequestAndResponseLoggingFilter#NA#NA#NA#-#HK#default task-1#HK_eBBSINT_01##Before Calling isMointorLoggingEnabled>>>>
+[3/6/2025#13:23:32:005] #API#RequestAndResponseLoggingFilter#NA#NA#NA#-#HK#default task-1#HK_eBBSINT_01##isMointorLoggingEnabled >>>>java.lang.NullPointerException
+[3/6/2025#13:23:34:104] #ALERTREQMSG#ejbTimeout#NA#NA#NA#-#HK#EJB default-timer - 1#HK_eBBSINT_01##[3/6/2025#13:23:34:104] #O#-#-#-#ALERTCHNL#-#-#2419#-#ALERT#-#eBBS#-

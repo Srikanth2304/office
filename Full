@@ -15,3 +15,9 @@ hkipf1b5bl81m03 OR hkipf1b5bl81m04 OR hkipf1b5bl81m05 OR hkipf1b5bl81m06 OR hkip
 hkipf1b5bl81m08 OR hkipf1b5bl81m09 OR hki7qixlen5sw00 OR hki7qixlen5sw01 OR hki5g25v7ey0n00 OR  
 hki5g25v7ey0n01 OR hkizluq6h7zw600 OR hkizluq6h7zw601 OR hkiuotb5chimg00 OR hkiuotb5chimg01 OR  
 hki7l0cq2g74000 OR hki7l0cq2g74001 OR hki6sjsn461xo00 OR hki6sjsn461xo01  
+
+
+
+
+
+app_id:14147 AND app_cname:*14147_eBBS_development_UAT_AU* AND message:"%Caused by: javax.ejb.EJBException: WFLYEJB0378%"

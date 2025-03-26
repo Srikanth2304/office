@@ -1,29 +1,31 @@
 fqdn
-sg5gtq25cfdfn00
-sg5gtq25cfdfn01
-sg5gtq25cfdfn02
-hkigtq25cfdfn00
-hkigtq25cfdfn01
-hkigtq25cfdfn02
-sg5jlkf1kx4ji00
-sg5jlkf1kx4ji01
-sg5jlkf1kx4ji02
-hkijlkf1kx4ji00
-hkijlkf1kx4ji01
-hkijlkf1kx4ji02
-sg5l8dgz3msxp00
-sg5l8dgz3msxp01
-hkil8dgz3msxp00
-hkil8dgz3msxp01
-sg5zf8yi896k400
-sg5zf8yi896k401
-hkizf8yi896k400
-hkizf8yi896k401
-sg5posoy938lw00
-sg5posoy938lw01
-hkiposoy938lw00
-hkiposoy938lw01
+sg5tykpngfvw300
+sg5tykpngfvw301
+sg5tykpngfvw302
+hkitykpngfvw300
+hkitykpngfvw301
+hkitykpngfvw302
+sg580p7978bak00
+sg580p7978bak01
+sg580p7978bak02
+hki80p7978bak00
+hki80p7978bak01
+hki80p7978bak02
+sg5gqx95o92v100
+sg5gqx95o92v101
+hkigqx95o92v100
+hkigqx95o92v101
+sg51m843alvkw00
+sg51m843alvkw01
+hki1m843alvkw00
+hki1m843alvkw01
+sg5kevkeioiq500
+sg5kevkeioiq501
+hkikevkeioiq500
+hkikevkeioiq501
 
 
-sg5gtq25cfdfn00 OR sg5gtq25cfdfn01 OR sg5gtq25cfdfn02 OR hkigtq25cfdfn00 OR hkigtq25cfdfn01 OR hkigtq25cfdfn02 OR sg5jlkf1kx4ji00 OR sg5jlkf1kx4ji01 OR sg5jlkf1kx4ji02 OR hkijlkf1kx4ji00 OR
-hkijlkf1kx4ji01 OR hkijlkf1kx4ji02 OR sg5l8dgz3msxp00 OR sg5l8dgz3msxp01 OR hkil8dgz3msxp00 OR hkil8dgz3msxp01 OR sg5zf8yi896k400 OR sg5zf8yi896k401 OR hkizf8yi896k400 OR hkizf8yi896k401 OR sg5posoy938lw00 OR sg5posoy938lw01 OR hkiposoy938lw00 OR hkiposoy938lw01
+
+sg5tykpngfvw300 OR sg5tykpngfvw301 OR sg5tykpngfvw302 OR hkitykpngfvw300 OR hkitykpngfvw301 OR hkitykpngfvw302 OR sg580p7978bak00 OR sg580p7978bak01 OR sg580p7978bak02 OR hki80p7978bak00 OR hki80p7978bak01 OR hki80p7978bak02 OR sg5gqx95o92v100 OR sg5gqx95o92v101 OR hkigqx95o92v100 OR hkigqx95o92v101 OR sg51m843alvkw00 OR sg51m843alvkw01 OR hki1m843alvkw00 OR
+hki1m843alvkw01 OR sg5kevkeioiq500 OR sg5kevkeioiq501 OR
+hkikevkeioiq500 OR hkikevkeioiq501

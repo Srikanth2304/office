@@ -1,36 +1,51 @@
-FQDN
-sg5bfut8x3yoq00
-hkibfut8x3yoq00
-sg533xfww7h1a00
-sg533xfww7h1a01
-sg533xfww7h1a02
-hki33xfww7h1a00
-hki33xfww7h1a01
-hki33xfww7h1a02
-sg5384jzxmyqe00
-sg5384jzxmyqe01
-sg5384jzxmyqe02
-hki384jzxmyqe00
-hki384jzxmyqe01
-hki384jzxmyqe02
-sg59cpuem6ntg00
-sg59cpuem6ntg01
-hki9cpuem6ntg00
-hki9cpuem6ntg01
-sg5tew2c0ch2j00
-sg5tew2c0ch2j01
-hkitew2c0ch2j00
-hkitew2c0ch2j01
-sg5uhqejntjdy00
-sg5uhqejntjdy01
-hkiuhqejntjdy00
-hkiuhqejntjdy01
-sg5d1zagrfmt400
-sg5d1zagrfmt401
-hkid1zagrfmt400
-hkid1zagrfmt401
+fqdn
+sg5hau317v3za00.sg.standardchartered.com
+sg5hau317v3za01.sg.standardchartered.com
+sg5hau317v3za02.sg.standardchartered.com
+hkihau317v3za00.hk.standardchartered.com
+hkihau317v3za01.hk.standardchartered.com
+hkihau317v3za02.hk.standardchartered.com
+sg5c4t5ifck700.sg.standardchartered.com
+sg5c4t5ifck701.sg.standardchartered.com
+sg5c4t5ifck702.sg.standardchartered.com
+hkic4t5ifck700.hk.standardchartered.com
+hkic4t5ifck701.hk.standardchartered.com
+hkic4t5ifck702.hk.standardchartered.com
+sg5lsvi8vvctc00.sg.standardchartered.com
+sg5lsvi8vvctc01.sg.standardchartered.com
+hkilsvi8vvctc00.hk.standardchartered.com
+hkilsvi8vvctc01.hk.standardchartered.com
+sg5lj7h5lrzrj00.sg.standardchartered.com
+sg5lj7h5lrzrj01.sg.standardchartered.com
+hkilj7h5lrzrj00.hk.standardchartered.com
+hkilj7h5lrzrj01.hk.standardchartered.com
+sg559f81o1ec300.sg.standardchartered.com
+sg559f81o1ec301.sg.standardchartered.com
+hki59f81o1ec300.hk.standardchartered.com
+hki59f81o1ec301.hk.standardchartered.com
 
 
-
-
-host.hostname:(sg5bfut8x3yoq00 OR hkibfut8x3yoq00   OR sg533xfww7h1a00 OR sg533xfww7h1a01 OR sg533xfww7h1a02 OR hki33xfww7h1a00 OR hki33xfww7h1a01 OR hki33xfww7h1a02 OR sg5384jzxmyqe00 OR sg5384jzxmyqe01 OR sg5384jzxmyqe02 OR hki384jzxmyqe00 OR hki384jzxmyqe01 OR hki384jzxmyqe02 OR sg59cpuem6ntg00 OR sg59cpuem6ntg01 OR hki9cpuem6ntg00 OR hki9cpuem6ntg01 OR sg5tew2c0ch2j00 OR sg5tew2c0ch2j01 OR hkitew2c0ch2j00 OR hkitew2c0ch2j01 OR sg5uhqejntjdy00 OR sg5uhqejntjdy01 OR hkiuhqejntjdy00 OR hkiuhqejntjdy01 OR sg5d1zagrfmt400 OR sg5d1zagrfmt401 OR hkid1zagrfmt400 OR hkid1zagrfmt401)
+sg5hau317v3za00 OR
+sg5hau317v3za01 OR
+sg5hau317v3za02 OR
+hkihau317v3za00 OR
+hkihau317v3za01 OR
+hkihau317v3za02 OR
+sg5c4t5ifck700  OR
+sg5c4t5ifck701  OR
+sg5c4t5ifck702  OR
+hkic4t5ifck700  OR
+hkic4t5ifck701  OR
+hkic4t5ifck702  OR
+sg5lsvi8vvctc00 OR
+sg5lsvi8vvctc01 OR
+hkilsvi8vvctc00 OR
+hkilsvi8vvctc01 OR
+sg5lj7h5lrzrj00 OR
+sg5lj7h5lrzrj01 OR
+hkilj7h5lrzrj00 OR
+hkilj7h5lrzrj01 OR
+sg559f81o1ec300 OR
+sg559f81o1ec301 OR
+hki59f81o1ec300 OR
+hki59f81o1ec301 OR

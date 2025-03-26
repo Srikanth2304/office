@@ -1,31 +1,30 @@
 fqdn
-sg5tykpngfvw300
-sg5tykpngfvw301
-sg5tykpngfvw302
-hkitykpngfvw300
-hkitykpngfvw301
-hkitykpngfvw302
-sg580p7978bak00
-sg580p7978bak01
-sg580p7978bak02
-hki80p7978bak00
-hki80p7978bak01
-hki80p7978bak02
-sg5gqx95o92v100
-sg5gqx95o92v101
-hkigqx95o92v100
-hkigqx95o92v101
-sg51m843alvkw00
-sg51m843alvkw01
-hki1m843alvkw00
-hki1m843alvkw01
-sg5kevkeioiq500
-sg5kevkeioiq501
-hkikevkeioiq500
-hkikevkeioiq501
+sg57karsfusyh00
+sg57karsfusyh01
+sg57karsfusyh02
+hki7karsfusyh00
+hki7karsfusyh01
+hki7karsfusyh02
+sg5vs6too8efx00
+sg5vs6too8efx01
+sg5vs6too8efx02
+hkivs6too8efx00
+hkivs6too8efx01
+hkivs6too8efx02
+sg5fm7gpxg3bj00
+sg5fm7gpxg3bj01
+hkifm7gpxg3bj00
+hkifm7gpxg3bj01
+sg5dpjbelxzrg00
+sg5dpjbelxzrg01
+hkidpjbelxzrg00
+hkidpjbelxzrg01
+sg56xzk3ljzrr00
+sg56xzk3ljzrr01
+hki6xzk3ljzrr00
+hki6xzk3ljzrr01
 
 
-
-sg5tykpngfvw300 OR sg5tykpngfvw301 OR sg5tykpngfvw302 OR hkitykpngfvw300 OR hkitykpngfvw301 OR hkitykpngfvw302 OR sg580p7978bak00 OR sg580p7978bak01 OR sg580p7978bak02 OR hki80p7978bak00 OR hki80p7978bak01 OR hki80p7978bak02 OR sg5gqx95o92v100 OR sg5gqx95o92v101 OR hkigqx95o92v100 OR hkigqx95o92v101 OR sg51m843alvkw00 OR sg51m843alvkw01 OR hki1m843alvkw00 OR
-hki1m843alvkw01 OR sg5kevkeioiq500 OR sg5kevkeioiq501 OR
-hkikevkeioiq500 OR hkikevkeioiq501
+ host.hostname:(sg57karsfusyh00 OR
+sg57karsfusyh01 OR sg57karsfusyh02 OR hki7karsfusyh00 OR hki7karsfusyh01 OR hki7karsfusyh02 OR sg5vs6too8efx00 OR sg5vs6too8efx01 OR sg5vs6too8efx02 OR hkivs6too8efx00 OR hkivs6too8efx01 OR hkivs6too8efx02 OR sg5fm7gpxg3bj00 OR sg5fm7gpxg3bj01 OR hkifm7gpxg3bj00 OR hkifm7gpxg3bj01 OR sg5dpjbelxzrg00 OR sg5dpjbelxzrg01 OR hkidpjbelxzrg00 OR hkidpjbelxzrg01 OR sg56xzk3ljzrr00 OR sg56xzk3ljzrr01 OR
+hki6xzk3ljzrr00 OR hki6xzk3ljzrr01

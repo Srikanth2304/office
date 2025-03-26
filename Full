@@ -1,30 +1,36 @@
-fqdn
-sg57karsfusyh00
-sg57karsfusyh01
-sg57karsfusyh02
-hki7karsfusyh00
-hki7karsfusyh01
-hki7karsfusyh02
-sg5vs6too8efx00
-sg5vs6too8efx01
-sg5vs6too8efx02
-hkivs6too8efx00
-hkivs6too8efx01
-hkivs6too8efx02
-sg5fm7gpxg3bj00
-sg5fm7gpxg3bj01
-hkifm7gpxg3bj00
-hkifm7gpxg3bj01
-sg5dpjbelxzrg00
-sg5dpjbelxzrg01
-hkidpjbelxzrg00
-hkidpjbelxzrg01
-sg56xzk3ljzrr00
-sg56xzk3ljzrr01
-hki6xzk3ljzrr00
-hki6xzk3ljzrr01
+FQDN
+sg5bfut8x3yoq00
+hkibfut8x3yoq00
+sg533xfww7h1a00
+sg533xfww7h1a01
+sg533xfww7h1a02
+hki33xfww7h1a00
+hki33xfww7h1a01
+hki33xfww7h1a02
+sg5384jzxmyqe00
+sg5384jzxmyqe01
+sg5384jzxmyqe02
+hki384jzxmyqe00
+hki384jzxmyqe01
+hki384jzxmyqe02
+sg59cpuem6ntg00
+sg59cpuem6ntg01
+hki9cpuem6ntg00
+hki9cpuem6ntg01
+sg5tew2c0ch2j00
+sg5tew2c0ch2j01
+hkitew2c0ch2j00
+hkitew2c0ch2j01
+sg5uhqejntjdy00
+sg5uhqejntjdy01
+hkiuhqejntjdy00
+hkiuhqejntjdy01
+sg5d1zagrfmt400
+sg5d1zagrfmt401
+hkid1zagrfmt400
+hkid1zagrfmt401
 
 
- host.hostname:(sg57karsfusyh00 OR
-sg57karsfusyh01 OR sg57karsfusyh02 OR hki7karsfusyh00 OR hki7karsfusyh01 OR hki7karsfusyh02 OR sg5vs6too8efx00 OR sg5vs6too8efx01 OR sg5vs6too8efx02 OR hkivs6too8efx00 OR hkivs6too8efx01 OR hkivs6too8efx02 OR sg5fm7gpxg3bj00 OR sg5fm7gpxg3bj01 OR hkifm7gpxg3bj00 OR hkifm7gpxg3bj01 OR sg5dpjbelxzrg00 OR sg5dpjbelxzrg01 OR hkidpjbelxzrg00 OR hkidpjbelxzrg01 OR sg56xzk3ljzrr00 OR sg56xzk3ljzrr01 OR
-hki6xzk3ljzrr00 OR hki6xzk3ljzrr01
+
+
+host.hostname:(sg5bfut8x3yoq00 OR hkibfut8x3yoq00   OR sg533xfww7h1a00 OR sg533xfww7h1a01 OR sg533xfww7h1a02 OR hki33xfww7h1a00 OR hki33xfww7h1a01 OR hki33xfww7h1a02 OR sg5384jzxmyqe00 OR sg5384jzxmyqe01 OR sg5384jzxmyqe02 OR hki384jzxmyqe00 OR hki384jzxmyqe01 OR hki384jzxmyqe02 OR sg59cpuem6ntg00 OR sg59cpuem6ntg01 OR hki9cpuem6ntg00 OR hki9cpuem6ntg01 OR sg5tew2c0ch2j00 OR sg5tew2c0ch2j01 OR hkitew2c0ch2j00 OR hkitew2c0ch2j01 OR sg5uhqejntjdy00 OR sg5uhqejntjdy01 OR hkiuhqejntjdy00 OR hkiuhqejntjdy01 OR sg5d1zagrfmt400 OR sg5d1zagrfmt401 OR hkid1zagrfmt400 OR hkid1zagrfmt401)

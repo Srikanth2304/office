@@ -1,28 +1,26 @@
-fqdn
-sg5hau317v3za00.sg.standardchartered.com
-sg5hau317v3za01.sg.standardchartered.com
-sg5hau317v3za02.sg.standardchartered.com
-hkihau317v3za00.hk.standardchartered.com
-hkihau317v3za01.hk.standardchartered.com
-hkihau317v3za02.hk.standardchartered.com
-sg5c4t5ifck700.sg.standardchartered.com
-sg5c4t5ifck701.sg.standardchartered.com
-sg5c4t5ifck702.sg.standardchartered.com
-hkic4t5ifck700.hk.standardchartered.com
-hkic4t5ifck701.hk.standardchartered.com
-hkic4t5ifck702.hk.standardchartered.com
-sg5lsvi8vvctc00.sg.standardchartered.com
-sg5lsvi8vvctc01.sg.standardchartered.com
-hkilsvi8vvctc00.hk.standardchartered.com
-hkilsvi8vvctc01.hk.standardchartered.com
-sg5lj7h5lrzrj00.sg.standardchartered.com
-sg5lj7h5lrzrj01.sg.standardchartered.com
-hkilj7h5lrzrj00.hk.standardchartered.com
-hkilj7h5lrzrj01.hk.standardchartered.com
-sg559f81o1ec300.sg.standardchartered.com
-sg559f81o1ec301.sg.standardchartered.com
-hki59f81o1ec300.hk.standardchartered.com
-hki59f81o1ec301.hk.standardchartered.com
+  cast to Object for a varargs call
+  cast to Object[] for a non-varargs call and to suppress this warning
+/ado-agent-workdir/1/s/***-rcb-atlas-interface-services/src/main/java/scb/process/FileTransferObjectIMFT_Solace.java:883: error: cannot find symbol
+					logwriter.println("Before Calling isMointorLoggingEnabled>>>> ");
+					^
+  symbol:   variable logwriter
+  location: class FileTransferObjectIMFT_Solace
+/ado-agent-workdir/1/s/***-rcb-atlas-interface-services/src/main/java/scb/process/FileTransferObjectIMFT_Solace.java:897: error: cannot find symbol
+				logwriter.println("isMointorLoggingEnabled >>>>"+e);
+				^
+  symbol:   variable logwriter
 
-
- host.hostname:(sg5hau317v3za00 OR sg5hau317v3za01 OR sg5hau317v3za02 OR hkihau317v3za00 OR hkihau317v3za01 OR hkihau317v3za02 OR sg5c4t5ifck700 OR sg5c4t5ifck701 OR sg5c4t5ifck702 OR hkic4t5ifck700 OR hkic4t5ifck701 OR hkic4t5ifck702 OR sg5lsvi8vvctc00 OR sg5lsvi8vvctc01 OR hkilsvi8vvctc00 OR hkilsvi8vvctc01 OR sg5lj7h5lrzrj00 OR sg5lj7h5lrzrj01 OR hkilj7h5lrzrj00 OR hkilj7h5lrzrj01 OR sg559f81o1ec300 OR sg559f81o1ec301 OR hki59f81o1ec300 OR hki59f81o1ec301) 
+String logDetails = eodDate + "#" + currTime + "#" + finalStatusFlag + "#" + finalStatusDesc + "#" + wrapper.fileTransferId+"#"+idNumber;
+			try{
+				if ((SCBPARAMCache.getInstance().getCache("ENABLE_MOINTOR_LOGGING") != null)&& (SCBPARAMCache.getInstance().getCache("ENABLE_MOINTOR_LOGGING").trim().equals("Y"))){
+			        Map<String, String> map = new HashMap<>();
+			        map.put("GrafanaFTData: eodDate", eodDate);
+			        map.put("currTime", currTime);
+			        map.put("finalStatusFlag", finalStatusFlag);
+			        map.put("finalStatusDesc", finalStatusDesc);
+			        map.put("finalFTFID", wrapper.fileTransferId);
+			        map.put("idNumber", idNumber);
+			        String json = jsonLogWriter.mapToJson(map);
+			        jsonLog.printGrafanaLog(json);
+				}}catch(Exception e){
+				logWriter.println("isMointorLoggingEnabled >>>>"+e);}

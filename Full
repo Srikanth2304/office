@@ -1,14 +1,13 @@
+			                                                                              ^
   cast to Object for a varargs call
   cast to Object[] for a non-varargs call and to suppress this warning
-/ado-agent-workdir/1/s/***-rcb-atlas-interface-services/src/main/java/scb/process/FileTransferObjectIMFT_Solace.java:883: error: cannot find symbol
-					logwriter.println("Before Calling isMointorLoggingEnabled>>>> ");
-					^
-  symbol:   variable logwriter
-  location: class FileTransferObjectIMFT_Solace
-/ado-agent-workdir/1/s/***-rcb-atlas-interface-services/src/main/java/scb/process/FileTransferObjectIMFT_Solace.java:897: error: cannot find symbol
-				logwriter.println("isMointorLoggingEnabled >>>>"+e);
-				^
-  symbol:   variable logwriter
+/ado-agent-workdir/1/s/***-rcb-atlas-interface-services/src/main/java/scb/process/FileTransferObjectIMFT_Solace.java:884: error: incompatible types: Date cannot be converted to String
+			        map.put("GrafanaFTData: eodDate", eodDate);
+			                                          ^
+/ado-agent-workdir/1/s/***-rcb-atlas-interface-services/src/main/java/scb/process/FileTransferObjectIMFT_Solace.java:885: error: incompatible types: Time cannot be converted to String
+			        map.put("currTime", currTime);
+			                            ^
+
 
 String logDetails = eodDate + "#" + currTime + "#" + finalStatusFlag + "#" + finalStatusDesc + "#" + wrapper.fileTransferId+"#"+idNumber;
 			try{

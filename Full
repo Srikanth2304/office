@@ -23,3 +23,15 @@ String logDetails = eodDate + "#" + currTime + "#" + finalStatusFlag + "#" + fin
 			        jsonLog.printGrafanaLog(json);
 				}}catch(Exception e){
 				logWriter.println("isMointorLoggingEnabled >>>>"+e);}
+
+
+
+
+
+
+
+
+
+
+String formattedEodDate = (eodDate != null) ? eodDate.toString() : null;  
+String formattedCurrTime = (currTime != null) ? currTime.toString() : null;  

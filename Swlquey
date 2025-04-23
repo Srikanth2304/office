@@ -89,4 +89,58 @@ mastrel.masterno = account.masterno inner join MLITSUB on account.accountno = ML
 relcont.contacttypecode ='EMR' or relcont.contacttypecode ='EMO'or relcont.primarycontact ='Y' and 
 
 MLITSUB.statusflag='18' and mastrel.primaryflag ='Y' limit 50
- 
+
+
+
+
+
+
+WITH ranked_contacts AS (
+  SELECT *,
+         ROW_NUMBER() OVER (
+           PARTITION BY relationshipno
+           ORDER BY 
+             CASE 
+               WHEN contacttypecode = 'EMR' THEN 1
+               WHEN contacttypecode = 'EMO' THEN 2
+               WHEN primarycontact = 'Y' THEN 3
+               ELSE 4
+             END
+         ) AS rn
+  FROM relcont
+  WHERE contacttypecode IN ('EMR', 'EMO') OR primarycontact = 'Y'
+)
+
+SELECT rel.relationshipno,
+       rel.salutationcode,
+       rel.fullname,
+       reladdr.flatno,
+       reladdr.bldgname,
+       reladdr.nrlandmrk,
+       reladdr.street,
+       reladdr.address1,
+       reladdr.address2,
+       reladdr.postbox,
+       reladdr.postalcode,
+       reladdr.state,
+       city.name AS cityname,
+       cntry.name AS countryname,
+       rc.contact,
+       MLITSUB.currencycode,
+       MLITSUB.accountno,
+       MLITSUB.limitamt,
+       MLITSUB.odstartdate,
+       MLITSUB.checkerdate,
+       MLITSUB.statusflag
+FROM rel
+INNER JOIN reladdr ON rel.relationshipno = reladdr.relationshipno
+INNER JOIN city ON reladdr.citycode = city.citycode
+INNER JOIN cntry ON reladdr.countrycode = cntry.countrycode
+INNER JOIN mastrel ON rel.relationshipno = mastrel.relationshipno
+INNER JOIN account ON mastrel.masterno = account.masterno
+INNER JOIN MLITSUB ON account.accountno = MLITSUB.accountno
+INNER JOIN ranked_contacts rc ON rel.relationshipno = rc.relationshipno AND rc.rn = 1
+WHERE MLITSUB.statusflag = '18'
+  AND mastrel.primaryflag = 'Y'
+LIMIT 50;
+

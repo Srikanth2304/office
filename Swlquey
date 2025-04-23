@@ -66,3 +66,27 @@ ORDER BY
     ELSE 4
   END
 LIMIT 1;
+
+
+
+
+select rel.relationshipno ,rel.salutationcode ,rel.fullname,reladdr.flatno ,reladdr.bldgname ,reladdr.nrlandmrk, 
+
+reladdr.street ,reladdr.address1 ,reladdr.address2 ,reladdr.postbox ,reladdr.postalcode ,reladdr.state,city.name, 
+
+cntry.name ,relcont.contact,MLITSUB.currencycode ,MLITSUB.accountno ,MLITSUB.limitamt ,MLITSUB.odstartdate ,
+
+MLITSUB.checkerdate ,MLITSUB.statusflag from rel inner join reladdr on 
+
+rel.relationshipno = reladdr.relationshipno inner join city on reladdr.citycode = city.citycode inner join cntry 
+
+on reladdr.countrycode = cntry.countrycode inner join relcont on rel.relationshipno = relcont.relationshipno 
+
+inner join mastrel on rel.relationshipno = mastrel.relationshipno inner join account on 
+
+mastrel.masterno = account.masterno inner join MLITSUB on account.accountno = MLITSUB.accountno where 
+
+relcont.contacttypecode ='EMR' or relcont.contacttypecode ='EMO'or relcont.primarycontact ='Y' and 
+
+MLITSUB.statusflag='18' and mastrel.primaryflag ='Y' limit 50
+ 

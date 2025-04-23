@@ -144,3 +144,58 @@ WHERE MLITSUB.statusflag = '18'
   AND mastrel.primaryflag = 'Y'
 LIMIT 50;
 
+SELECT DISTINCT
+  rel.relationshipno,
+  rel.salutationcode,
+  rel.fullname,
+  reladdr.flatno,
+  reladdr.bldgname,
+  reladdr.nrlandmrk,
+  reladdr.street,
+  reladdr.address1,
+  reladdr.address2,
+  reladdr.postbox,
+  reladdr.postalcode,
+  reladdr.state,
+  city.name AS city_name,
+  cntry.name AS country_name,
+  relcont.contact,
+
+  -- CASE for contact type description
+  CASE
+    WHEN relcont.contacttypecode = 'EMR' THEN 'Emergency Contact'
+    WHEN relcont.contacttypecode = 'EMO' THEN 'Employer Contact'
+    WHEN relcont.primarycontact = 'Y' THEN 'Primary Contact'
+    ELSE 'Other'
+  END AS contact_type,
+
+  MLITSUB.currencycode,
+  MLITSUB.accountno,
+  MLITSUB.limitamt,
+
+  -- CASE for limit amount status
+  CASE
+    WHEN MLITSUB.limitamt > 100000 THEN 'High Limit'
+    ELSE 'Normal'
+  END AS limit_status,
+
+  MLITSUB.odstartdate,
+  MLITSUB.checkerdate,
+  MLITSUB.statusflag
+FROM rel
+INNER JOIN reladdr ON rel.relationshipno = reladdr.relationshipno
+INNER JOIN city ON reladdr.citycode = city.citycode
+INNER JOIN cntry ON reladdr.countrycode = cntry.countrycode
+INNER JOIN (
+    SELECT DISTINCT ON (relationshipno) *
+    FROM relcont
+    WHERE contacttypecode IN ('EMR', 'EMO') OR primarycontact = 'Y'
+    ORDER BY relationshipno, primarycontact DESC
+) relcont ON rel.relationshipno = relcont.relationshipno
+INNER JOIN mastrel ON rel.relationshipno = mastrel.relationshipno
+INNER JOIN account ON mastrel.masterno = account.masterno
+INNER JOIN MLITSUB ON account.accountno = MLITSUB.accountno
+WHERE
+  MLITSUB.statusflag = '18'
+  AND mastrel.primaryflag = 'Y'
+LIMIT 50;

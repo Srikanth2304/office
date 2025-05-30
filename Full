@@ -1,39 +1,7 @@
+I sincerely apologize if it seemed like I was not responding. Over the past few days, I have been actively following up with my current manager and the assigned team lead regarding the timesheet access. However, they mentioned that some internal alignment was needed before I could proceed, and I was awaiting their confirmation.
 
-openssl s_client -connect artifactory.global.standardchartered.com:443 -showcerts
+I want to take a moment to express my gratitude for the opportunity to work with the Core Banking team. It has truly been a valuable experience — I’ve gained significant knowledge in both development and application areas, which I will always carry forward in my career.
 
+I’ve been following up with my current manager and team lead regarding timesheet access, but they needed to align with others before proceeding. I’m still waiting for their confirmation and will update it as soon as access is given.
 
-
-mvn clean install -U -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true
-
-
-Non-resolvable parent POM for com.sc.faas:Sample:1.0.0-SNAPSHOT: The following artifacts could not be resolved: com.sc.devkit:process-parent-java:pom:1.0.0-3165123 (absent): com.sc.devkit:process-parent-java:pom:1.0.0-3165123 failed to transfer from https://artifactory.global.standardchartered.com/artifactory/maven-release/ during a previous attempt. This failure was cached in the local repository and resolution is not reattempted until the update interval of artifactory-repo has elapsed or updates are forced. Original error: Could not transfer artifact com.sc.devkit:process-parent-java:pom:1.0.0-3165123 from/to artifactory-repo (https://artifactory.global.standardchartered.com/artifactory/maven-release/): sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target and 'parent.relativePath' points at wrong local POM
-
-
-
-
-
-PS C:\Users\2013176\faas-workspace\14147-UI-Sample> mvn clean install -U -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true
-[INFO] Scanning for projects...
-Downloading from artifactory-repo: https://artifactory.global.standardchartered.com/artifactory/maven-release/com/sc/devkit/process-parent-java/1.0.0-3165123/process-parent-java-1.0.0-3165123.pom
-Downloading from gradle-release: https://artifactory.global.standardchartered.com/artifactory/gradle-release/com/sc/devkit/process-parent-java/1.0.0-3165123/process-parent-java-1.0.0-3165123.pom
-[ERROR] [ERROR] Some problems were encountered while processing the POMs:
-[FATAL] Non-resolvable parent POM for com.sc.faas:Sample:1.0.0-SNAPSHOT: The following artifacts could not be resolved: com.sc.devkit:process-par
-ent-java:pom:1.0.0-3165123 (absent): Could not transfer artifact com.sc.devkit:process-parent-java:pom:1.0.0-3165123 from/to artifactory-repo (ht
-tps://artifactory.global.standardchartered.com/artifactory/maven-release/): sun.security.validator.ValidatorException: PKIX path building failed:
- sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target and 'parent.relativePath' points at wrong local POM @ line 4, column 13
- @
-[ERROR] The build could not read 1 project -> [Help 1]
-[ERROR]
-[ERROR]   The project com.sc.faas:Sample:1.0.0-SNAPSHOT (C:\Users\2013176\faas-workspace\14147-UI-Sample\pom.xml) has 1 error
-[ERROR]     Non-resolvable parent POM for com.sc.faas:Sample:1.0.0-SNAPSHOT: The following artifacts could not be resolved: com.sc.devkit:process
--parent-java:pom:1.0.0-3165123 (absent): Could not transfer artifact com.sc.devkit:process-parent-java:pom:1.0.0-3165123 from/to artifactory-repo
- (https://artifactory.global.standardchartered.com/artifactory/maven-release/): sun.security.validator.ValidatorException: PKIX path building fai
-led: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target and 'parent.relativePath' points at wrong local POM @ line 4, column 13 -> [Help 2]
-[ERROR]
-[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
-[ERROR] Re-run Maven using the -X switch to enable full debug logging.
-[ERROR]
-[ERROR] For more information about the errors and possible solutions, please read the following articles:
-[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/ProjectBuildingException
-[ERROR] [Help 2] http://cwiki.apache.org/confluence/display/MAVEN/UnresolvableModelException
-PS C:\Users\2013176\faas-workspace\14147-UI-Sample> 
+Also, thank you for the opportunity to work with the Core Banking team — I’ve learned a lot in terms of development and application knowledge.

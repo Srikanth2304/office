@@ -1,7 +1,54 @@
-I sincerely apologize if it seemed like I was not responding. Over the past few days, I have been actively following up with my current manager and the assigned team lead regarding the timesheet access. However, they mentioned that some internal alignment was needed before I could proceed, and I was awaiting their confirmation.
-
-I want to take a moment to express my gratitude for the opportunity to work with the Core Banking team. It has truly been a valuable experience — I’ve gained significant knowledge in both development and application areas, which I will always carry forward in my career.
-
-I’ve been following up with my current manager and team lead regarding timesheet access, but they needed to align with others before proceeding. I’m still waiting for their confirmation and will update it as soon as access is given.
-
-Also, thank you for the opportunity to work with the Core Banking team — I’ve learned a lot in terms of development and application knowledge.
+INTERNAL
+eOps Step Rules and route types
+Overview
+eOps Flexi/Steps are static content screens with custom data entry fields with out any validations applied to it. To make it render dynamically, we have to apply rules/validations on it.
+We can apply/call our custom rules/validations/Business operations in below ways.
+➢ On Load of a Step
+➢ On Complete of a Step
+➢ On enter of a field value after opening a transaction in particular step.
+Configuration Details
+Table: STEPRULEMAPPING
+Column: RULEID
+More than one ruleid can be mapped to same step name and processed.
+TRIGGEREVENT in STEPRULEMAPPING can have below valid values.
+➢ LOAD/(null) – will be called on load of a step
+➢ COMP - will be called on complete of a step
+➢ CKLT - on click of checklist widget
+➢ SAVE - on click of save button
+➢ RESP -
+➢ REST -
+➢ ACOM -
+➢ AUTO - will be called when the transaction landed into particular
+manual step
+INTERNAL
+Each ruleid will have reference in below tables. Ruleid in steprulemapping is same as Functionid in Function table.
+➢ FUNCTION
+➢ FUNCTIONOPERATIONS
+➢ OPERATIONS
+Serial / Conditional / Parallel Function Operations
+INTERNAL
+Overview
+A group of operations can be triggered for a Step in different ways as given below.
+➢ Serial
+➢ Conditional and
+➢ Parallel
+Configuration Details
+Table: FUNCTION
+Column: ROUTETYPE
+Route type column can have below possible values.
+➢ SERIAL
+➢ CONDITIONAL
+➢ PARALLEL
+If it is SERIAL, list of operations configured in Functionoperations table for the corresponding Functionid will be executed in a sequential order based on the sequence number.
+If it is CONDITIONAL, an additional RULEID should be configured in FUNCTION table as given below. This RULEID will refer the RULEDEFINITION table to get the ROUTEID (Ex: R0,R1) and the operations corresponding to that route id from FUNCTIONOPERATIONS table alone will be executed.
+INTERNAL
+If it is PARALLEL, list of operations to be executed will be configured in camel xml file based on the configuration in camel file.
+Camel configurations
+Overview
+Business validations can be done in xml document using camel framework.
+Configuration Details
+Table: FUNCTION
+Column: ROUTETYPE
+ROUTETYPE should be configured as PARALLEL
+In <<Processid>>_camel.xml file for each parallel processed, corresponding list of operations to be executed based on conditions can be configured.
+Sample Camel.xml file:

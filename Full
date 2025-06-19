@@ -1,54 +1,79 @@
-INTERNAL
-eOps Step Rules and route types
-Overview
-eOps Flexi/Steps are static content screens with custom data entry fields with out any validations applied to it. To make it render dynamically, we have to apply rules/validations on it.
-We can apply/call our custom rules/validations/Business operations in below ways.
-➢ On Load of a Step
-➢ On Complete of a Step
-➢ On enter of a field value after opening a transaction in particular step.
-Configuration Details
-Table: STEPRULEMAPPING
-Column: RULEID
-More than one ruleid can be mapped to same step name and processed.
-TRIGGEREVENT in STEPRULEMAPPING can have below valid values.
-➢ LOAD/(null) – will be called on load of a step
-➢ COMP - will be called on complete of a step
-➢ CKLT - on click of checklist widget
-➢ SAVE - on click of save button
-➢ RESP -
-➢ REST -
-➢ ACOM -
-➢ AUTO - will be called when the transaction landed into particular
-manual step
-INTERNAL
-Each ruleid will have reference in below tables. Ruleid in steprulemapping is same as Functionid in Function table.
-➢ FUNCTION
-➢ FUNCTIONOPERATIONS
-➢ OPERATIONS
-Serial / Conditional / Parallel Function Operations
-INTERNAL
-Overview
-A group of operations can be triggered for a Step in different ways as given below.
-➢ Serial
-➢ Conditional and
-➢ Parallel
-Configuration Details
-Table: FUNCTION
-Column: ROUTETYPE
-Route type column can have below possible values.
-➢ SERIAL
-➢ CONDITIONAL
-➢ PARALLEL
-If it is SERIAL, list of operations configured in Functionoperations table for the corresponding Functionid will be executed in a sequential order based on the sequence number.
-If it is CONDITIONAL, an additional RULEID should be configured in FUNCTION table as given below. This RULEID will refer the RULEDEFINITION table to get the ROUTEID (Ex: R0,R1) and the operations corresponding to that route id from FUNCTIONOPERATIONS table alone will be executed.
-INTERNAL
-If it is PARALLEL, list of operations to be executed will be configured in camel xml file based on the configuration in camel file.
-Camel configurations
-Overview
-Business validations can be done in xml document using camel framework.
-Configuration Details
-Table: FUNCTION
-Column: ROUTETYPE
-ROUTETYPE should be configured as PARALLEL
-In <<Processid>>_camel.xml file for each parallel processed, corresponding list of operations to be executed based on conditions can be configured.
-Sample Camel.xml file:
+0 verbose cli [
+0 verbose cli   'C:\\Users\\2013176\\goldenversions\\node-v16.15.0-win-x64\\node.exe',
+0 verbose cli   'C:\\Users\\2013176\\goldenversions\\node-v16.15.0-win-x64\\node_modules\\npm\\bin\\npm-cli.js',
+0 verbose cli   'install',
+0 verbose cli   '--loglevel=error',
+0 verbose cli   '--prefer-offline',
+0 verbose cli   '--no-audit',
+0 verbose cli   '--progress=false',
+0 verbose cli   '@esbuild/win32-x64@0.25.5'
+0 verbose cli ]
+1 info using npm@8.5.5
+2 info using node@v16.15.0
+3 timing npm:load:whichnode Completed in 0ms
+4 timing config:load:defaults Completed in 2ms
+5 timing config:load:file:C:\Users\2013176\goldenversions\node-v16.15.0-win-x64\node_modules\npm\npmrc Completed in 2ms
+6 timing config:load:builtin Completed in 2ms
+7 timing config:load:cli Completed in 2ms
+8 timing config:load:env Completed in 1ms
+9 timing config:load:file:C:\Users\2013176\Desktop\service repos\55313-00-wealth\node_modules\esbuild\lib\npm-install\.npmrc Completed in 0ms
+10 timing config:load:project Completed in 4ms
+11 timing config:load:file:C:\Users\2013176\.npmrc Completed in 1ms
+12 timing config:load:user Completed in 1ms
+13 timing config:load:file:C:\Users\2013176\goldenversions\node-v16.15.0-win-x64\etc\npmrc Completed in 0ms
+14 timing config:load:global Completed in 0ms
+15 timing config:load:validate Completed in 2ms
+16 timing config:load:credentials Completed in 0ms
+17 timing config:load:setEnvs Completed in 1ms
+18 timing config:load Completed in 16ms
+19 timing npm:load:configload Completed in 16ms
+20 timing npm:load:setTitle Completed in 0ms
+21 timing config:load:flatten Completed in 2ms
+22 timing npm:load:display Completed in 3ms
+23 verbose logfile C:\Users\2013176\AppData\Local\npm-cache\_logs\2025-06-19T10_27_26_161Z-debug-0.log
+24 timing npm:load:logFile Completed in 5ms
+25 timing npm:load:timers Completed in 0ms
+26 timing npm:load:configScope Completed in 0ms
+27 timing npm:load Completed in 25ms
+28 timing arborist:ctor Completed in 0ms
+29 silly logfile start cleaning logs, removing 2 files
+30 timing arborist:ctor Completed in 0ms
+31 timing idealTree:init Completed in 9ms
+32 timing idealTree:userRequests Completed in 2ms
+33 silly idealTree buildDeps
+34 silly fetch manifest @esbuild/win32-x64@0.25.5
+35 http fetch GET 200 https://artifactory.global.standardchartered.com/artifactory/api/npm/npm-release/@esbuild%2fwin32-x64 50ms (cache stale)
+36 silly placeDep ROOT @esbuild/win32-x64@ OK for:  want: 0.25.5
+37 timing idealTree:#root Completed in 56ms
+38 timing idealTree:node_modules/@esbuild/win32-x64 Completed in 0ms
+39 timing idealTree:buildDeps Completed in 57ms
+40 timing idealTree:fixDepFlags Completed in 0ms
+41 timing idealTree Completed in 70ms
+42 timing command:install Completed in 76ms
+43 verbose type version
+44 verbose stack @esbuild/win32-x64: No matching version found for @esbuild/win32-x64@0.25.5.
+44 verbose stack     at module.exports (C:\Users\2013176\goldenversions\node-v16.15.0-win-x64\node_modules\npm\node_modules\npm-pick-manifest\lib\index.js:209:23)
+44 verbose stack     at C:\Users\2013176\goldenversions\node-v16.15.0-win-x64\node_modules\npm\node_modules\pacote\lib\registry.js:126:26
+44 verbose stack     at async Arborist.[nodeFromEdge] (C:\Users\2013176\goldenversions\node-v16.15.0-win-x64\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\build-ideal-tree.js:1081:19)
+44 verbose stack     at async Arborist.[buildDepStep] (C:\Users\2013176\goldenversions\node-v16.15.0-win-x64\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\build-ideal-tree.js:950:11)
+44 verbose stack     at async Arborist.buildIdealTree (C:\Users\2013176\goldenversions\node-v16.15.0-win-x64\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\build-ideal-tree.js:216:7)
+44 verbose stack     at async Promise.all (index 1)
+44 verbose stack     at async Arborist.reify (C:\Users\2013176\goldenversions\node-v16.15.0-win-x64\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\reify.js:153:5)
+44 verbose stack     at async Install.exec (C:\Users\2013176\goldenversions\node-v16.15.0-win-x64\node_modules\npm\lib\commands\install.js:159:5)
+44 verbose stack     at async module.exports (C:\Users\2013176\goldenversions\node-v16.15.0-win-x64\node_modules\npm\lib\cli.js:66:5)
+45 verbose cwd C:\Users\2013176\Desktop\service repos\55313-00-wealth\node_modules\esbuild\lib\npm-install
+46 verbose Windows_NT 10.0.22631
+47 verbose argv "C:\\Users\\2013176\\goldenversions\\node-v16.15.0-win-x64\\node.exe" "C:\\Users\\2013176\\goldenversions\\node-v16.15.0-win-x64\\node_modules\\npm\\bin\\npm-cli.js" "install" "--loglevel=error" "--prefer-offline" "--no-audit" "--progress=false" "@esbuild/win32-x64@0.25.5"
+48 verbose node v16.15.0
+49 verbose npm  v8.5.5
+50 error code ETARGET
+51 error notarget No matching version found for @esbuild/win32-x64@0.25.5.
+52 error notarget In most cases you or one of your dependencies are requesting
+52 error notarget a package version that doesn't exist.
+53 verbose exit 1
+54 timing npm Completed in 544ms
+55 verbose unfinished npm timer reify 1750328846626
+56 verbose unfinished npm timer reify:loadTrees 1750328846631
+57 verbose code 1
+58 error A complete log of this run can be found in:
+58 error     C:\Users\2013176\AppData\Local\npm-cache\_logs\2025-06-19T10_27_26_161Z-debug-0.log

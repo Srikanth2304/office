@@ -1,79 +1,97 @@
-0 verbose cli [
-0 verbose cli   'C:\\Users\\2013176\\goldenversions\\node-v16.15.0-win-x64\\node.exe',
-0 verbose cli   'C:\\Users\\2013176\\goldenversions\\node-v16.15.0-win-x64\\node_modules\\npm\\bin\\npm-cli.js',
-0 verbose cli   'install',
-0 verbose cli   '--loglevel=error',
-0 verbose cli   '--prefer-offline',
-0 verbose cli   '--no-audit',
-0 verbose cli   '--progress=false',
-0 verbose cli   '@esbuild/win32-x64@0.25.5'
-0 verbose cli ]
-1 info using npm@8.5.5
-2 info using node@v16.15.0
-3 timing npm:load:whichnode Completed in 0ms
-4 timing config:load:defaults Completed in 2ms
-5 timing config:load:file:C:\Users\2013176\goldenversions\node-v16.15.0-win-x64\node_modules\npm\npmrc Completed in 2ms
-6 timing config:load:builtin Completed in 2ms
-7 timing config:load:cli Completed in 2ms
-8 timing config:load:env Completed in 1ms
-9 timing config:load:file:C:\Users\2013176\Desktop\service repos\55313-00-wealth\node_modules\esbuild\lib\npm-install\.npmrc Completed in 0ms
-10 timing config:load:project Completed in 4ms
-11 timing config:load:file:C:\Users\2013176\.npmrc Completed in 1ms
-12 timing config:load:user Completed in 1ms
-13 timing config:load:file:C:\Users\2013176\goldenversions\node-v16.15.0-win-x64\etc\npmrc Completed in 0ms
-14 timing config:load:global Completed in 0ms
-15 timing config:load:validate Completed in 2ms
-16 timing config:load:credentials Completed in 0ms
-17 timing config:load:setEnvs Completed in 1ms
-18 timing config:load Completed in 16ms
-19 timing npm:load:configload Completed in 16ms
-20 timing npm:load:setTitle Completed in 0ms
-21 timing config:load:flatten Completed in 2ms
-22 timing npm:load:display Completed in 3ms
-23 verbose logfile C:\Users\2013176\AppData\Local\npm-cache\_logs\2025-06-19T10_27_26_161Z-debug-0.log
-24 timing npm:load:logFile Completed in 5ms
-25 timing npm:load:timers Completed in 0ms
-26 timing npm:load:configScope Completed in 0ms
-27 timing npm:load Completed in 25ms
-28 timing arborist:ctor Completed in 0ms
-29 silly logfile start cleaning logs, removing 2 files
-30 timing arborist:ctor Completed in 0ms
-31 timing idealTree:init Completed in 9ms
-32 timing idealTree:userRequests Completed in 2ms
-33 silly idealTree buildDeps
-34 silly fetch manifest @esbuild/win32-x64@0.25.5
-35 http fetch GET 200 https://artifactory.global.standardchartered.com/artifactory/api/npm/npm-release/@esbuild%2fwin32-x64 50ms (cache stale)
-36 silly placeDep ROOT @esbuild/win32-x64@ OK for:  want: 0.25.5
-37 timing idealTree:#root Completed in 56ms
-38 timing idealTree:node_modules/@esbuild/win32-x64 Completed in 0ms
-39 timing idealTree:buildDeps Completed in 57ms
-40 timing idealTree:fixDepFlags Completed in 0ms
-41 timing idealTree Completed in 70ms
-42 timing command:install Completed in 76ms
-43 verbose type version
-44 verbose stack @esbuild/win32-x64: No matching version found for @esbuild/win32-x64@0.25.5.
-44 verbose stack     at module.exports (C:\Users\2013176\goldenversions\node-v16.15.0-win-x64\node_modules\npm\node_modules\npm-pick-manifest\lib\index.js:209:23)
-44 verbose stack     at C:\Users\2013176\goldenversions\node-v16.15.0-win-x64\node_modules\npm\node_modules\pacote\lib\registry.js:126:26
-44 verbose stack     at async Arborist.[nodeFromEdge] (C:\Users\2013176\goldenversions\node-v16.15.0-win-x64\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\build-ideal-tree.js:1081:19)
-44 verbose stack     at async Arborist.[buildDepStep] (C:\Users\2013176\goldenversions\node-v16.15.0-win-x64\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\build-ideal-tree.js:950:11)
-44 verbose stack     at async Arborist.buildIdealTree (C:\Users\2013176\goldenversions\node-v16.15.0-win-x64\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\build-ideal-tree.js:216:7)
-44 verbose stack     at async Promise.all (index 1)
-44 verbose stack     at async Arborist.reify (C:\Users\2013176\goldenversions\node-v16.15.0-win-x64\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\reify.js:153:5)
-44 verbose stack     at async Install.exec (C:\Users\2013176\goldenversions\node-v16.15.0-win-x64\node_modules\npm\lib\commands\install.js:159:5)
-44 verbose stack     at async module.exports (C:\Users\2013176\goldenversions\node-v16.15.0-win-x64\node_modules\npm\lib\cli.js:66:5)
-45 verbose cwd C:\Users\2013176\Desktop\service repos\55313-00-wealth\node_modules\esbuild\lib\npm-install
-46 verbose Windows_NT 10.0.22631
-47 verbose argv "C:\\Users\\2013176\\goldenversions\\node-v16.15.0-win-x64\\node.exe" "C:\\Users\\2013176\\goldenversions\\node-v16.15.0-win-x64\\node_modules\\npm\\bin\\npm-cli.js" "install" "--loglevel=error" "--prefer-offline" "--no-audit" "--progress=false" "@esbuild/win32-x64@0.25.5"
-48 verbose node v16.15.0
-49 verbose npm  v8.5.5
-50 error code ETARGET
-51 error notarget No matching version found for @esbuild/win32-x64@0.25.5.
-52 error notarget In most cases you or one of your dependencies are requesting
-52 error notarget a package version that doesn't exist.
-53 verbose exit 1
-54 timing npm Completed in 544ms
-55 verbose unfinished npm timer reify 1750328846626
-56 verbose unfinished npm timer reify:loadTrees 1750328846631
-57 verbose code 1
-58 error A complete log of this run can be found in:
-58 error     C:\Users\2013176\AppData\Local\npm-cache\_logs\2025-06-19T10_27_26_161Z-debug-0.log
+{
+	txrefno: "sc123",
+	stepname: "maker",
+	processid : "H843"
+	data :[
+		{
+			Key: Name,
+			value: srikanth
+		},
+		{
+			Key: Name1,
+			value: srikanth
+		},
+		{
+			Key: test,
+			value: 123
+		},
+	}
+ 
+}
+
+
+package com.sc.wrb.controller;
+
+import com.sc.wrb.dto.FormData;
+import com.sc.wrb.service.inter.FormDataService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/processapi/formdata")
+public class FormDataController {
+
+    @Autowired
+    private FormDataService formDataService;
+
+    @GetMapping("/getFormDataById")
+    public List<FormData> getFormDataById(String txrefno) {
+        return formDataService.getFormDataById(txrefno);
+    }
+
+
+}
+
+
+package com.sc.wrb.service.inter;
+
+import com.sc.wrb.dto.FormData;
+
+import java.util.List;
+
+public interface FormDataService {
+    public List<FormData> getFormDataById(String txrefno);
+}
+
+
+
+package com.sc.wrb.service;
+
+import com.sc.wrb.dto.FormData;
+import com.sc.wrb.service.inter.FormDataService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class FormDataServiceImpl implements FormDataService {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Override
+    public List<FormData> getFormDataById(String txrefno) {
+        try {
+            List<Object[]> resultList = entityManager.createNativeQuery("SELECT u.txrefno,u.key,u.value FROM ftdmasterkeyvalue u WHERE u.txrefno = :txrefno ")
+                    .setParameter("txrefno", txrefno)
+                    .getResultList();
+            return resultList.stream().map(row -> {
+                FormData formData = new FormData();
+                formData.setTxrefno((String) row[0]);
+                formData.setId((String) row[1]);
+                formData.setValue(row[2] != null ? (String) row[2] : "");
+                return formData;
+            }).collect(Collectors.toList());
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+    }
+}

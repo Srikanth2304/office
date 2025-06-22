@@ -1,381 +1,42 @@
-package com.sc.wrb.controller;
-
-import com.sc.wrb.dto.FormDefinitionMasterKeyValueDTO;
-import com.sc.wrb.service.inter.FormDataKeyValueService;
-import jakarta.websocket.server.PathParam;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+package com.sc.wrb.dto;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/processapi/formdata")
-public class FormDataKeyValueController {
+public class FormKeyValueUpdateRequest {
+    private String txrefno;
+    private String stepname;
+    private String processid;
+    private List<FormKeyValueDTO> data;
 
-    @Autowired
-    private FormDataKeyValueService formDataService;
-
-    @GetMapping("/getFormKeyValue")
-    public List<FormDefinitionMasterKeyValueDTO> getFormKeyValue(String txrefno) {package com.sc.wrb.dto;
-
-public class FormKeyValueDTO {
-
-    private String id;
-    private String Value;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getValue() {
-        return Value;
-    }
-
-    public void setValue(String value) {
-        Value = value;
-    }
-
-    public FormKeyValueDTO(String id, String value) {
-        id = id;
-        Value = value;
-    }
-
-    public FormKeyValueDTO() {
-
-    }
-}
-
-package com.sc.wrb.model.pk;
-
-import jakarta.persistence.Embeddable;
-import java.io.Serializable;
-import java.util.Objects;
-
-@Embeddable
-public class FormKeyValuePK implements Serializable {
-
-    private String txrefNo;
-    private String key;
-
-    // No-argument constructor
-    public FormKeyValuePK() {
-    }
-
-    // Parameterized constructor (if needed)
-    public FormKeyValuePK(String txrefNo, String key) {
-        this.txrefNo = txrefNo;
-        this.key = key;
-    }
-
-    // Getters and setters
     public String getTxrefno() {
-        return txrefNo;
+        return txrefno;
     }
 
     public void setTxrefno(String txrefno) {
-        this.txrefNo = txrefNo;
+        this.txrefno = txrefno;
     }
 
-    public String getKey() {
-        return key;
+    public String getStepname() {
+        return stepname;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setStepname(String stepname) {
+        this.stepname = stepname;
     }
 
-    // Override equals() and hashCode()
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        FormKeyValuePK that = (FormKeyValuePK) o;
-        return Objects.equals(txrefNo, that.txrefNo) && Objects.equals(key, that.key);
+    public String getProcessid() {
+        return processid;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(txrefNo, key);
-    }
-}
-
-package com.sc.wrb.model;
-
-import com.sc.wrb.model.pk.FormKeyValuePK;
-import jakarta.persistence.*;
-
-import java.sql.Timestamp;
-import java.util.Map;
-
-@Entity
-@Table(name = "FTDMASTERKEYVALUE")
-@IdClass(FormKeyValuePK.class)
-public class FormKeyValue {
-    @Id
-    @Column(name = "TXREFNO")
-    private String txrefNo;
-    @Column(name = "PROCESSID")
-    private String processId;
-
-    @Column(name = "PROCESSDATE")
-    private Timestamp processDate;
-    @Id
-    @Column(name="KEY")
-    private String key;
-
-    @Column(name="VALUE")
-    private String value;
-
-    @Column(name = "STEPNAME")
-    private String stepName;
-
-    @Column(name = "STATUSCODE")
-    private String statusCode;
-
-    @Column(name = "VTASKREFNO")
-    private String vTaskRefNo;
-
-    @Column(name="USERID")
-    private String userId;
-
-    @Column(name="MODIFIEDTIME")
-    private Timestamp modifiedTime;
-    @Column(name="ENTRY_STATUS")
-    private String entry_Status;
-
-    @Column(name="ISMULTILINGUAL")
-    private String isMultiLingual;
-    @Column(name = "SYSMODIFIEDTIME")
-    private Timestamp sysmodifiedTime;
-
-    @Column(name = "SECUREDSTATUS")
-    private String securedStatus;
-
-
-    public String getTxrefNo() {
-        return txrefNo;
+    public void setProcessid(String processid) {
+        this.processid = processid;
     }
 
-    public void setTxrefNo(String txrefNo) {
-        this.txrefNo = txrefNo;
+    public List<FormKeyValueDTO> getData() {
+        return data;
     }
 
-    public String getProcessId() {
-        return processId;
-    }
-
-    public void setProcessId(String processId) {
-        this.processId = processId;
-    }
-
-    public Timestamp getProcessDate() {
-        return processDate;
-    }
-
-    public void setProcessDate(Timestamp processDate) {
-        this.processDate = processDate;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public String getStepName() {
-        return stepName;
-    }
-
-    public void setStepName(String stepName) {
-        this.stepName = stepName;
-    }
-
-    public String getStatusCode() {
-        return statusCode;
-    }
-
-    public void setStatusCode(String statusCode) {
-        this.statusCode = statusCode;
-    }
-
-    public String getvTaskRefNo() {
-        return vTaskRefNo;
-    }
-
-    public void setvTaskRefNo(String vTaskRefNo) {
-        this.vTaskRefNo = vTaskRefNo;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public Timestamp getModifiedTime() {
-        return modifiedTime;
-    }
-
-    public void setModifiedTime(Timestamp modifiedTime) {
-        this.modifiedTime = modifiedTime;
-    }
-
-    public String getEntry_Status() {
-        return entry_Status;
-    }
-
-    public void setEntry_Status(String entry_Status) {
-        this.entry_Status = entry_Status;
-    }
-
-    public String getIsMultiLingual() {
-        return isMultiLingual;
-    }
-
-    public void setIsMultiLingual(String isMultiLingual) {
-        this.isMultiLingual = isMultiLingual;
-    }
-
-    public Timestamp getSysmodifiedTime() {
-        return sysmodifiedTime;
-    }
-
-    public void setSysmodifiedTime(Timestamp sysmodifiedTime) {
-        this.sysmodifiedTime = sysmodifiedTime;
-    }
-
-    public String getSecuredStatus() {
-        return securedStatus;
-    }
-
-    public void setSecuredStatus(String securedStatus) {
-        this.securedStatus = securedStatus;
-    }
-
-    public FormKeyValue(String txrefNo, String processId, Timestamp processDate, String key, String value, String stepName, String statusCode, String vTaskRefNo, String userId, Timestamp modifiedTime, String entry_Status, String isMultiLingual, Timestamp sysmodifiedTime, String securedStatus) {
-        this.txrefNo = txrefNo;
-        this.processId = processId;
-        this.processDate = processDate;
-        this.key = key;
-        this.value = value;
-        this.stepName = stepName;
-        this.statusCode = statusCode;
-        this.vTaskRefNo = vTaskRefNo;
-        this.userId = userId;
-        this.modifiedTime = modifiedTime;
-        this.entry_Status = entry_Status;
-        this.isMultiLingual = isMultiLingual;
-        this.sysmodifiedTime = sysmodifiedTime;
-        this.securedStatus = securedStatus;
-    }
-
-    public FormKeyValue(){
-
+    public void setData(List<FormKeyValueDTO> data) {
+        this.data = data;
     }
 }
-
-
-        return formDataService.getFormKeyValue(txrefno);
-    }
-}
-
-package com.sc.wrb.service;
-
-import com.sc.wrb.dto.FormDefinitionMasterKeyValueDTO;
-import com.sc.wrb.dto.FormKeyValueDTO;
-import com.sc.wrb.model.FormKeyValue;
-import com.sc.wrb.repository.FormKeyValueRepository;
-import com.sc.wrb.service.inter.FormDataKeyValueService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-
-@Service
-public class FormDataKeyValueServiceImpl implements FormDataKeyValueService {
-
-    @Autowired
-    FormKeyValueRepository formKeyValueRepository;
-
-    @Override
-    public List<FormDefinitionMasterKeyValueDTO> getFormKeyValue(String txrefno) {
-
-        List<FormKeyValue> formKeyValueMaster = formKeyValueRepository.findByTxrefNo(txrefno);
-
-       /*List<FormKeyValueDTO> formKeyValueDTOS = formKeyValueMaster.stream()
-                .map(formKeyValue -> new FormKeyValueDTO(
-                        formKeyValue.getKey(),
-                        formKeyValue.getValue()
-                )).toList();*/
-
-        List<FormKeyValueDTO> formKeyValueDTOS = formKeyValueMaster.stream().map(
-                FormDataKeyValueServiceImpl::mapDtoToModel
-        ).toList();
-
-       FormDefinitionMasterKeyValueDTO formDefinitionMasterKeyValueDTO = new FormDefinitionMasterKeyValueDTO(
-                formKeyValueMaster.get(0).getTxrefNo(),
-                formKeyValueMaster.get(0).getProcessId(),
-                formKeyValueMaster.get(0).getProcessDate(),
-                formKeyValueDTOS,
-                formKeyValueMaster.get(0).getStepName(),
-                formKeyValueMaster.get(0).getStatusCode(),
-                formKeyValueMaster.get(0).getvTaskRefNo(),
-                formKeyValueMaster.get(0).getUserId(),
-                formKeyValueMaster.get(0).getModifiedTime(),
-                formKeyValueMaster.get(0).getEntry_Status(),
-                formKeyValueMaster.get(0).getIsMultiLingual(),
-                formKeyValueMaster.get(0).getSysmodifiedTime(),
-                formKeyValueMaster.get(0).getSecuredStatus()
-        );
-        return List.of(formDefinitionMasterKeyValueDTO);
-
-    }
-
-    public static FormKeyValueDTO mapDtoToModel(FormKeyValue formKeyValue) {
-        FormKeyValueDTO formKeyValueDTO = new FormKeyValueDTO();
-        formKeyValueDTO.setId(formKeyValue.getKey());
-        formKeyValueDTO.setValue((formKeyValue.getValue()) != null ? formKeyValue.getValue() : "");
-        return formKeyValueDTO;
-    }
-
-}
-{
-	txrefno: "sc123",
-	stepname: "maker",
-	processid : "H843"
-	data :[
-		{
-			Key: Name,
-			value: srikanth
-		},
-		{
-			Key: Name1,
-			value: srikanth
-		},
-		{
-			Key: test,
-			value: 123
-		},
-	}
- 
-}
-
-
-
-select * from  EOPSHUB_SIT03.ftdmasterkeyvalue where txrefno in ('SCW495G210A1180422059614');

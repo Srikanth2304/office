@@ -1,97 +1,51 @@
-{
-	txrefno: "sc123",
-	stepname: "maker",
-	processid : "H843"
-	data :[
-		{
-			Key: Name,
-			value: srikanth
-		},
-		{
-			Key: Name1,
-			value: srikanth
-		},
-		{
-			Key: test,
-			value: 123
-		},
-	}
- 
-}
+package com.sc.wrb.dto;
 
 
-package com.sc.wrb.controller;
-
-import com.sc.wrb.dto.FormData;
-import com.sc.wrb.service.inter.FormDataService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-
-@RestController
-@RequestMapping("/processapi/formdata")
-public class FormDataController {
-
-    @Autowired
-    private FormDataService formDataService;
-
-    @GetMapping("/getFormDataById")
-    public List<FormData> getFormDataById(String txrefno) {
-        return formDataService.getFormDataById(txrefno);
-    }
-
-
-}
-
-
-package com.sc.wrb.service.inter;
-
-import com.sc.wrb.dto.FormData;
-
-import java.util.List;
-
-public interface FormDataService {
-    public List<FormData> getFormDataById(String txrefno);
-}
-
-
-
-package com.sc.wrb.service;
-
-import com.sc.wrb.dto.FormData;
-import com.sc.wrb.service.inter.FormDataService;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-@Service
-public class FormDataServiceImpl implements FormDataService {
-
-    @PersistenceContext
-    private EntityManager entityManager;
+public class FormData {
+    private String txrefno;
+    private String id;
 
     @Override
-    public List<FormData> getFormDataById(String txrefno) {
-        try {
-            List<Object[]> resultList = entityManager.createNativeQuery("SELECT u.txrefno,u.key,u.value FROM ftdmasterkeyvalue u WHERE u.txrefno = :txrefno ")
-                    .setParameter("txrefno", txrefno)
-                    .getResultList();
-            return resultList.stream().map(row -> {
-                FormData formData = new FormData();
-                formData.setTxrefno((String) row[0]);
-                formData.setId((String) row[1]);
-                formData.setValue(row[2] != null ? (String) row[2] : "");
-                return formData;
-            }).collect(Collectors.toList());
-        } catch (Exception e) {
-            return new ArrayList<>();
-        }
+    public String toString() {
+        return "FormDataDTO{" +
+                "txrefno='" + txrefno + '\'' +
+                ", id='" + id + '\'' +
+                ", value='" + value + '\'' +
+                '}';
+    }
+
+    public FormData(String txrefno, String id, String value) {
+        this.txrefno = txrefno;
+        this.id = id;
+        this.value = value;
+    }
+
+    public FormData() {
+    }
+
+    private String value;
+
+    public String getTxrefno() {
+        return txrefno;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setTxrefno(String txrefno) {
+        this.txrefno = txrefno;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setValue(String value) {
+        this.value = (value != null) ? value : "";
     }
 }

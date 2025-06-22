@@ -1,42 +1,9 @@
-package com.sc.wrb.dto;
-
-import java.util.List;
-
-public class FormKeyValueUpdateRequest {
-    private String txrefno;
-    private String stepname;
-    private String processid;
-    private List<FormKeyValueDTO> data;
-
-    public String getTxrefno() {
-        return txrefno;
-    }
-
-    public void setTxrefno(String txrefno) {
-        this.txrefno = txrefno;
-    }
-
-    public String getStepname() {
-        return stepname;
-    }
-
-    public void setStepname(String stepname) {
-        this.stepname = stepname;
-    }
-
-    public String getProcessid() {
-        return processid;
-    }
-
-    public void setProcessid(String processid) {
-        this.processid = processid;
-    }
-
-    public List<FormKeyValueDTO> getData() {
-        return data;
-    }
-
-    public void setData(List<FormKeyValueDTO> data) {
-        this.data = data;
+@PostMapping("/updateFormKeyValue")
+public ResponseEntity<String> updateFormKeyValue(@RequestBody FormKeyValueUpdateRequest request) {
+    try {
+        formDataService.updateFormKeyValue(request);
+        return ResponseEntity.ok("Form key-values updated/inserted successfully.");
+    } catch (Exception ex) {
+        return ResponseEntity.status(500).body("Error while updating form key-values: " + ex.getMessage());
     }
 }

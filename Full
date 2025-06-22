@@ -78,3 +78,14 @@ public class FormDataServiceImpl implements FormDataService {
                                     .executeUpdate();
                         }
                     }
+                } catch (Exception e) {
+                    // Log and continue with next record
+                    System.err.println("Error processing key '" + key + "': " + e.getMessage());
+                }
+            }
+        } catch (Exception e) {
+            // Handle unexpected top-level errors
+            System.err.println("Error in upsertFormData: " + e.getMessage());
+        }
+    }
+}

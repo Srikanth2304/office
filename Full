@@ -1,51 +1,101 @@
-package com.sc.wrb.dto;
+package com.sc.wrb.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-public class FormData {
-    private String txrefno;
-    private String id;
+@Entity
+@Table(name = "scriptdefinition")
+public class FormDefinition {
 
-    @Override
-    public String toString() {
-        return "FormDataDTO{" +
-                "txrefno='" + txrefno + '\'' +
-                ", id='" + id + '\'' +
-                ", value='" + value + '\'' +
-                '}';
+    @Id
+    @Column(name="scriptid")
+    protected String formId;
+    @Column(name="scriptexpression")
+    protected String formDataJson;
+
+    public FormDefinition(){}
+
+    public String getFormId() {
+        return formId;
     }
 
-    public FormData(String txrefno, String id, String value) {
+    public void setFormId(String scriptId) {
+        this.formId = formId;
+    }
+
+    public String getFormDataJson() {
+        return formDataJson;
+    }
+
+    public void setFormDataJson(String formDataJson) {
+        this.formDataJson = formDataJson;
+    }
+}
+
+package com.sc.wrb.model;
+
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+public class TaskEntity {
+
+    public	String	processid;
+
+    public	String	txrefno;
+
+    public	String	steptype;
+
+    public	String	stepname;
+
+    public	String	countrycode;
+
+    public TaskEntity(String processid, String txrefno, String steptype, String stepname, String countrycode) {
+        this.processid = processid;
         this.txrefno = txrefno;
-        this.id = id;
-        this.value = value;
+        this.steptype = steptype;
+        this.stepname = stepname;
+        this.countrycode = countrycode;
     }
 
-    public FormData() {
+    public String getProcessid() {
+        return processid;
     }
 
-    private String value;
+    public void setProcessid(String processid) {
+        this.processid = processid;
+    }
 
     public String getTxrefno() {
         return txrefno;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getValue() {
-        return value;
     }
 
     public void setTxrefno(String txrefno) {
         this.txrefno = txrefno;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public String getSteptype() {
+        return steptype;
     }
 
-    public void setValue(String value) {
-        this.value = (value != null) ? value : "";
+    public void setSteptype(String steptype) {
+        this.steptype = steptype;
+    }
+
+    public String getStepname() {
+        return stepname;
+    }
+
+    public void setStepname(String stepname) {
+        this.stepname = stepname;
+    }
+
+    public String getCountrycode() {
+        return countrycode;
+    }
+
+    public void setCountrycode(String countrycode) {
+        this.countrycode = countrycode;
     }
 }

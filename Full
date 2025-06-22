@@ -1,42 +1,11 @@
-package com.sc.wrb.dto;
+package com.sc.wrb.service.inter;
+
+import com.sc.wrb.dto.FormData;
+import com.sc.wrb.dto.FormDataUpsertRequest;
 
 import java.util.List;
 
-public class FormDataUpsertRequest {
-    private String txrefno;
-    private String stepname;
-    private String processid;
-    private List<FormData> data;
-
-    public String getTxrefno() {
-        return txrefno;
-    }
-
-    public void setTxrefno(String txrefno) {
-        this.txrefno = txrefno;
-    }
-
-    public String getStepname() {
-        return stepname;
-    }
-
-    public void setStepname(String stepname) {
-        this.stepname = stepname;
-    }
-
-    public String getProcessid() {
-        return processid;
-    }
-
-    public void setProcessid(String processid) {
-        this.processid = processid;
-    }
-
-    public List<FormData> getData() {
-        return data;
-    }
-
-    public void setData(List<FormData> data) {
-        this.data = data;
-    }
+public interface FormDataService {
+    List<FormData> getFormDataById(String txrefno);
+    void upsertFormData(FormDataUpsertRequest request);
 }

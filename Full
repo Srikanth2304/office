@@ -1,45 +1,19 @@
-void updateFormKeyValue(FormKeyValueUpdateRequest request);
-
-
-
-
-
-@Override
-@Transactional
-public void updateFormKeyValue(FormKeyValueUpdateRequest request) {
-    List<FormKeyValue> existingRecords = formKeyValueRepository.findByTxrefNo(request.getTxrefno());
-
-    Map<String, FormKeyValue> existingMap = existingRecords.stream()
-            .collect(Collectors.toMap(FormKeyValue::getKey, fk -> fk));
-
-    List<FormKeyValue> toUpdate = new ArrayList<>();
-    List<FormKeyValue> toInsert = new ArrayList<>();
-
-    for (FormKeyValueDTO dto : request.getData()) {
-        String key = dto.getId();
-        String newValue = dto.getValue();
-        FormKeyValue existing = existingMap.get(key);
-
-        if (existing != null) {
-            if (!Objects.equals(existing.getValue(), newValue)) {
-                existing.setValue(newValue);
-                existing.setStepName(request.getStepname());
-                existing.setModifiedTime(new Timestamp(System.currentTimeMillis()));
-                toUpdate.add(existing);
-            }
-        } else {
-            FormKeyValue newRow = new FormKeyValue();
-            newRow.setTxrefNo(request.getTxrefno());
-            newRow.setKey(key);
-            newRow.setValue(newValue);
-            newRow.setStepName(request.getStepname());
-            newRow.setProcessId(request.getProcessid());
-            newRow.setProcessDate(new Timestamp(System.currentTimeMillis()));
-            newRow.setModifiedTime(new Timestamp(System.currentTimeMillis()));
-            toInsert.add(newRow);
-        }
+{
+  "txrefno": "SCW495G210A1180422059614",
+  "stepname": "CMS_Maker",
+  "processid": "H843",
+  "data": [
+    {
+      "id": "PTFILEFLAG",
+      "value": "ACTIVE"
+    },
+    {
+      "id": "BO01",
+      "value": "updatedValue"
+    },
+    {
+      "id": "NEW_KEY_123",
+      "value": "newValue"
     }
-
-    if (!toUpdate.isEmpty()) formKeyValueRepository.saveAll(toUpdate);
-    if (!toInsert.isEmpty()) formKeyValueRepository.saveAll(toInsert);
+  ]
 }

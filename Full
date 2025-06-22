@@ -1,19 +1,2 @@
-{
-  "txrefno": "SCW495G210A1180422059614",
-  "stepname": "CMS_Maker",
-  "processid": "H843",
-  "data": [
-    {
-      "id": "PTFILEFLAG",
-      "value": "ACTIVE"
-    },
-    {
-      "id": "BO01",
-      "value": "updatedValue"
-    },
-    {
-      "id": "NEW_KEY_123",
-      "value": "newValue"
-    }
-  ]
-}
+@Entity
+@Table(name = "FTDMASTERKEYVALUE", schema = "EOPSHUB_SIT03")

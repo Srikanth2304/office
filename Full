@@ -1,71 +1,12 @@
-package com.sc.wrb.model;
+package com.sc.wrb.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import java.util.List;
 
-@Entity
-@Table(name = "scriptdefinition")
-public class FormDefinition {
-
-    @Id
-    @Column(name="scriptid")
-    protected String formId;
-    @Column(name="scriptexpression")
-    protected String formDataJson;
-
-    public FormDefinition(){}
-
-    public String getFormId() {
-        return formId;
-    }
-
-    public void setFormId(String scriptId) {
-        this.formId = formId;
-    }
-
-    public String getFormDataJson() {
-        return formDataJson;
-    }
-
-    public void setFormDataJson(String formDataJson) {
-        this.formDataJson = formDataJson;
-    }
-}
-
-package com.sc.wrb.model;
-
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
-public class TaskEntity {
-
-    public	String	processid;
-
-    public	String	txrefno;
-
-    public	String	steptype;
-
-    public	String	stepname;
-
-    public	String	countrycode;
-
-    public TaskEntity(String processid, String txrefno, String steptype, String stepname, String countrycode) {
-        this.processid = processid;
-        this.txrefno = txrefno;
-        this.steptype = steptype;
-        this.stepname = stepname;
-        this.countrycode = countrycode;
-    }
-
-    public String getProcessid() {
-        return processid;
-    }
-
-    public void setProcessid(String processid) {
-        this.processid = processid;
-    }
+public class FormDataUpsertRequest {
+    private String txrefno;
+    private String stepname;
+    private String processid;
+    private List<FormData> data;
 
     public String getTxrefno() {
         return txrefno;
@@ -73,14 +14,6 @@ public class TaskEntity {
 
     public void setTxrefno(String txrefno) {
         this.txrefno = txrefno;
-    }
-
-    public String getSteptype() {
-        return steptype;
-    }
-
-    public void setSteptype(String steptype) {
-        this.steptype = steptype;
     }
 
     public String getStepname() {
@@ -91,11 +24,19 @@ public class TaskEntity {
         this.stepname = stepname;
     }
 
-    public String getCountrycode() {
-        return countrycode;
+    public String getProcessid() {
+        return processid;
     }
 
-    public void setCountrycode(String countrycode) {
-        this.countrycode = countrycode;
+    public void setProcessid(String processid) {
+        this.processid = processid;
+    }
+
+    public List<FormData> getData() {
+        return data;
+    }
+
+    public void setData(List<FormData> data) {
+        this.data = data;
     }
 }

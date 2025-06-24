@@ -1,2 +1,19 @@
-@Entity
-@Table(name = "FTDMASTERKEYVALUE", schema = "EOPSHUB_SIT03")
+import React from 'react';
+import '@scdevkit/form/elements/form-editor.js';
+// import '@scdevkit\form\dist\elements\form-editor.js';
+const HomeContent = () => {
+
+    return (
+        <>
+            <div>
+                <sc-button type="primary" state="default" size="md" width="auto" left-icon="" right-icon="">Save</sc-button>
+            </div>
+            <div className='home-content'>
+                <sc-form-editor></sc-form-editor>
+            </div>
+        </>
+    )
+
+}
+
+export { HomeContent };

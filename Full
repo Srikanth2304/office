@@ -5,8 +5,28 @@ const HomeContent = () => {
 
     return (
         <>
-            <div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '2rem' }}>
                 <sc-button type="primary" state="default" size="md" width="auto" left-icon="" right-icon="">Save</sc-button>
+            </div>
+            <div>
+                <div style="padding:20px 30px 100px; overflow: hidden; ">
+                    <sc-dropdown-input size="md" label="ProcessId" label-size="" dropdown-header="" prefix-icon="" border-type="box" loading-text="" retry-button="" advanced-search-text="" advanced-search-icon="" empty-text="No data found" tooltip="" tooltip-placement="top" hint="" hint-placement="right" placeholder="Please select" help-text="" value="" icon-size="" text-align="left" success-message="" error-message="">
+                        <sc-dropdown-option value="Process1">Process1</sc-dropdown-option>
+                        <sc-dropdown-option value="Process2">Process2</sc-dropdown-option>
+                        <sc-dropdown-option value="Process3">Process3</sc-dropdown-option>
+                        <sc-dropdown-option value="Process4">Process4</sc-dropdown-option>
+                        <sc-dropdown-option value="Process5">Process5</sc-dropdown-option>
+                    </sc-dropdown-input>
+                </div>
+                <div style="padding:20px 30px 100px; overflow: hidden; ">
+                    <sc-dropdown-input size="md" label="StepName" label-size="" dropdown-header="" prefix-icon="" border-type="box" loading-text="" retry-button="" advanced-search-text="" advanced-search-icon="" empty-text="No data found" tooltip="" tooltip-placement="top" hint="" hint-placement="right" placeholder="Please select" help-text="" value="" icon-size="" text-align="left" success-message="" error-message="">
+                        <sc-dropdown-option value="Step1">Step1</sc-dropdown-option>
+                        <sc-dropdown-option value="Step2">Step2</sc-dropdown-option>
+                        <sc-dropdown-option value="Step3">Step3</sc-dropdown-option>
+                        <sc-dropdown-option value="Step4">Step4</sc-dropdown-option>
+                        <sc-dropdown-option value="Step5">Step5</sc-dropdown-option>
+                    </sc-dropdown-input>
+                </div>
             </div>
             <div className='home-content'>
                 <sc-form-editor></sc-form-editor>

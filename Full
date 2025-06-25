@@ -1,49 +1,121 @@
-package com.sc.wrb.controller;
+import React, { useState, useEffect } from 'react';
+import '@scdevkit/form/elements/form-editor.js';
 
-import com.sc.wrb.dto.StepFormMappingDTO;
-import com.sc.wrb.model.StepFormMapping;
-import com.sc.wrb.model.pk.StepFormPK;
-import com.sc.wrb.service.inter.StepFormMappingService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+const HomeContent = () => {
+    const [processId, setProcessId] = useState('');
+    const [stepName, setStepName] = useState('');
 
-import java.util.Optional;
+    // Load saved partial form data when processId & stepName are selected
+    useEffect(() => {
+        const loadDraft = async () => {
+            if (!processId || !stepName) return;
 
-@RestController
-@RequestMapping("/processapi/stepform")
-public class StepFormController {
-
-    @Autowired
-    StepFormMappingService stepFormMappingService;
-
-
-    @GetMapping("/getStepFormDefinitionById")
-    public StepFormMappingDTO getStepFormMappingById(String processid, String stepname) {
-        if (processid != null && stepname != null) {
-            Optional<StepFormMappingDTO> stepFormMappingDTO = stepFormMappingService.getStepFormMappingById(processid, stepname);
-            if (stepFormMappingDTO.isPresent()) {
-                return stepFormMappingDTO.get();
-            } else {
-                return new StepFormMappingDTO(
-                        processid,
-                        stepname,
-                        "No form data available for the given process ID and step name"
-                );
+            try {
+                const response = await fetch(`/processapi/stepform/getPartialForm?processId=${processId}&stepName=${stepName}`);
+                if (response.ok) {
+                    const data = await response.json(); // data.form is expected
+                    const editor = document.querySelector('sc-form-editor');
+                    if (editor && data?.form) {
+                        const parsedForm = JSON.parse(data.form);
+                        editor.setValue(parsedForm);
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading partial form:', error);
             }
-        } else {
-            return new StepFormMappingDTO(
-                    processid,
-                    stepname,
-                    "ProcessId or StepName is null"
-            );
+        };
+
+        loadDraft();
+    }, [processId, stepName]);
+
+    // Save partial form data to the backend
+    const handlePartialSave = async () => {
+        const editor = document.querySelector('sc-form-editor');
+        if (!editor || !processId || !stepName) {
+            alert("Please select both ProcessId and StepName before saving.");
+            return;
         }
-    }
 
+        const formData = editor.getValue();
+        const formString = JSON.stringify(formData);
 
-    @PostMapping("/saveStepFormDefinition")
-    public String saveStepFormDefinition(String processId,String stepName,String form) throws Exception {
-        StepFormMappingDTO stepFormMappingDTO = new StepFormMappingDTO(processId, stepName, form);
-        return stepFormMappingService.saveStepFormDefinition(stepFormMappingDTO);
-    }
-}
+        try {
+            const response = await fetch('/processapi/stepform/savePartialForm', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    processId,
+                    stepName,
+                    form: formString
+                })
+            });
+
+            if (response.ok) {
+                alert('Draft saved successfully!');
+            } else {
+                alert('Failed to save draft.');
+            }
+        } catch (err) {
+            console.error('Error saving draft:', err);
+        }
+    };
+
+    return (
+        <>
+            {/* Save button aligned to right */}
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '2rem' }}>
+                <sc-button
+                    type="primary"
+                    state="default"
+                    size="md"
+                    width="auto"
+                    onClick={handlePartialSave}
+                >
+                    Save
+                </sc-button>
+            </div>
+
+            {/* Dropdowns side by side */}
+            <div style={{ display: 'flex', padding: '20px 30px', gap: '20px', overflow: 'hidden' }}>
+                {/* ProcessId Dropdown */}
+                <sc-dropdown-input
+                    size="md"
+                    label="ProcessId"
+                    placeholder="Please select"
+                    value={processId}
+                    onChange={(e) => setProcessId(e.target.value)}
+                >
+                    <sc-dropdown-option value="Process1">Process1</sc-dropdown-option>
+                    <sc-dropdown-option value="Process2">Process2</sc-dropdown-option>
+                    <sc-dropdown-option value="Process3">Process3</sc-dropdown-option>
+                    <sc-dropdown-option value="Process4">Process4</sc-dropdown-option>
+                    <sc-dropdown-option value="Process5">Process5</sc-dropdown-option>
+                </sc-dropdown-input>
+
+                {/* StepName Dropdown */}
+                <sc-dropdown-input
+                    size="md"
+                    label="StepName"
+                    placeholder="Please select"
+                    value={stepName}
+                    onChange={(e) => setStepName(e.target.value)}
+                >
+                    <sc-dropdown-option value="Step1">Step1</sc-dropdown-option>
+                    <sc-dropdown-option value="Step2">Step2</sc-dropdown-option>
+                    <sc-dropdown-option value="Step3">Step3</sc-dropdown-option>
+                    <sc-dropdown-option value="Step4">Step4</sc-dropdown-option>
+                    <sc-dropdown-option value="Step5">Step5</sc-dropdown-option>
+                </sc-dropdown-input>
+            </div>
+
+            {/* Form Editor */}
+            <div className='home-content'>
+                <sc-form-editor></sc-form-editor>
+            </div>
+        </>
+    );
+};
+
+export { HomeContent };

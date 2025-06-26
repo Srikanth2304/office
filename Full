@@ -1,4 +1,170 @@
-<div style="padding: 20px 30px">
-  <sc-text-input label="Business justification" tooltip="" tooltip-placement="top" hint="" hint-placement="right" label-size="" value="" placeholder="" rows="5" prefix-icon="" suffix-icon="" suffix-label="" help-text="" border-type="box" max-length="100" success-message="" error-message="" size="md" icon-size="" text-align="left"> 
-  
-  
+import React, { useState } from 'react';
+import '@scdevkit/form/elements/form-editor.js';
+
+const HomeContent = () => {
+  const [processId, setProcessId] = useState('');
+  const [stepName, setStepName] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  // Fetch saved form data based on processId and stepName
+  const handleFetch = async () => {
+    const editor = document.querySelector('sc-form-editor');
+    if (!processId || !stepName) {
+      alert('Please enter both Process ID and Step Name.');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const query = `
+        query {
+          getStepFormMappingById(processid: "${processId}", stepname: "${stepName}") {
+            processId
+            stepName
+            form
+          }
+        }
+      `;
+
+      const response = await fetch('/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query }),
+      });
+
+      const result = await response.json();
+      const data = result.data?.getStepFormMappingById;
+
+      if (editor) {
+        if (data?.form && !data.form.includes('No form data')) {
+          const parsedForm = JSON.parse(data.form);
+          editor.setValue(parsedForm);
+          alert('Draft loaded successfully.');
+        } else {
+          editor.setValue({});
+          alert('No draft found. Loaded empty form.');
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching draft:', error);
+      alert('Failed to fetch form.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Save current form data to backend
+  const handleSave = async () => {
+    const editor = document.querySelector('sc-form-editor');
+    if (!editor || !processId || !stepName) {
+      alert('Please enter both Process ID and Step Name.');
+      return;
+    }
+
+    try {
+      const formData = editor.getValue();
+      const formString = JSON.stringify(formData);
+
+      const mutation = `
+        mutation {
+          saveStepFormDefinition(
+            processId: "${processId}",
+            stepName: "${stepName}",
+            form: """${formString.replace(/"/g, '\\"')}"""
+          )
+        }
+      `;
+
+      const response = await fetch('/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: mutation }),
+      });
+
+      const result = await response.json();
+
+      if (result.data?.saveStepFormDefinition) {
+        alert('Form saved successfully!');
+      } else {
+        alert('Failed to save form.');
+      }
+    } catch (error) {
+      console.error('Error saving form:', error);
+      alert('Error while saving. Please try again.');
+    }
+  };
+
+  return (
+    <>
+      {/* Input Row with Fetch and Save buttons */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '20px',
+          padding: '20px 30px',
+          flexWrap: 'wrap',
+        }}
+      >
+        {/* Left Section: Text Inputs + Fetch */}
+        <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
+          {/* Process ID Input */}
+          <sc-text-input
+            label="Process ID"
+            placeholder="Enter Process ID"
+            size="md"
+            border-type="box"
+            value={processId}
+            onInput={(e) => setProcessId(e.target.value)}
+          ></sc-text-input>
+
+          {/* Step Name Input */}
+          <sc-text-input
+            label="Step Name"
+            placeholder="Enter Step Name"
+            size="md"
+            border-type="box"
+            value={stepName}
+            onInput={(e) => setStepName(e.target.value)}
+          ></sc-text-input>
+
+          {/* Fetch Button */}
+          <sc-button
+            type="primary"
+            state="default"
+            size="md"
+            width="auto"
+            left-icon=""
+            right-icon=""
+            onClick={handleFetch}
+          >
+            {loading ? 'Fetching...' : 'Fetch'}
+          </sc-button>
+        </div>
+
+        {/* Right Section: Save Button */}
+        <div>
+          <sc-button
+            type="primary"
+            state="default"
+            size="md"
+            width="auto"
+            left-icon=""
+            right-icon=""
+            onClick={handleSave}
+          >
+            Save
+          </sc-button>
+        </div>
+      </div>
+
+      {/* Form Editor */}
+      <div className="home-content" style={{ padding: '0 30px' }}>
+        <sc-form-editor></sc-form-editor>
+      </div>
+    </>
+  );
+};
+
+export { HomeContent };

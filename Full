@@ -115,4 +115,43 @@ const HomeContent = () => {
             size="md"
             border-type="box"
             value={stepName}
-            onInput={(e) => setStepName(e.target.va
+            onInput={(e) => setStepName(e.target.value)}
+          ></sc-text-input>
+        </div>
+
+        {/* Fetch Button */}
+        <div style={{ alignSelf: 'flex-end' }}>
+          <sc-button
+            type="primary"
+            state="default"
+            size="md"
+            width="auto"
+            onClick={handleFetch}
+          >
+            {loading ? 'Fetching...' : 'Fetch'}
+          </sc-button>
+        </div>
+
+        {/* Save Button */}
+        <div style={{ marginLeft: 'auto', alignSelf: 'flex-end' }}>
+          <sc-button
+            type="primary"
+            state="default"
+            size="md"
+            width="auto"
+            onClick={handleSave}
+          >
+            Save
+          </sc-button>
+        </div>
+      </div>
+
+      {/* Form Editor */}
+      <div className="home-content" style={{ padding: '0 30px' }}>
+        <sc-form-editor></sc-form-editor>
+      </div>
+    </>
+  );
+};
+
+export { HomeContent };

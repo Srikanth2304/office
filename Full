@@ -119,3 +119,24 @@ const HomeContent = () => {
 };
 
 export { HomeContent };
+
+
+
+
+
+
+query {
+  getStepFormMappingById(processid:"H190",stepname:"Test"){
+      processId,
+      stepName
+      form
+  }
+  saveStepFormDefinition(processId:"W409",stepName:"Maker",form:"{name : kiran,mobile : 12335}")
+  getCaseFormDataById(caseId:"123456"){
+      caseId
+      processId
+      countryCode
+      formData
+  }
+  saveCaseFormData(caseId:"SCB1234",processId:"W409",countryCode:"ID",formData:"{id:name,value:kiran}")
+}

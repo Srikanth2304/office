@@ -1,4 +1,54 @@
-form-updated	
-Emitted when add new components or edit the form, can get the form definition from the event.detail.definition.
+{
+  "layout": {
+    "row": "60c1f3e4-e9cb-4f03-a8b3-aec6396d1672"
+  },
+  "pages": [
+    {
+      "layout": {
+        "row": "26fc1845-8ceb-4f2a-9602-74ca5aa284ed"
+      },
+      "id": "e279efac-b282-4b51-9a9a-ff7591dac9db",
+      "type": "form",
+      "name": "Form1",
+      "components": [
+        {
+          "layout": {
+            "row": "4219ae26-e04e-4b60-bd9e-1b6724e62289"
+          },
+          "type": "text-field",
+          "template": {
+            "label": "Text Field"
+          },
+          "id": "TextFieldd6d31b"
+        },
+        {
+          "layout": {
+            "row": "d1681595-b8a4-41fb-92e6-13608c11fc27"
+          },
+          "type": "number-input",
+          "template": {
+            "label": "Number Input"
+          },
+          "id": "NumberInputd6d506"
+        }
+      ]
+    }
+  ],
+  "version": "1",
+  "id": "52b88ef2-6aaa-49de-a43e-6c7d48830d41"
+}
 
-CustomEvent
+
+
+[
+  {
+    "id": "TextFieldd6d31b",
+    "type": "text-field",
+    "label": "Text Field"
+  },
+  {
+    "id": "NumberInputd6d506",
+    "type": "number-input",
+    "label": "Number Input"
+  }
+]

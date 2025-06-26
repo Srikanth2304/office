@@ -1,179 +1,20 @@
-import React, { useState } from 'react';
-import '@scdevkit/form/elements/form-editor.js';
+PS C:\Users\2013176\SCB\Service_Repo\55313-00-sbformstudio> npm start
 
-const HomeContent = () => {
-  // State variables for user input
-  const [processId, setProcessId] = useState('');
-  const [stepName, setStepName] = useState('');
-  const [loading, setLoading] = useState(false); // Tracks fetch state
+> @sc-sb-project/sb-sbformstudio@0.0.1 start
+> web-dev-server --port 11001
 
-  /**
-   * Fetches draft form data for a given processId and stepName using GraphQL
-   * If no form is found, an empty form is loaded
-   */
-  const handleFetch = async () => {
-    const editor = document.querySelector('sc-form-editor');
-    if (!processId || !stepName) {
-      alert('Please enter both Process ID and Step Name.');
-      return;
-    }
-
-    try {
-      setLoading(true);
-
-      // GraphQL query to fetch existing saved form (if any)
-      const query = `
-        query {
-          getStepFormMappingById(processid: "${processId}", stepname: "${stepName}") {
-            processId
-            stepName
-            form
-          }
-        }
-      `;
-
-      const response = await fetch('/graphql', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query }),
-      });
-
-      const result = await response.json();
-      const data = result.data?.getStepFormMappingById;
-
-      // Load form into the editor
-      if (editor) {
-        if (data?.form && !data.form.includes('No form data')) {
-          const parsedForm = JSON.parse(data.form);
-          editor.setValue(parsedForm);
-          alert('Draft loaded successfully.');
-        } else {
-          editor.setValue({}); // Load empty form when no draft found
-          alert('No draft found. Loaded empty form.');
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching draft:', error);
-      alert('Failed to fetch form.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  /**
-   * Saves the current form data as a draft using GraphQL
-   * If form is already present for the processId/stepName, it will overwrite
-   */
-  const handleSave = async () => {
-    const editor = document.querySelector('sc-form-editor');
-    if (!editor || !processId || !stepName) {
-      alert('Please enter both Process ID and Step Name.');
-      return;
-    }
-
-    try {
-      // Get the JSON structure of the form from the editor
-      const formData = editor.getValue();
-      const formString = JSON.stringify(formData);
-
-      // GraphQL mutation to save the form draft
-      const mutation = `
-        mutation {
-          saveStepFormDefinition(
-            processId: "${processId}",
-            stepName: "${stepName}",
-            form: """${formString.replace(/"/g, '\\"')}"""
-          )
-        }
-      `;
-
-      const response = await fetch('/graphql', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: mutation }),
-      });
-
-      const result = await response.json();
-
-      if (result.data?.saveStepFormDefinition) {
-        alert('Form saved successfully!');
-      } else {
-        alert('Failed to save form.');
-      }
-    } catch (error) {
-      console.error('Error saving form:', error);
-      alert('Error while saving. Please try again.');
-    }
-  };
-
-  return (
-    <>
-      {/* Row: Process ID + Step Name Inputs + Fetch + Save Buttons */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          margin: '20px 30px',
-          flexWrap: 'wrap',
-        }}
-      >
-        {/* Process ID input field */}
-        <input
-          type="text"
-          placeholder="Enter Process ID"
-          value={processId}
-          onChange={(e) => setProcessId(e.target.value)}
-          style={{ padding: '8px', fontSize: '14px', width: '180px' }}
-        />
-
-        {/* Step Name input field */}
-        <input
-          type="text"
-          placeholder="Enter Step Name"
-          value={stepName}
-          onChange={(e) => setStepName(e.target.value)}
-          style={{ padding: '8px', fontSize: '14px', width: '180px' }}
-        />
-
-        {/* Fetch button to load draft */}
-        <button
-          onClick={handleFetch}
-          disabled={loading}
-          style={{
-            padding: '8px 16px',
-            background: '#007bff',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            minWidth: '90px',
-          }}
-        >
-          {loading ? 'Fetching...' : 'Fetch'}
-        </button>
-
-        {/* Save button to save draft */}
-        <button
-          onClick={handleSave}
-          style={{
-            padding: '8px 16px',
-            background: '#28a745',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            minWidth: '90px',
-          }}
-        >
-          Save
-        </button>
-      </div>
-
-      {/* Main Form Builder Component */}
-      <div className="home-content" style={{ padding: '0 30px' }}>
-        <sc-form-editor></sc-form-editor>
-      </div>
-    </>
-  );
-};
-
-export { HomeContent };
+Error: listen EADDRINUSE: address already in use :::11001
+    at Server.setupListenHandle [as _listen2] (node:net:1372:16)
+    at listenInCluster (node:net:1420:12)
+    at Server.listen (node:net:1508:7)
+    at node:internal/util:360:7
+    at new Promise (<anonymous>)
+    at Server.<anonymous> (node:internal/util:346:12)
+    at DevServer.start (C:\Users\2013176\SCB\Service_Repo\55313-00-sbformstudio\node_modules\@web\dev-server-core\dist\server\DevServer.js:43:78)
+    at startDevServer (C:\Users\2013176\SCB\Service_Repo\55313-00-sbformstudio\node_modules\@web\dev-server\dist\startDevServer.js:43:22) {
+  code: 'EADDRINUSE',
+  errno: -4091,
+  syscall: 'listen',
+  address: '::',
+  port: 11001
+}

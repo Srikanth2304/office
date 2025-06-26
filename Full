@@ -1,142 +1,161 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import '@scdevkit/form/elements/form-editor.js';
 
 const HomeContent = () => {
-    const [processId, setProcessId] = useState('');
-    const [stepName, setStepName] = useState('');
+  const [processId, setProcessId] = useState('');
+  const [stepName, setStepName] = useState('');
+  const [loading, setLoading] = useState(false);
 
-    // Load saved partial form data when processId & stepName are selected
-    useEffect(() => {
-        const loadDraft = async () => {
-            if (!processId || !stepName) return;
+  const handleFetch = async () => {
+    const editor = document.querySelector('sc-form-editor');
+    if (!processId || !stepName) {
+      alert('Please enter both Process ID and Step Name.');
+      return;
+    }
 
-            try {
-                const response = await fetch(`/processapi/stepform/getPartialForm?processId=${processId}&stepName=${stepName}`);
-                if (response.ok) {
-                    const data = await response.json(); // data.form is expected
-                    const editor = document.querySelector('sc-form-editor');
-                    if (editor && data?.form) {
-                        const parsedForm = JSON.parse(data.form);
-                        editor.setValue(parsedForm);
-                    }
-                }
-            } catch (error) {
-                console.error('Error loading partial form:', error);
-            }
-        };
-
-        loadDraft();
-    }, [processId, stepName]);
-
-    // Save partial form data to the backend
-    const handlePartialSave = async () => {
-        const editor = document.querySelector('sc-form-editor');
-        if (!editor || !processId || !stepName) {
-            alert("Please select both ProcessId and StepName before saving.");
-            return;
+    try {
+      setLoading(true);
+      const query = `
+        query {
+          getStepFormMappingById(processid: "${processId}", stepname: "${stepName}") {
+            processId
+            stepName
+            form
+          }
         }
+      `;
 
-        const formData = editor.getValue();
-        const formString = JSON.stringify(formData);
+      const response = await fetch('/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query }),
+      });
 
-        try {
-            const response = await fetch('/processapi/stepform/savePartialForm', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: new URLSearchParams({
-                    processId,
-                    stepName,
-                    form: formString
-                })
-            });
+      const result = await response.json();
+      const data = result.data?.getStepFormMappingById;
 
-            if (response.ok) {
-                alert('Draft saved successfully!');
-            } else {
-                alert('Failed to save draft.');
-            }
-        } catch (err) {
-            console.error('Error saving draft:', err);
+      if (editor) {
+        if (data?.form && !data.form.includes('No form data')) {
+          const parsedForm = JSON.parse(data.form);
+          editor.setValue(parsedForm);
+          alert('Draft loaded successfully.');
+        } else {
+          editor.setValue({});
+          alert('No draft found. Loaded empty form.');
         }
-    };
+      }
+    } catch (error) {
+      console.error('Error fetching draft:', error);
+      alert('Failed to fetch form.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    return (
-        <>
-            {/* Save button aligned to right */}
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '2rem' }}>
-                <sc-button
-                    type="primary"
-                    state="default"
-                    size="md"
-                    width="auto"
-                    onClick={handlePartialSave}
-                >
-                    Save
-                </sc-button>
-            </div>
+  const handleSave = async () => {
+    const editor = document.querySelector('sc-form-editor');
+    if (!editor || !processId || !stepName) {
+      alert('Please enter both Process ID and Step Name.');
+      return;
+    }
 
-            {/* Dropdowns side by side */}
-            <div style={{ display: 'flex', padding: '20px 30px', gap: '20px', overflow: 'hidden' }}>
-                {/* ProcessId Dropdown */}
-                <sc-dropdown-input
-                    size="md"
-                    label="ProcessId"
-                    placeholder="Please select"
-                    value={processId}
-                    onChange={(e) => setProcessId(e.target.value)}
-                >
-                    <sc-dropdown-option value="Process1">Process1</sc-dropdown-option>
-                    <sc-dropdown-option value="Process2">Process2</sc-dropdown-option>
-                    <sc-dropdown-option value="Process3">Process3</sc-dropdown-option>
-                    <sc-dropdown-option value="Process4">Process4</sc-dropdown-option>
-                    <sc-dropdown-option value="Process5">Process5</sc-dropdown-option>
-                </sc-dropdown-input>
+    try {
+      const formData = editor.getValue();
+      const formString = JSON.stringify(formData);
 
-                {/* StepName Dropdown */}
-                <sc-dropdown-input
-                    size="md"
-                    label="StepName"
-                    placeholder="Please select"
-                    value={stepName}
-                    onChange={(e) => setStepName(e.target.value)}
-                >
-                    <sc-dropdown-option value="Step1">Step1</sc-dropdown-option>
-                    <sc-dropdown-option value="Step2">Step2</sc-dropdown-option>
-                    <sc-dropdown-option value="Step3">Step3</sc-dropdown-option>
-                    <sc-dropdown-option value="Step4">Step4</sc-dropdown-option>
-                    <sc-dropdown-option value="Step5">Step5</sc-dropdown-option>
-                </sc-dropdown-input>
-            </div>
+      const mutation = `
+        mutation {
+          saveStepFormDefinition(
+            processId: "${processId}",
+            stepName: "${stepName}",
+            form: """${formString.replace(/"/g, '\\"')}"""
+          )
+        }
+      `;
 
-            {/* Form Editor */}
-            <div className='home-content'>
-                <sc-form-editor></sc-form-editor>
-            </div>
-        </>
-    );
+      const response = await fetch('/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: mutation }),
+      });
+
+      const result = await response.json();
+
+      if (result.data?.saveStepFormDefinition) {
+        alert('Form saved successfully!');
+      } else {
+        alert('Failed to save form.');
+      }
+    } catch (error) {
+      console.error('Error saving form:', error);
+      alert('Error while saving.');
+    }
+  };
+
+  return (
+    <>
+      {/* Top row: inputs and buttons */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          margin: '20px 30px',
+          flexWrap: 'wrap',
+        }}
+      >
+        <input
+          type="text"
+          placeholder="Enter Process ID"
+          value={processId}
+          onChange={(e) => setProcessId(e.target.value)}
+          style={{ padding: '8px', fontSize: '14px', width: '180px' }}
+        />
+
+        <input
+          type="text"
+          placeholder="Enter Step Name"
+          value={stepName}
+          onChange={(e) => setStepName(e.target.value)}
+          style={{ padding: '8px', fontSize: '14px', width: '180px' }}
+        />
+
+        <button
+          onClick={handleFetch}
+          disabled={loading}
+          style={{
+            padding: '8px 16px',
+            background: '#007bff',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            minWidth: '90px',
+          }}
+        >
+          {loading ? 'Fetching...' : 'Fetch'}
+        </button>
+
+        <button
+          onClick={handleSave}
+          style={{
+            padding: '8px 16px',
+            background: '#28a745',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            minWidth: '90px',
+          }}
+        >
+          Save
+        </button>
+      </div>
+
+      {/* Form Editor */}
+      <div className="home-content" style={{ padding: '0 30px' }}>
+        <sc-form-editor></sc-form-editor>
+      </div>
+    </>
+  );
 };
 
 export { HomeContent };
-
-
-
-
-
-
-query {
-  getStepFormMappingById(processid:"H190",stepname:"Test"){
-      processId,
-      stepName
-      form
-  }
-  saveStepFormDefinition(processId:"W409",stepName:"Maker",form:"{name : kiran,mobile : 12335}")
-  getCaseFormDataById(caseId:"123456"){
-      caseId
-      processId
-      countryCode
-      formData
-  }
-  saveCaseFormData(caseId:"SCB1234",processId:"W409",countryCode:"ID",formData:"{id:name,value:kiran}")
-}

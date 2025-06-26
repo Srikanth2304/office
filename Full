@@ -2,4 +2,4 @@ package com.sample.practice.controller;import com.sample.practice.Service.HelloS
 
 
 
-package com.sample.practice.controller;import com.sample.practice.Service.HelloService;import org.springframework.beans.factory.annotation.Autowired;import org.springframework.web.bind.annotation.GetMapping;import org.springframework.web.bind.annotation.PostMapping;import org.springframework.web.bind.annotation.RequestBody;import org.springframework.web.bind.annotation.RestController;@RestControllerpublic class HelloController {    @Autowired    HelloService helloService;    @GetMapping("/Hello")    public String sayHello(){        return HelloService.getmessage();    }    @PostMapping("/Name")    public String Name(@RequestBody String name){        return HelloService.givename(name);    }}
+package com.sample.practice.Service;import org.springframework.stereotype.Service;@Servicepublic class HelloService {    public static String getmessage(){        return "Hello!!";    }    public static String givename(String name){        return "Hi "+name;    }}

@@ -2,10 +2,15 @@ import React, { useState } from 'react';
 import '@scdevkit/form/elements/form-editor.js';
 
 const HomeContent = () => {
+  // State variables for user input
   const [processId, setProcessId] = useState('');
   const [stepName, setStepName] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); // Tracks fetch state
 
+  /**
+   * Fetches draft form data for a given processId and stepName using GraphQL
+   * If no form is found, an empty form is loaded
+   */
   const handleFetch = async () => {
     const editor = document.querySelector('sc-form-editor');
     if (!processId || !stepName) {
@@ -15,6 +20,8 @@ const HomeContent = () => {
 
     try {
       setLoading(true);
+
+      // GraphQL query to fetch existing saved form (if any)
       const query = `
         query {
           getStepFormMappingById(processid: "${processId}", stepname: "${stepName}") {
@@ -34,13 +41,14 @@ const HomeContent = () => {
       const result = await response.json();
       const data = result.data?.getStepFormMappingById;
 
+      // Load form into the editor
       if (editor) {
         if (data?.form && !data.form.includes('No form data')) {
           const parsedForm = JSON.parse(data.form);
           editor.setValue(parsedForm);
           alert('Draft loaded successfully.');
         } else {
-          editor.setValue({});
+          editor.setValue({}); // Load empty form when no draft found
           alert('No draft found. Loaded empty form.');
         }
       }
@@ -52,6 +60,10 @@ const HomeContent = () => {
     }
   };
 
+  /**
+   * Saves the current form data as a draft using GraphQL
+   * If form is already present for the processId/stepName, it will overwrite
+   */
   const handleSave = async () => {
     const editor = document.querySelector('sc-form-editor');
     if (!editor || !processId || !stepName) {
@@ -60,9 +72,11 @@ const HomeContent = () => {
     }
 
     try {
+      // Get the JSON structure of the form from the editor
       const formData = editor.getValue();
       const formString = JSON.stringify(formData);
 
+      // GraphQL mutation to save the form draft
       const mutation = `
         mutation {
           saveStepFormDefinition(
@@ -88,13 +102,13 @@ const HomeContent = () => {
       }
     } catch (error) {
       console.error('Error saving form:', error);
-      alert('Error while saving.');
+      alert('Error while saving. Please try again.');
     }
   };
 
   return (
     <>
-      {/* Top row: inputs and buttons */}
+      {/* Row: Process ID + Step Name Inputs + Fetch + Save Buttons */}
       <div
         style={{
           display: 'flex',
@@ -104,6 +118,7 @@ const HomeContent = () => {
           flexWrap: 'wrap',
         }}
       >
+        {/* Process ID input field */}
         <input
           type="text"
           placeholder="Enter Process ID"
@@ -112,6 +127,7 @@ const HomeContent = () => {
           style={{ padding: '8px', fontSize: '14px', width: '180px' }}
         />
 
+        {/* Step Name input field */}
         <input
           type="text"
           placeholder="Enter Step Name"
@@ -120,6 +136,7 @@ const HomeContent = () => {
           style={{ padding: '8px', fontSize: '14px', width: '180px' }}
         />
 
+        {/* Fetch button to load draft */}
         <button
           onClick={handleFetch}
           disabled={loading}
@@ -135,6 +152,7 @@ const HomeContent = () => {
           {loading ? 'Fetching...' : 'Fetch'}
         </button>
 
+        {/* Save button to save draft */}
         <button
           onClick={handleSave}
           style={{
@@ -150,7 +168,7 @@ const HomeContent = () => {
         </button>
       </div>
 
-      {/* Form Editor */}
+      {/* Main Form Builder Component */}
       <div className="home-content" style={{ padding: '0 30px' }}>
         <sc-form-editor></sc-form-editor>
       </div>

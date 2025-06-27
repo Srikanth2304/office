@@ -1,7 +1,49 @@
-CREATE TABLE form_draft_data (
-    process_id   VARCHAR2(100) NOT NULL,
-    step_name    VARCHAR2(100) NOT NULL,
-    form_json    CLOB,
-    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (process_id, step_name)
-);
+package com.sc.wrb.model.pk;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+@Embeddable
+public class DraftFormPK implements Serializable {
+
+    @Column(name = "process_id")
+    private String processId;
+
+    @Column(name = "step_name")
+    private String stepName;
+
+    public DraftFormPK() {}
+
+    public DraftFormPK(String processId, String stepName) {
+        this.processId = processId;
+        this.stepName = stepName;
+    }
+
+    // Getters and Setters
+
+    public String getProcessId() { return processId; }
+
+    public void setProcessId(String processId) { this.processId = processId; }
+
+    public String getStepName() { return stepName; }
+
+    public void setStepName(String stepName) { this.stepName = stepName; }
+
+    // equals and hashCode
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DraftFormPK)) return false;
+        DraftFormPK that = (DraftFormPK) o;
+        return Objects.equals(processId, that.processId) &&
+               Objects.equals(stepName, that.stepName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(processId, stepName);
+    }
+}

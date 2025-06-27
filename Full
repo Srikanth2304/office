@@ -1,37 +1,28 @@
-package com.sc.wrb.service.impl;
+package com.sc.wrb.controller;
 
 import com.sc.wrb.dto.DraftFormDTO;
-import com.sc.wrb.model.DraftForm;
-import com.sc.wrb.model.pk.DraftFormPK;
-import com.sc.wrb.repository.DraftFormRepository;
 import com.sc.wrb.service.inter.DraftFormService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@Service
-public class DraftFormServiceImpl implements DraftFormService {
+@RestController
+@RequestMapping("/processapi/stepform")
+public class DraftFormController {
 
     @Autowired
-    DraftFormRepository draftFormRepository;
+    DraftFormService draftFormService;
 
-    @Override
-    public Optional<DraftFormDTO> getPartialForm(String processId, String stepName) {
-        Optional<DraftForm> draft = draftFormRepository.findById(new DraftFormPK(processId, stepName));
-        return draft.map(d -> new DraftFormDTO(
-                d.getDraftFormPK().getProcessId(),
-                d.getDraftFormPK().getStepName(),
-                d.getFormJson()
-        ));
+    @GetMapping("/getPartialForm")
+    public DraftFormDTO getPartialForm(@RequestParam String processId, @RequestParam String stepName) {
+        Optional<DraftFormDTO> dto = draftFormService.getPartialForm(processId, stepName);
+        return dto.orElse(new DraftFormDTO(processId, stepName, "{}"));
     }
 
-    @Override
-    public String savePartialForm(DraftFormDTO draftFormDTO) {
-        DraftForm draft = new DraftForm();
-        draft.setDraftFormPK(new DraftFormPK(draftFormDTO.getProcessId(), draftFormDTO.getStepName()));
-        draft.setFormJson(draftFormDTO.getFormJson());
-        draftFormRepository.save(draft);
-        return "Draft saved successfully";
+    @PostMapping("/savePartialForm")
+    public String savePartialForm(@RequestParam String processId, @RequestParam String stepName, @RequestParam String form) {
+        DraftFormDTO dto = new DraftFormDTO(processId, stepName, form);
+        return draftFormService.savePartialForm(dto);
     }
 }

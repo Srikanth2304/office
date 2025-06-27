@@ -1,10 +1,11 @@
-package com.sc.wrb.repository;
+package com.sc.wrb.service.inter;
 
-import com.sc.wrb.model.DraftForm;
-import com.sc.wrb.model.pk.DraftFormPK;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import com.sc.wrb.dto.DraftFormDTO;
 
-@Repository
-public interface DraftFormRepository extends JpaRepository<DraftForm, DraftFormPK> {
+import java.util.Optional;
+
+public interface DraftFormService {
+    Optional<DraftFormDTO> getPartialForm(String processId, String stepName);
+    String savePartialForm(DraftFormDTO draftFormDTO);
 }
+

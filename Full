@@ -1,49 +1,52 @@
-package com.sc.wrb.model.pk;
+package com.sc.wrb.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import com.sc.wrb.model.pk.DraftFormPK;
+import jakarta.persistence.*;
 
-import java.io.Serializable;
-import java.util.Objects;
+import java.time.LocalDateTime;
 
-@Embeddable
-public class DraftFormPK implements Serializable {
+@Entity
+@Table(name = "form_draft_data")
+public class DraftForm {
 
-    @Column(name = "process_id")
-    private String processId;
+    @EmbeddedId
+    private DraftFormPK draftFormPK;
 
-    @Column(name = "step_name")
-    private String stepName;
+    @Lob
+    @Column(name = "form_json")
+    private String formJson;
 
-    public DraftFormPK() {}
+    @Column(name = "created_at")
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    public DraftFormPK(String processId, String stepName) {
-        this.processId = processId;
-        this.stepName = stepName;
+    public DraftForm() {}
+
+    public DraftForm(DraftFormPK draftFormPK, String formJson) {
+        this.draftFormPK = draftFormPK;
+        this.formJson = formJson;
     }
 
-    // Getters and Setters
-
-    public String getProcessId() { return processId; }
-
-    public void setProcessId(String processId) { this.processId = processId; }
-
-    public String getStepName() { return stepName; }
-
-    public void setStepName(String stepName) { this.stepName = stepName; }
-
-    // equals and hashCode
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof DraftFormPK)) return false;
-        DraftFormPK that = (DraftFormPK) o;
-        return Objects.equals(processId, that.processId) &&
-               Objects.equals(stepName, that.stepName);
+    public DraftFormPK getDraftFormPK() {
+        return draftFormPK;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(processId, stepName);
+    public void setDraftFormPK(DraftFormPK draftFormPK) {
+        this.draftFormPK = draftFormPK;
+    }
+
+    public String getFormJson() {
+        return formJson;
+    }
+
+    public void setFormJson(String formJson) {
+        this.formJson = formJson;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

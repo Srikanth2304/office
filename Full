@@ -1,7 +1,1 @@
-CREATE TABLE EOPSHUB_SIT03.form_draft_data (
-    process_id   VARCHAR2(100 CHAR) NOT NULL,
-    step_name    VARCHAR2(100 CHAR) NOT NULL,
-    form_json    CLOB,
-    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (process_id, step_name)
-);
+{"layout":{"row":"row1"},"pages":[{"layout":{"row":"row2"},"components":[{"type":"text-field","id":"field1","template":{"label":"Name"}}]}]}

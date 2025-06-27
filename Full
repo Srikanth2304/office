@@ -1,28 +1,9 @@
-package com.sc.wrb.controller;
+package com.sample.practice.controller;import com.sample.practice.Service.HelloService;import org.springframework.beans.factory.annotation.Autowired;import org.springframework.web.bind.annotation.*;import com.sample.practice.DTO.Details;import java.util.List;@RestControllerpublic class HelloController {    @Autowired    HelloService helloService;    @GetMapping("/Hello")    public String sayHello(){        return helloService.getmessage();    }    @PostMapping("/Name")    public String Name(@RequestBody Details name){        return helloService.givename(name);    }    @PostMapping("/Add")    public String adduser(@RequestBody Details user){        return helloService.adduser(user);    }    @GetMapping("/Getallusers")    public List<Details> getalluser(){        return helloService.getallusers();    }    @GetMapping("/Getuserbyid")    public Details getuserbyid(@RequestBody int ID){        return helloService.getuserbeId(ID);    }    @PostMapping("/Update")    public String updateuser(@RequestBody int ID , Details newdetails){        return helloService.updateuser(ID,newdetails);    }    @DeleteMapping("/Delete")    public String deleteuser(@RequestBody int ID) {        return helloService.deleteuser(ID);    }}
 
-import com.sc.wrb.dto.DraftFormDTO;
-import com.sc.wrb.service.inter.DraftFormService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
-@RestController
-@RequestMapping("/processapi/stepform")
-public class DraftFormController {
+package com.sample.practice.Service;import com.sample.practice.DTO.Details;import org.springframework.stereotype.Service;import java.util.ArrayList;import java.util.List;@Servicepublic class HelloService {    public static String getmessage() {        return "Hello!!";    }    public static String givename(Details request) {        return "Hi " + request.getName();    }    private List<Details> users = new ArrayList<>();    public String adduser(Details user) {        users.add(user);        return user.getName();    }    public List<Details> getallusers() {        return users;    }    public Details getuserbeId(int ID) {        Details userdetails = users.stream().filter(u -> u.getId() == ID).findFirst().orElse(null);        return userdetails;    }    public String updateuser(int ID, Details newdetails) {        Details user = getuserbeId(ID);        user.setName(newdetails.getName());        user.setAge(newdetails.getAge());        return "updated";    }    public String deleteuser(int ID) {        return (users.removeIf(u -> u.getId() == ID)) ? "user deleted" : "user not present";    }}
 
-    @Autowired
-    DraftFormService draftFormService;
-
-    @GetMapping("/getPartialForm")
-    public DraftFormDTO getPartialForm(@RequestParam String processId, @RequestParam String stepName) {
-        Optional<DraftFormDTO> dto = draftFormService.getPartialForm(processId, stepName);
-        return dto.orElse(new DraftFormDTO(processId, stepName, "{}"));
-    }
-
-    @PostMapping("/savePartialForm")
-    public String savePartialForm(@RequestParam String processId, @RequestParam String stepName, @RequestParam String form) {
-        DraftFormDTO dto = new DraftFormDTO(processId, stepName, form);
-        return draftFormService.savePartialForm(dto);
-    }
-}
+ 
+package com.sample.practice.DTO;public class Details {    private String name;    private int id;    private int age;    public Details() {    }    public Details(String name, int id, int age) {        this.name = name;        this.id = id;        this.age = age;    }    public String getName() {        return name;    }    public int getId() {        return id;    }    public int getAge() {        return age;    }    public void setName(String name) {        this.name = name;    }    public void setId(int id) {        this.id = id;    }    public void setAge(int age) {        this.age = age;    }}
+ 

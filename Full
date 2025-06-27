@@ -1,11 +1,37 @@
-package com.sc.wrb.service.inter;
+package com.sc.wrb.service.impl;
 
 import com.sc.wrb.dto.DraftFormDTO;
+import com.sc.wrb.model.DraftForm;
+import com.sc.wrb.model.pk.DraftFormPK;
+import com.sc.wrb.repository.DraftFormRepository;
+import com.sc.wrb.service.inter.DraftFormService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-public interface DraftFormService {
-    Optional<DraftFormDTO> getPartialForm(String processId, String stepName);
-    String savePartialForm(DraftFormDTO draftFormDTO);
-}
+@Service
+public class DraftFormServiceImpl implements DraftFormService {
 
+    @Autowired
+    DraftFormRepository draftFormRepository;
+
+    @Override
+    public Optional<DraftFormDTO> getPartialForm(String processId, String stepName) {
+        Optional<DraftForm> draft = draftFormRepository.findById(new DraftFormPK(processId, stepName));
+        return draft.map(d -> new DraftFormDTO(
+                d.getDraftFormPK().getProcessId(),
+                d.getDraftFormPK().getStepName(),
+                d.getFormJson()
+        ));
+    }
+
+    @Override
+    public String savePartialForm(DraftFormDTO draftFormDTO) {
+        DraftForm draft = new DraftForm();
+        draft.setDraftFormPK(new DraftFormPK(draftFormDTO.getProcessId(), draftFormDTO.getStepName()));
+        draft.setFormJson(draftFormDTO.getFormJson());
+        draftFormRepository.save(draft);
+        return "Draft saved successfully";
+    }
+}

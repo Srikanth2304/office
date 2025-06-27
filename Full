@@ -1,12 +1,7 @@
-spring.application.name=wrb-service
-server.port=6666
-
-spring.datasource.url=jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=hklvddapp063.hk.standardchartered.com)(PORT=1621)))(CONNECT_DATA=(SERVICE_NAME=pdbd_eops_rw.hk.standardchartered.com)))
-spring.datasource.username=EOPSHUB_SIT03
-spring.datasource.password=Scb#1234
-spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
-spring.jpa.database-platform = org.hibernate.dialect.OracleDialect
-#spring.jpa.generate-ddl=true
-spring.jpa.show-sql=true
-#spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.OracleDialect
-#spring.jpa.hibernate.ddl-auto = update
+CREATE TABLE EOPSHUB_SIT03.form_draft_data (
+    process_id   VARCHAR2(100 CHAR) NOT NULL,
+    step_name    VARCHAR2(100 CHAR) NOT NULL,
+    form_json    CLOB,
+    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (process_id, step_name)
+);

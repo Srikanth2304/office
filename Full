@@ -1,52 +1,29 @@
-package com.sc.wrb.model;
+package com.sc.wrb.dto;
 
-import com.sc.wrb.model.pk.DraftFormPK;
-import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
-
-@Entity
-@Table(name = "form_draft_data")
-public class DraftForm {
-
-    @EmbeddedId
-    private DraftFormPK draftFormPK;
-
-    @Lob
-    @Column(name = "form_json")
+public class DraftFormDTO {
+    private String processId;
+    private String stepName;
     private String formJson;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt = LocalDateTime.now();
+    public DraftFormDTO() {}
 
-    public DraftForm() {}
-
-    public DraftForm(DraftFormPK draftFormPK, String formJson) {
-        this.draftFormPK = draftFormPK;
+    public DraftFormDTO(String processId, String stepName, String formJson) {
+        this.processId = processId;
+        this.stepName = stepName;
         this.formJson = formJson;
     }
 
-    public DraftFormPK getDraftFormPK() {
-        return draftFormPK;
-    }
+    // Getters and Setters
 
-    public void setDraftFormPK(DraftFormPK draftFormPK) {
-        this.draftFormPK = draftFormPK;
-    }
+    public String getProcessId() { return processId; }
 
-    public String getFormJson() {
-        return formJson;
-    }
+    public void setProcessId(String processId) { this.processId = processId; }
 
-    public void setFormJson(String formJson) {
-        this.formJson = formJson;
-    }
+    public String getStepName() { return stepName; }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+    public void setStepName(String stepName) { this.stepName = stepName; }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+    public String getFormJson() { return formJson; }
+
+    public void setFormJson(String formJson) { this.formJson = formJson; }
 }

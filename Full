@@ -1,41 +1,230 @@
-package com.sample.practice.Service;
+package com.sc.wrb.controller;
 
-import org.springframework.stereotype.Service;
+import com.sc.wrb.dto.StepFormMappingDTO;
+import com.sc.wrb.model.StepFormMapping;
+import com.sc.wrb.model.pk.StepFormPK;
+import com.sc.wrb.service.inter.StepFormMappingService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-@Service
-public class HelloService {
+import java.util.Optional;
 
-    public String getmessage() {
-        return "Hello!!";
+@RestController
+@RequestMapping("/processapi/stepform")
+public class StepFormController {
+
+    @Autowired
+    StepFormMappingService stepFormMappingService;
+
+
+    @GetMapping("/getStepFormDefinitionById")
+    public StepFormMappingDTO getStepFormMappingById(String processid, String stepname) {
+        if (processid != null && stepname != null) {
+            Optional<StepFormMappingDTO> stepFormMappingDTO = stepFormMappingService.getStepFormMappingById(processid, stepname);
+            if (stepFormMappingDTO.isPresent()) {
+                return stepFormMappingDTO.get();
+            } else {
+                return new StepFormMappingDTO(
+                        processid,
+                        stepname,
+                        "No form data available for the given process ID and step name"
+                );
+            }
+        } else {
+            return new StepFormMappingDTO(
+                    processid,
+                    stepname,
+                    "ProcessId or StepName is null"
+            );
+        }
     }
 
-    public String givename(String name) {
-        return "Hi " + name;
+
+    @PostMapping("/saveStepFormDefinition")
+    public String saveStepFormDefinition(String processId,String stepName,String form) throws Exception {
+        StepFormMappingDTO stepFormMappingDTO = new StepFormMappingDTO(processId, stepName, form);
+        return stepFormMappingService.saveStepFormDefinition(stepFormMappingDTO);
     }
 }
 
 
 
 
-package com.sample.practice.controller;
+package com.sc.wrb.dto;
 
-import com.sample.practice.Service.HelloService;
+public class StepFormMappingDTO {
+    private String processId;
+    private String stepName;
+    private String form;
+
+    public StepFormMappingDTO() {
+    }
+
+    public StepFormMappingDTO(String processId, String stepName, String form) {
+        this.processId = processId;
+        this.stepName = stepName;
+        this.form = form;
+    }
+
+    public String getProcessId() {
+        return processId;
+    }
+
+    public void setProcessId(String processId) {
+        this.processId = processId;
+    }
+
+    public String getStepName() {
+        return stepName;
+    }
+
+    public void setStepName(String stepName) {
+        this.stepName = stepName;
+    }
+
+    public String getForm() {
+        return form;
+    }
+
+    public void setForm(String form) {
+        this.form = form;
+    }
+
+    @Override
+    public String toString() {
+        return "StepFormMappingDTO{" +
+                "processId='" + processId + '\'' +
+                ", stepName='" + stepName + '\'' +
+                ", form='" + form + '\'' +
+                '}';
+    }
+}
+
+
+
+
+package com.sc.wrb.model;
+
+import com.sc.wrb.model.pk.StepFormPK;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+
+@Entity
+@Table(name = "stepformmapping")
+public class StepFormMapping {
+
+    @EmbeddedId
+   private StepFormPK stepFormPK;
+
+    @Column(name = "form")
+    private String form;
+
+    public StepFormMapping() {
+    }
+
+    public StepFormMapping(StepFormPK stepFormPK, String form) {
+        this.stepFormPK = stepFormPK;
+        this.form = form;
+    }
+
+    public StepFormPK getStepFormPK() {
+        return stepFormPK;
+    }
+
+    public void setStepFormPK(StepFormPK stepFormPK) {
+        this.stepFormPK = stepFormPK;
+    }
+
+    public String getForm() {
+        return form;
+    }
+
+    public void setForm(String form) {
+        this.form = form;
+    }
+}
+
+
+package com.sc.wrb.repository;
+
+import com.sc.wrb.model.StepFormMapping;
+import com.sc.wrb.model.pk.StepFormPK;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface StepFormMappingRepository extends JpaRepository<StepFormMapping,StepFormPK> {
+
+}
+
+package com.sc.wrb.service.impl;
+
+import com.sc.wrb.dto.StepFormMappingDTO;
+import com.sc.wrb.model.StepFormMapping;
+import com.sc.wrb.model.pk.StepFormPK;
+import com.sc.wrb.repository.StepFormMappingRepository;
+import com.sc.wrb.service.inter.StepFormMappingService;
+import com.sc.wrb.util.ProcessConstants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
 
-@RestController
-public class HelloController {
+import java.util.Optional;
+
+@Service
+public class StepFormMappingServiceImpl implements StepFormMappingService{
 
     @Autowired
-    HelloService helloService;
-
-    @GetMapping("/Hello")
-    public String sayHello() {
-        return helloService.getmessage(); // use instance
+    StepFormMappingRepository stepFormMappingRepository;
+    @Override
+    public Optional<StepFormMappingDTO> getStepFormMappingById(String processid, String stepname) {
+        Optional<StepFormMapping> stepFormMapping = stepFormMappingRepository.findById(new StepFormPK(processid, stepname));
+        return Optional.ofNullable(stepFormMapping.stream().map(StepFormMappingServiceImpl::convertToStepFormDTO)
+                .findFirst()
+                .orElse(null));
     }
 
-    @PostMapping("/Name")
-    public String Name(@RequestBody String name) {
-        return helloService.givename(name); // use instance
+    @Override
+    public String saveStepFormDefinition(StepFormMappingDTO stepFormMappingDTO) {
+        if (stepFormMappingDTO != null) {
+            StepFormMapping stepFormMapping = convertToStepFormEntity(stepFormMappingDTO);
+            stepFormMappingRepository.save(stepFormMapping);
+            return ProcessConstants.FORM_SAVE_SUCCESS;
+        } else {
+            return ProcessConstants.FORM_SAVE_FAILURE;
+        }
     }
+
+
+    public static StepFormMappingDTO convertToStepFormDTO(StepFormMapping stepFormMapping) {
+        StepFormMappingDTO dto = new StepFormMappingDTO();
+        dto.setProcessId(stepFormMapping.getStepFormPK().getProcessId());
+        dto.setStepName(stepFormMapping.getStepFormPK().getStepName());
+        dto.setForm(stepFormMapping.getForm());
+        return dto;
+    }
+
+    private StepFormMapping convertToStepFormEntity(StepFormMappingDTO stepFormMappingDTO) {
+        StepFormMapping stepFormMapping = new StepFormMapping();
+        StepFormPK stepFormPK = new StepFormPK(stepFormMappingDTO.getProcessId(), stepFormMappingDTO.getStepName());
+        stepFormMapping.setStepFormPK(stepFormPK);
+        stepFormMapping.setForm(stepFormMappingDTO.getForm());
+        return stepFormMapping;
+    }
+}
+
+package com.sc.wrb.service.inter;
+
+import com.sc.wrb.dto.StepFormMappingDTO;
+import com.sc.wrb.model.StepFormMapping;
+
+import java.util.Optional;
+
+public interface StepFormMappingService {
+
+    public Optional<StepFormMappingDTO> getStepFormMappingById(String processid, String stepname);
+    public String saveStepFormDefinition(StepFormMappingDTO stepFormMappingDTO);
 }

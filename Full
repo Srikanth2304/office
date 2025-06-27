@@ -1,29 +1,10 @@
-package com.sc.wrb.dto;
+package com.sc.wrb.repository;
 
-public class DraftFormDTO {
-    private String processId;
-    private String stepName;
-    private String formJson;
+import com.sc.wrb.model.DraftForm;
+import com.sc.wrb.model.pk.DraftFormPK;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-    public DraftFormDTO() {}
-
-    public DraftFormDTO(String processId, String stepName, String formJson) {
-        this.processId = processId;
-        this.stepName = stepName;
-        this.formJson = formJson;
-    }
-
-    // Getters and Setters
-
-    public String getProcessId() { return processId; }
-
-    public void setProcessId(String processId) { this.processId = processId; }
-
-    public String getStepName() { return stepName; }
-
-    public void setStepName(String stepName) { this.stepName = stepName; }
-
-    public String getFormJson() { return formJson; }
-
-    public void setFormJson(String formJson) { this.formJson = formJson; }
+@Repository
+public interface DraftFormRepository extends JpaRepository<DraftForm, DraftFormPK> {
 }

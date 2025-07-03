@@ -12,12 +12,14 @@ const HomeContent = () => {
   const [stepName, setStepName] = useState('test123');
   const [loading, setLoading] = useState(false);
 
-  // Fetch saved draft (design + data) based on Process ID and Step Name
+  // Fetch saved draft (design + data)
   const handleFetch = async () => {
     const editor = document.querySelector('sc-form-editor');
-    console.log(processId,stepName);
+    console.log('Fetch Clicked');
+    console.log('Process ID:', processId);
+    console.log('Step Name:', stepName);
 
-    if (!processId || !stepName) {
+    if (!processId.trim() || !stepName.trim()) {
       alert('Please enter both Process ID and Step Name.');
       return;
     }
@@ -33,8 +35,6 @@ const HomeContent = () => {
         }
       `;
 
-      console.log(query);
-
       const response = await fetch('/graphql', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -43,6 +43,8 @@ const HomeContent = () => {
 
       const result = await response.json();
       const rawForm = result.data?.getStepFormMappingById?.form;
+
+      console.log('Raw form fetched:', rawForm);
 
       if (!rawForm || rawForm.includes('No form data')) {
         editor.setValue({});
@@ -63,11 +65,16 @@ const HomeContent = () => {
     }
   };
 
-  // Save current form (structure + data) into database
+  // Save form (structure + data)
   const handleSave = async () => {
     const editor = document.querySelector('sc-form-editor');
 
-    if (!editor || !processId || !stepName) {
+    console.log('Save Clicked');
+    console.log('Process ID:', processId);
+    console.log('Step Name:', stepName);
+    console.log('Editor object:', editor);
+
+    if (!editor || !processId.trim() || !stepName.trim()) {
       alert('Please enter both Process ID and Step Name.');
       return;
     }
@@ -79,6 +86,11 @@ const HomeContent = () => {
         structure,
         data
       };
+
+      console.log('Form structure:', structure);
+      console.log('Form data:', data);
+      console.log('Combined payload:', combined);
+
       const formString = JSON.stringify(combined).replace(/"/g, '\\"');
 
       const mutation = `
@@ -91,6 +103,8 @@ const HomeContent = () => {
         }
       `;
 
+      console.log('Final mutation:', mutation);
+
       const response = await fetch('/graphql', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -99,6 +113,8 @@ const HomeContent = () => {
 
       const result = await response.json();
       const saved = result.data?.saveStepFormDefinition;
+
+      console.log('Save response:', result);
 
       if (saved) {
         alert('Form saved successfully!');
@@ -113,7 +129,7 @@ const HomeContent = () => {
 
   return (
     <>
-      {/* Input Row with Save & Fetch */}
+      {/* Input Fields & Buttons */}
       <div
         style={{
           display: 'flex',
@@ -123,7 +139,7 @@ const HomeContent = () => {
           flexWrap: 'wrap'
         }}
       >
-        {/* Process ID Text Box */}
+        {/* Process ID */}
         <div>
           <sc-text-input
             label="Process ID"
@@ -135,7 +151,7 @@ const HomeContent = () => {
           ></sc-text-input>
         </div>
 
-        {/* Step Name Text Box */}
+        {/* Step Name */}
         <div>
           <sc-text-input
             label="Step Name"
@@ -147,7 +163,7 @@ const HomeContent = () => {
           ></sc-text-input>
         </div>
 
-        {/* Fetch Button beside fields */}
+        {/* Fetch Button */}
         <div style={{ alignSelf: 'flex-end' }}>
           <sc-button
             type="primary"
@@ -160,7 +176,7 @@ const HomeContent = () => {
           </sc-button>
         </div>
 
-        {/* Save Button aligned right */}
+        {/* Save Button */}
         <div style={{ marginLeft: 'auto', alignSelf: 'flex-end' }}>
           <sc-button
             type="primary"
@@ -174,7 +190,7 @@ const HomeContent = () => {
         </div>
       </div>
 
-      {/* sc-form-editor (Form Builder) */}
+      {/* Form Editor */}
       <div className="home-content" style={{ padding: '0 30px' }}>
         <sc-form-editor></sc-form-editor>
       </div>

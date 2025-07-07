@@ -1,12 +1,73 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useRef, useState } from 'react';
 import '@scdevkit/form/elements/form-editor.js';
-const Draft = () =>{
-return(
+import { serviceCall } from '../service/apiService'; // adjust path to your API utility
+
+const Draft = () => {
+  const formEditorRef = useRef(null); // Ref to access sc-form-editor
+
+  const [processId, setProcessId] = useState('');
+  const [stepName, setStepName] = useState('');
+
+  const handleSubmit = async () => {
+    if (!formEditorRef.current || !processId || !stepName) {
+      alert('Please enter processId and stepName');
+      return;
+    }
+
+    // Get code and data from <sc-form-editor>
+    const codeJson = formEditorRef.current.getCode(); // Layout JSON
+    const dataJson = formEditorRef.current.getData(); // Data fields JSON
+
+    const combined = {
+      code: codeJson,
+      data: dataJson
+    };
+
+    // Escape JSON for GraphQL
+    const formPayload = JSON.stringify(combined).replace(/"/g, '\\"');
+
+    const query = `
+      mutation {
+        saveStepFormDefinition(processId: "${processId}", stepName: "${stepName}", form: "${formPayload}")
+      }
+    `;
+
+    try {
+      const response = await serviceCall(query);
+      console.log('Form saved successfully:', response);
+      alert('Form saved to backend successfully!');
+    } catch (error) {
+      console.error('Error saving form:', error);
+      alert('Error saving form!');
+    }
+  };
+
+  return (
     <>
-        <div>
-        <sc-form-editor></sc-form-editor>
-        </div>
+      <div style={{ padding: '20px' }}>
+        <h3>Save Form Definition</h3>
+        <input
+          type="text"
+          placeholder="Process ID"
+          value={processId}
+          onChange={(e) => setProcessId(e.target.value)}
+          style={{ marginBottom: '10px', width: '300px' }}
+        /><br />
+        <input
+          type="text"
+          placeholder="Step Name"
+          value={stepName}
+          onChange={(e) => setStepName(e.target.value)}
+          style={{ marginBottom: '20px', width: '300px' }}
+        /><br />
+        <button onClick={handleSubmit}>Submit Form</button>
+      </div>
+
+      <div style={{ margin: '20px' }}>
+        <sc-form-editor ref={formEditorRef}></sc-form-editor>
+      </div>
     </>
-)
-}
+  );
+};
+
 export default Draft;

@@ -1,90 +1,15 @@
-import React, { useEffect, useState, useContext } from 'react'; // Added useState and useEffect
-import formDefinition from '../data/formdef.js';
-import '@scdevkit/form/elements/form-viewer.js';
-import { serviceCall } from '../service/apiService';
-import { 
-    NavigationContext
-  } from '@scdevkit/service-bench-core/react/context.js';
-
-const HomeContent = (json) => {
-    const [data, setData] = useState([]); // State to hold the data
-    const [definition, setDefinition] = useState({});
-    
-    const navigation = useContext(NavigationContext);
-    console.log('navigation',navigation);
-    const txrefno = navigation.params.caseId
-    const process = navigation.params.process
-    const step = navigation.params.step
-    useEffect(() => {
-        const fetchData = async () => {
-            const query = "{FormDefinition(processid:\""+process+"\",stepname:\""+step+"\"){formId formDataJson} FormData(txrefno:\""+txrefno+"\"){txrefno,id,value}}";
-            console.log('query', query);
-            const response = await serviceCall(query);
-            console.log('data', response);
-            setData(response.data.FormData); // Set the data once the response is received
-            setDefinition(JSON.parse(response.data.FormDefinition.formDataJson)); // Convert to JS object
-        };
-
-        fetchData(); // Call the fetch function
-    }, []); // Empty dependency array to run once on mount
-
-  console.log('data',data);
-  console.log('definition',definition);
-  console.log('formDefinition',formDefinition);
-
-
-    return (
-        <>
-            <sc-column-layout layout="Main Content Left" height="auto" fix-sticky-bar="" right-column-collapsible="" right-column-collapse="" additional-height="0px">
-                <div slot="sticky-breadcrumb">
-                    <sc-breadcrumb>
-                        <sc-breadcrumb-item><sc-back mode="href" label="Go Back" to="mercury/home"></sc-back></sc-breadcrumb-item>
-                    </sc-breadcrumb>
-                </div>
-                <div slot="sticky-button"> <sc-button fill="">Save</sc-button> <sc-button fill="">Complete</sc-button> </div>
-                {/* <div slot="additional">
-                    <sc-box>
-                        <sc-icon-provider>
-                            <sc-stepper direction="horizontal" mode="full" title-position="bottom" presence-numbers="0">
-                                <sc-step status="finish" title="Step1" show-time="" show-description="" show-view=""></sc-step>
-                                <sc-step status="finish" title="Step2" show-time="" show-description="" show-view=""></sc-step>
-                                <sc-step active="" title="Step3" show-description=""></sc-step>
-                                <sc-step title="Step4" show-description="" show-view=""></sc-step>
-                            </sc-stepper>
-                        </sc-icon-provider>
-                    </sc-box>
-                </div> */}
-                <div slot="right">
-                    <sc-box>
-                    </sc-box>
-                </div>
-                <div slot="left">
-                {data.length > 0 && Object.keys(definition).length > 0 ? (
-                    <sc-box height="100%">
-                        <div style="position:relative;">
-                            <sc-copy mode="default" tooltip-placement="top" help-text="" error-message="" success-message="" feedback-duration="1000" from="copy-el" value="">    
-                            </sc-copy>
-                            <span id="copy-el" style="color: var(--sc-copy-display-message)">{txrefno}</span>
-                        </div>
-                        <div>
-                            <sc-form-viewer
-                                definition={definition}
-                                data={data}
-                            ></sc-form-viewer>
-                            <sc-spacer vertical="" size="xs"></sc-spacer>
-                        </div>
-                    </sc-box>
-                    ) : (
-                        <div style="text-align:center">
-                            <sc-spinner type="page" size="sm" color="blue"></sc-spinner>
-                        </div>
-                    )}
-                </div>
-            </sc-column-layout>
-
-        </>
-    )
-
+query {
+  getStepFormMappingById(processid:"H190",stepname:"Test"){
+      processId,
+      stepName
+      form
+  }
+  saveStepFormDefinition(processId:"W409",stepName:"Maker",form:"{name : kiran,mobile : 12335}")
+  getCaseFormDataById(caseId:"123456"){
+      caseId
+      processId
+      countryCode
+      formData
+  }
+  saveCaseFormData(caseId:"SCB1234",processId:"W409",countryCode:"ID",formData:"{id:name,value:kiran}")
 }
-
-export { HomeContent };

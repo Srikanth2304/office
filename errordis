@@ -1,74 +1,180 @@
--- set define off;
+import React, { useEffect, useState, useContext } from 'react'; // Added useState and useEffect
+//import formDefinition from '../../data/formdef.js';
+import '@scdevkit/form/elements/form-viewer.js';
+import { serviceCall,serviceCallwithcontext } from '../../service/apiService.js';
+import  ProcessData  from '../../model/ProcessData.js';
+import { 
+    NavigationContext, UserContext, GraphQLClientContext
+  } from '@scdevkit/service-bench-core/react/context.js';
+import CaseData from '../../model/CaseData.js';
+import CaseTask from '../../model/CaseTask.js';
 
+const HomeContent = (json) => {
+    const [data, setData] = useState([]); // State to hold the data
+    const [definition, setDefinition] = useState({});
+    const [formDataDefinition, setFormDataDefinition] = useState({});
+    const [toastContent, setToastContent] = useState({});
+    
+    
+    const navigation = useContext(NavigationContext);
+    const user = useContext(UserContext);
+    const graphQLClient = useContext(GraphQLClientContext);
+    const [caserefno, setCaserefno] = useState(navigation.params.caseId);
+    console.log('navigation',navigation);
+    console.log('user',user);
+    //setCaserefno(navigation.params.caseId);
+    const process = navigation.params.process
+    const step = navigation.params.step
+    const module = navigation.params.module
+    useEffect(() => {
+        const fetchData = async () => {
+            console.log("Module Click ## " + module);
 
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'txRefNo=?','txRefNo=?1') where jobid = '3' and jobgroup = '3';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'notificationSeq =?','notificationSeq =?1') where jobid = '20' and jobgroup = '20';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'txRefNo = ?','txRefNo = ?1') where jobid = '44' and jobgroup = '44';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'kcsaHdrId = ?','kcsaHdrId = ?1') where jobid = '45' and jobgroup = '45';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'requestId=?','requestId=?1') where jobid = '49' and jobgroup = '49';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'txRefNo = ?','txRefNo = ?1') where jobid = '301' and jobgroup = '301';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'txRefNo = ?','txRefNo = ?1') where jobid = '302' and jobgroup = '302';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'txRefNo = ?','txRefNo = ?1') where jobid = '303' and jobgroup = '303';
--- commit;
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'txRefNo =?','txRefNo =?1') where jobid = '22' and jobgroup = '22';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'jobRefNo =?','jobRefNo =?1') where jobid = '23' and jobgroup = '23';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'ID =?','ID =?1') where jobid = '24' and jobgroup = '24';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'jobRefNo =?','jobRefNo =?1') where jobid = '26' and jobgroup = '26';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'escalationSeq =?','escalationSeq =?1') where jobid = '21' and jobgroup = '21';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'BatchNo=?','BatchNo=?1') where jobid = '28' and jobgroup = '28';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'txRefNo = ?','txRefNo = ?1') where jobid = '304' and jobgroup = '304';
--- commit;
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'ID =?','ID =?1') where jobid = '16' and jobgroup = '16';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'txRefNo =?','txRefNo =?1') where jobid = '33' and jobgroup = '33';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'id = ?','id = ?1') where jobid = '36' and jobgroup = '36';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'jobRefNo =?','jobRefNo =?1') where jobid = '29' and jobgroup = '29';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'headerSeq =?','headerSeq =?1') where jobid = '30' and jobgroup = '30';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'txRefNo = ?','txRefNo = ?1') where jobid = '32' and jobgroup = '32';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'genTxnRefNo=?','genTxnRefNo=?1') where jobid = '8' and jobgroup = '8';
--- commit;
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'txRefNo = ?','txRefNo = ?1') where jobid = '305' and jobgroup = '305';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'requestId =?','requestId =?1') where jobid = '206' and jobgroup = '206';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'requestId =?','requestId =?1') where jobid = '207' and jobgroup = '207';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'taskId =?','taskId =?1') where jobid = '19' and jobgroup = '19';
--- commit;
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'triger=?','triger=?2') where jobid = '19' and jobgroup = '19';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'ID =?','ID =?1') where jobid = '112' and jobgroup = '112';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'notificationSeq =?','notificationSeq =?1') where jobid = '120' and jobgroup = '120';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'id = ?','id = ?1') where jobid = '403' and jobgroup = '403';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'taskId =?','taskId =?1') where jobid = '219' and jobgroup = '219';
--- commit;
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'triger=?','triger=?2') where jobid = '219' and jobgroup = '219';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'notificationSeq =?','notificationSeq =?1') where jobid = '220' and jobgroup = '220';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'TaskId=?','TaskId=?1') where jobid = '161' and jobgroup = '161';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'notificationSeq =?','notificationSeq =?1') where jobid = '164' and jobgroup = '164';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'TaskId=?','TaskId=?1') where jobid = '163' and jobgroup = '163';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'taskId =?','taskId =?1') where jobid = '222' and jobgroup = '222';
--- commit;
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'triger=?','triger=?2') where jobid = '222' and jobgroup = '222';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'ID =?','ID =?1') where jobid = '250' and jobgroup = '250';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'TaskId=?','TaskId=?1') where jobid = '6' and jobgroup = '6';
--- commit;
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'ID=?','ID=?2') where jobid = '6' and jobgroup = '6';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'id =?','id =?') where jobid = '404' and jobgroup = '404';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'TaskId=?','TaskId=?1') where jobid = '160' and jobgroup = '160';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'id =?','id =?1') where jobid = '401' and jobgroup = '401';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'id =?','id =?1') where jobid = '402' and jobgroup = '402';
--- commit;
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'TaskId=?','TaskId=?1') where jobid = '162' and jobgroup = '162';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'ID =?','ID =?1') where jobid = '103' and jobgroup = '103';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'genTxnRefNo=?','genTxnRefNo=?1') where jobid = '81' and jobgroup = '81';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'TaskId=?','TaskId=?1') where jobid = '167' and jobgroup = '161';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'TaskId=?','TaskId=?1') where jobid = '169' and jobgroup = '169';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'TaskId=?','TaskId=?1') where jobid = '170' and jobgroup = '170';
--- commit;
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'id =?','id =?1') where jobid = '405' and jobgroup = '405';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'jobRefNo =?','jobRefNo =?1') where jobid = '165' and jobgroup = '165';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'inMsgID =?','inMsgID =?1') where jobid = '310' and jobgroup = '310';
--- update jobdefinition set PARAMETERXML=replace(PARAMETERXML,'TaskId=?','TaskId=?1') where jobid = '501' and jobgroup = '501';
--- commit;
+            if (module !== "Flexi"){
+            const query = "{getForm(processId:\""+process+"\",stepName:\""+step+"\") getCaseData(caseId:\""+caserefno+"\")}";
+            console.log('query', query);
+            const response = await serviceCall(query);
+            console.log('data', JSON.parse(response.data.getCaseData));
+            setData(JSON.parse(JSON.parse(response.data.getCaseData).caseFormDataDTO.formData)); // Set the data once the response is received
+            setDefinition(JSON.parse(JSON.parse(response.data.getForm).stepFormMappingDTO.form)); // Convert to JS object
+            }else{
 
+                const processData = new ProcessData('SC','G2',process,'01','A1');
+                console.log("process getdetails## ",processData.getDetails());
+           
+                const query = "{getForm(processId:\""+process+"\",stepName:\""+step+"\") generateTxrefno("+processData.getDetails()+")}";
+                console.log('query', query);
+                const response = await serviceCall(query);
+                console.log('data Flexi', response);
+                //txrefno = response.createCaseId;
+                setCaserefno(JSON.parse(response.data.generateTxrefno).txRefNoDTO.txRefNo);
+                setData([]);
+                setDefinition(JSON.parse(JSON.parse(response.data.getForm).stepFormMappingDTO.form));
+            }
+        };
 
+        fetchData(); // Call the fetch function
+    }, []); // Empty dependency array to run once on mount
 
+  console.log('data',data);
+  console.log('definition',definition);
+ // console.log('formDefinition',formDefinition);
 
+const onValueChange = (event) => {
+    console.log('form value changed----', event.detail);
+    const modifiedData = event.detail.data;
 
+    // Update existing data with modified values
+    const updatedData = modifiedData.map(item => 
+        item.id === data.id ? { ...item, ...modifiedData } : item
+    );
 
+    setData(updatedData); // Set the updated data
+
+    setFormDataDefinition(event.detail)
+    console.log('form value changed updated data == > ', updatedData);
+}
+const onSubmit = async (module) => {
+
+   if(module === 'Flexi'){
+
+    const caseData = new CaseData(caserefno, process, 'G2', data);
+    const atomBody = {ref_no:caserefno,flow_response:"complete",caserefno:caserefno,data:{},version:"2.1"};
+    const caseTask = new CaseTask(user.id, 'G2', 'SB', caserefno, process, JSON.stringify(atomBody));
+    console.log("caseData getdetails## ",caseData.getDetails());
+    console.log("caseTask getdetails## ",caseTask.getDetails());
+
+    const query = "{createCase("+caseTask.getDetails()+") saveCaseData("+caseData.getDetails()+")}";
+    console.log('query', query);
+    const response = await serviceCallwithcontext(query,graphQLClient);
+    console.log('data Flexi', response);
+
+    if(JSON.parse(response.data.createCase).atomStatus === "Success"){
+        setToastContent({
+            open: true,
+            type: 'success',
+            msg: 'Case created successfully',
+            title: 'Success!'
+        });
+        // Inside your component
+        location.href="mercury/home";
+    }
+   }
+}
+
+    return (
+        <>
+            <sc-column-layout layout="Main Content Left" height="auto" fix-sticky-bar="" right-column-collapsible="" right-column-collapse="" additional-height="0px">
+                <div slot="sticky-breadcrumb">
+                    <sc-breadcrumb>
+                        <sc-breadcrumb-item><sc-back mode="href" label="Go Back" to="mercury/home"></sc-back></sc-breadcrumb-item>
+                    </sc-breadcrumb>
+                </div>
+                <div slot="sticky-button"> 
+                { module !== "Flexi" ? (<>
+                <sc-button type="secondary" state="default" size="sm" width="auto" >Save as Draft</sc-button> 
+                <sc-button fill="" onClick={() => onSubmit('CaseForm')}>Complete</sc-button> </> 
+                ): (<sc-button fill="" onClick={() => onSubmit('Flexi')}>Complete</sc-button> )
+                }
+                
+                </div>
+                {/* <div slot="additional">
+                    <sc-box>
+                        <sc-icon-provider>
+                            <sc-stepper direction="horizontal" mode="full" title-position="bottom" presence-numbers="0">
+                                <sc-step status="finish" title="Step1" show-time="" show-description="" show-view=""></sc-step>
+                                <sc-step status="finish" title="Step2" show-time="" show-description="" show-view=""></sc-step>
+                                <sc-step active="" title="Step3" show-description=""></sc-step>
+                                <sc-step title="Step4" show-description="" show-view=""></sc-step>
+                            </sc-stepper>
+                        </sc-icon-provider>
+                    </sc-box>
+                </div> */}
+                <div slot="right">
+                    <sc-box>
+                    </sc-box>
+                </div>
+                <div slot="left">
+                {Object.keys(definition).length > 0 ? (
+                    <sc-box height="100%">
+                        <div style="position:relative;">
+                            <sc-copy mode="default" tooltip-placement="top" help-text="" error-message="" success-message="" feedback-duration="1000" from="copy-el" value="">    
+                            </sc-copy>
+                            <span id="copy-el" style="color: var(--sc-copy-display-message)">{caserefno}</span>
+                        </div>
+                        <div>
+                            <sc-form-viewer
+                                definition={definition}
+                                data={data}
+                                onvalue-changed={(event) => onValueChange(event)}
+                            ></sc-form-viewer>
+                            <sc-spacer vertical="" size="xs"></sc-spacer>
+                        </div>
+                    </sc-box>
+                    ) : (
+                        <div style="text-align:center">
+                            <sc-spinner type="page" size="sm" color="blue"></sc-spinner>
+                        </div>
+                    )}
+                </div>
+            </sc-column-layout>
+            {toastContent.open ? (
+            <sc-toast 
+                type={toastContent.type}
+                open={toastContent.open} 
+                closable="" 
+                placement="top-right" 
+                duration="3000" 
+                title="">
+                <sc-icon name="clock--line"></sc-icon> {toastContent.msg}
+                <sc-icon name="arrow-ios-forward" slot="title"></sc-icon>
+                <span slot="title" style="margin-left: 4px;">{toastContent.title}</span>
+            </sc-toast>)
+            : null}
+
+        </>
+    )
+
+}
+
+export { HomeContent };

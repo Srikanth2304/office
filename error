@@ -1,33 +1,35 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useContext } from 'react';
 import '@scdevkit/form/elements/form-editor.js';
+import { serviceCall } from '../service/apiService';
+import { GraphQLClientContext } from '@scdevkit/service-bench-core/react/context.js';
 
 const Draft = () => {
   const formEditorRef = useRef(null);
-
   const [processId, setProcessId] = useState('');
   const [stepName, setStepName] = useState('');
   const [editorReady, setEditorReady] = useState(false);
+  const graphQLClient = useContext(GraphQLClientContext);
 
+  // Ensure the custom element is ready before interacting with it
   useEffect(() => {
     customElements.whenDefined('sc-form-editor').then(() => {
       setEditorReady(true);
     });
   }, []);
 
-  // SUBMIT: Save current editor content to backend
+  // Handle form submission to backend
   const handleSubmit = async () => {
     if (!processId || !stepName || !editorReady || !formEditorRef.current) {
-      console.log('Missing required input or form editor not ready');
+      console.log('Input missing or editor not ready');
       return;
     }
 
     const editor = formEditorRef.current;
-
     const code = await editor.getCode();
     const data = await editor.getData();
 
-    const combined = { code, data };
-    const escapedForm = JSON.stringify(combined).replace(/"/g, '\\"');
+    const form = { code, data };
+    const escapedForm = JSON.stringify(form).replace(/"/g, '\\"');
 
     const query = `mutation {
       saveStepFormDefinition(
@@ -37,14 +39,14 @@ const Draft = () => {
       )
     }`;
 
-    console.log('Payload:', combined);
-    console.log('GraphQL Query:', query);
+    await serviceCall(query);
+    console.log('Submitted form:', form);
   };
 
-  // FETCH: Load form from backend into editor
+  // Fetch form from backend and load into editor
   const handleFetch = async () => {
     if (!processId || !stepName || !editorReady || !formEditorRef.current) {
-      console.log('Missing required input or form editor not ready');
+      console.log('Input missing or editor not ready');
       return;
     }
 
@@ -56,29 +58,19 @@ const Draft = () => {
       }
     }`;
 
-    try {
-      const response = await fetch('/graphql', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ query }),
-      });
+    const result = await serviceCall(query);
+    const rawForm = result?.data?.getForm?.stepFormMappingDTO?.form;
 
-      const result = await response.json();
-      const rawFormString = result.data.getForm.stepFormMappingDTO.form;
-      const parsedForm = JSON.parse(rawFormString);
-
-      await formEditorRef.current.setCode(parsedForm);
-      console.log('Form loaded into editor');
-    } catch (err) {
-      console.error('Error fetching form:', err);
+    if (rawForm) {
+      const parsed = JSON.parse(rawForm);
+      await formEditorRef.current.setCode(parsed.code || parsed); // Fallback in case only code is stored
+      console.log('Loaded form into editor');
     }
   };
 
   return (
     <div style={{ padding: '24px' }}>
-      {/* Inputs */}
+      {/* Input Section */}
       <div style={{ marginBottom: '16px' }}>
         <input
           type="text"
@@ -102,8 +94,8 @@ const Draft = () => {
             color: 'white',
             border: 'none',
             borderRadius: '4px',
+            marginRight: '10px',
             cursor: 'pointer',
-            marginRight: '10px'
           }}
         >
           Submit
@@ -116,7 +108,7 @@ const Draft = () => {
             color: 'white',
             border: 'none',
             borderRadius: '4px',
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
         >
           Fetch

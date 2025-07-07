@@ -1,13 +1,12 @@
-KT Paragraph: Service Bench, Experience API, Process API, and GraphQL – Unified Understanding
-In our traditional operations setup, users often face the challenge of logging into multiple backend systems to perform a single task. Take the example of card blocking: to block a credit card, an ops user might need to access multiple systems like Euronet for debit cards and CCMS for credit cards. This process is time-consuming, leads to session timeouts, and creates a fragmented experience. To solve this, we introduced Service Bench – a unified operational interface that centralizes access to multiple backend systems through a single sign-on experience. Each application, such as EOPS or Core Banking, is onboarded to Service Bench as a plugin, and users interact with these plugins without logging into each system individually.
-
-The core of this architecture lies in the Experience API layer, which sits between the client interfaces (like web or mobile apps) and backend domain systems (OLTPs). An Experience API is a thin, lightweight API that handles routing and presentation logic, but contains no business logic. For example, when the EOPS plugin initiates a card block request, the Experience API determines whether the card is debit or credit and routes the request to the appropriate backend Process API — Euronet for debit and CCMS for credit. This ensures that business logic is always centralized in the Process API, maintaining separation of concerns.
-
-The Process API serves as an abstraction layer over core systems and OLTPs. It encapsulates business processes like validation, orchestration, and interaction with databases. In our card block case, Euronet and CCMS both provide Process APIs with the necessary domain logic. These APIs could either be part of existing headless infrastructure or newly developed services running on a Function as a Service (FaaS) platform. They are standardized using SC DevKit libraries, integrated into the CICD pipeline via Azure DevOps (ADO), and secured using SC-IDP policy enforcement via sidecars.
-
-To further streamline communication and data access, we use a GraphQL Router in the Experience API layer. This allows front-end applications (like Service Bench plugins) to query only the data they need — even if that data spans across multiple Experience APIs. For instance, a single GraphQL query can retrieve both the card block status from one system and workflow progress from another, all within one optimized request. This approach not only reduces over-fetching and minimizes network calls, but also makes the frontend highly responsive and customizable to different client needs (mobile vs. desktop).
-
-Experience APIs are also optimized for UI performance: they return tailored, minimal data responses formatted exactly as needed by the client, with support for pagination, filtering, and dynamic field selection. They are stateless, loosely coupled, reusable, and highly composable — supporting internal apps like dashboards or partner systems with equal ease. Importantly, they come with automatic integration to COP (Change Onboarding Platform), making system-wide compliance and deployment seamless.
-
-In summary, this modern architecture – built on FaaS, SC DevKit, GraphQL, and secure policy sidecars – allows us to offer functionality like card blocking through a clean separation of concerns. The plugin interacts only with Experience APIs, which in turn intelligently route requests to the appropriate Process APIs. By consolidating access, removing redundant login steps, and exposing standardized APIs, Service Bench delivers a faster, scalable, and user-friendly experience for operations teams — while ensuring that business logic remains maintainable and domain-specific.
-
+import React, { useEffect, useState, useContext } from 'react';
+import '@scdevkit/form/elements/form-editor.js';
+const Draft = () =>{
+return(
+    <>
+        <div>
+        <sc-form-editor></sc-form-editor>
+        </div>
+    </>
+)
+}
+export default Draft;

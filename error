@@ -1,93 +1,16 @@
-import React, { useRef, useState, useEffect } from 'react';
-import '@scdevkit/form/elements/form-editor.js';
+<sc-button type="primary" state="default" size="sm" width="auto" left-icon="" right-icon="">
+        
 
-const Draft = () => {
-  // Ref for the form editor to access getCode() and getData()
-  const formEditorRef = useRef(null);
+    Default
+  </sc-button>
 
-  // Input states for processId and stepName
-  const [processId, setProcessId] = useState('');
-  const [stepName, setStepName] = useState('');
-
-  // Flag to ensure form editor is ready before calling its methods
-  const [editorReady, setEditorReady] = useState(false);
-
-  // Wait until sc-form-editor is defined and ready
-  useEffect(() => {
-    customElements.whenDefined('sc-form-editor').then(() => {
-      setEditorReady(true);
-    });
-  }, []);
-
-  // Handles Submit click
-  const handleSubmit = () => {
-    if (!processId || !stepName || !editorReady || !formEditorRef.current) {
-      console.log('Missing required input or form editor is not ready');
-      return;
-    }
-
-    const editor = formEditorRef.current;
-    const code = editor.getCode(); // form structure
-    const data = editor.getData(); // user-entered data
-
-    const combined = {
-      code,
-      data
-    };
-
-    // Escape double quotes for safe GraphQL string
-    const escapedForm = JSON.stringify(combined).replace(/"/g, '\\"');
-
-    const query = `mutation {
-      saveStepFormDefinition(
-        processId: "${processId}",
-        stepName: "${stepName}",
-        form: "${escapedForm}"
-      )
-    }`;
-
-    // Minimal debug logs
-    console.log('Payload:', combined);
-    console.log('GraphQL Query:', query);
-  };
-
-  return (
-    <div style={{ padding: '24px' }}>
-      {/* Input fields for process and step name */}
-      <div style={{ marginBottom: '16px' }}>
-        <input
-          type="text"
-          placeholder="Process ID"
-          value={processId}
-          onChange={(e) => setProcessId(e.target.value)}
-          style={{ padding: '6px 12px', marginRight: '12px' }}
-        />
-        <input
-          type="text"
-          placeholder="Step Name"
-          value={stepName}
-          onChange={(e) => setStepName(e.target.value)}
-          style={{ padding: '6px 12px', marginRight: '12px' }}
-        />
-        <button
-          onClick={handleSubmit}
-          style={{
-            padding: '8px 20px',
-            backgroundColor: '#007bff',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
-        >
-          Submit
-        </button>
-      </div>
-
-      {/* Drag-and-drop form editor */}
-      <sc-form-editor ref={formEditorRef}></sc-form-editor>
-    </div>
-  );
-};
-
-export default Draft;
+<div style="padding: 20px 30px">
+  <sc-text-input label="Business justification" tooltip="" tooltip-placement="top" hint="" hint-placement="right" label-size="" value="" placeholder="" rows="5" resizable="false" prefix-icon="" suffix-icon="" suffix-label="" help-text="" border-type="box" max-length="100" success-message="" error-message="" size="md" icon-size="" text-align="left"> 
+  
+  
+  
+  
+  
+  
+  </sc-text-input>
+</div>

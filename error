@@ -10,20 +10,28 @@ const Draft = () => {
   const [editorReady, setEditorReady] = useState(false);
 
   useEffect(() => {
+    // Wait for the custom element to be ready
     customElements.whenDefined('sc-form-editor').then(() => {
       setEditorReady(true);
     });
   }, []);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!processId || !stepName || !editorReady || !formEditorRef.current) {
       console.log('Missing required input or form editor is not ready');
       return;
     }
 
     const editor = formEditorRef.current;
-    const code = editor.getCode();
-    const data = editor.getData();
+
+    // Wait for internal methods to be available
+    const code = await editor.getCode?.();
+    const data = await editor.getData?.();
+
+    if (!code || !data) {
+      console.log('Editor is not ready or returned empty code/data');
+      return;
+    }
 
     const combined = { code, data };
     const escapedForm = JSON.stringify(combined).replace(/"/g, '\\"');

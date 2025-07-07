@@ -2,40 +2,31 @@ import React, { useRef, useState, useEffect } from 'react';
 import '@scdevkit/form/elements/form-editor.js';
 
 const Draft = () => {
-  // Ref for the form editor to access getCode() and getData()
   const formEditorRef = useRef(null);
 
-  // Input states for processId and stepName
   const [processId, setProcessId] = useState('');
   const [stepName, setStepName] = useState('');
-
-  // Flag to ensure form editor is ready before calling its methods
   const [editorReady, setEditorReady] = useState(false);
 
-  // Wait until sc-form-editor is defined and ready
   useEffect(() => {
     customElements.whenDefined('sc-form-editor').then(() => {
       setEditorReady(true);
     });
   }, []);
 
-  // Handles Submit click
-  const handleSubmit = () => {
+  // SUBMIT: Save current editor content to backend
+  const handleSubmit = async () => {
     if (!processId || !stepName || !editorReady || !formEditorRef.current) {
-      console.log('Missing required input or form editor is not ready');
+      console.log('Missing required input or form editor not ready');
       return;
     }
 
     const editor = formEditorRef.current;
-    const code = editor.getCode(); // form structure
-    const data = editor.getData(); // user-entered data
 
-    const combined = {
-      code,
-      data
-    };
+    const code = await editor.getCode();
+    const data = await editor.getData();
 
-    // Escape double quotes for safe GraphQL string
+    const combined = { code, data };
     const escapedForm = JSON.stringify(combined).replace(/"/g, '\\"');
 
     const query = `mutation {
@@ -46,14 +37,48 @@ const Draft = () => {
       )
     }`;
 
-    // Minimal debug logs
     console.log('Payload:', combined);
     console.log('GraphQL Query:', query);
   };
 
+  // FETCH: Load form from backend into editor
+  const handleFetch = async () => {
+    if (!processId || !stepName || !editorReady || !formEditorRef.current) {
+      console.log('Missing required input or form editor not ready');
+      return;
+    }
+
+    const query = `{
+      getForm(processId: "${processId}", stepName: "${stepName}") {
+        stepFormMappingDTO {
+          form
+        }
+      }
+    }`;
+
+    try {
+      const response = await fetch('/graphql', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query }),
+      });
+
+      const result = await response.json();
+      const rawFormString = result.data.getForm.stepFormMappingDTO.form;
+      const parsedForm = JSON.parse(rawFormString);
+
+      await formEditorRef.current.setCode(parsedForm);
+      console.log('Form loaded into editor');
+    } catch (err) {
+      console.error('Error fetching form:', err);
+    }
+  };
+
   return (
     <div style={{ padding: '24px' }}>
-      {/* Input fields for process and step name */}
+      {/* Inputs */}
       <div style={{ marginBottom: '16px' }}>
         <input
           type="text"
@@ -77,14 +102,28 @@ const Draft = () => {
             color: 'white',
             border: 'none',
             borderRadius: '4px',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            marginRight: '10px'
           }}
         >
           Submit
         </button>
+        <button
+          onClick={handleFetch}
+          style={{
+            padding: '8px 20px',
+            backgroundColor: '#28a745',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          Fetch
+        </button>
       </div>
 
-      {/* Drag-and-drop form editor */}
+      {/* Editor */}
       <sc-form-editor ref={formEditorRef}></sc-form-editor>
     </div>
   );

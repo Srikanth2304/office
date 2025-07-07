@@ -1,45 +1,63 @@
-### **Application Health Check Implementation - Discussion & Plan**  
+Experience API is layer sittings between client (e.g. mobile, web app) and each domain's process API. Tailored for the user experience, this component delivers data and functionalities to a client. They cater to external consumption like mobile apps and partner systems, or internal applications like web interfaces and dashboards. The Experience API should be thin and light weight, contains no business logic. 
 
-#### **1. Requirements for Implementation in COP**  
-To ensure proper monitoring and health checks for the application, the following requirements must be met:  
-- **JBoss and Database Availability:** Verify whether JBoss and the database are running.  
-- **Cluster Health Check:** Ensure the application is functioning correctly within the cluster.  
+Key characteristics of experience API are:
 
----
+Develop and deploy based on Function as a Service framework
+Out of box common libraries from SC DevKit
+GraphQL or REST API as experience API
+CICD integration with ADO 
+Authentication and authorization leveraging SC-IDP policy enforcement point common library and sidecar
+Automatic integration to COP
 
-#### **2. Discussion Points**  
 
-##### **2.1 Health Check Implementation**  
-- A **`HealthCheck.jsp`** file will be created to return a status code for checking the application's health.  
-- If the status code is **`0000`**, the application is healthy.  
-- If the response code deviates from `0000`, further investigation is required.  
-- Currently, the four zeros (`0000`) indicate the health of **JBoss and the database**, with plans to extend it to include two additional components in the future.  
+4. Experience API vs Process API
+Information below extracted from API Function Design and Standards 
 
-##### **2.2 Log Monitoring & Extraction**  
-- The response code will be extracted using **regular expressions (regex)** from logs.  
-- Log extraction will consider **application names** or **server details** to determine if four zeros (`0000`) appear consistently.  
+Definition	APIs tailored for the user experience, this component delivers data and functionalities to a client. They cater to external consumption like mobile apps and partner systems, or internal applications like web interfaces and dashboards.	APIs which act as an intermediary and abstraction layer, facilitating communication between the Experience API and OLTP systems. This component represents either a business process or data resource and may support operations like data manipulation, aggregation, and orchestration across various systems within its domain.
+Attributes	
+Thin and light weight
+No Business Logic
+Standard API contracts
+High degree of composability and reusability
+Business Logic
 
-##### **2.3 YAML File for Configuration**  
-- YAML files will be created to configure the process of retrieving the health check response code.  
-- The YAML file will dictate whether the extracted response code should be displayed or flagged for further investigation.  
 
----
+5.1 Thin and light weight
+Minimal data processing
+The API should primarily act as a data aggregator and facilitator, minimizing any heavy data processing
+Leverage process API for data transformation and complex calculations, passing only necessary data to the experience API
+Efficient data transfer 
+Use efficient data formats such as JSON to reduce the size of data payloads
+Implement techniques such as pagination, filtering and field selection to allow client to request only the data they need, minimizing data transfer
+Optimized network usage
+Minimize the number of network requests by aggregating multiple data sources into single responses where possible
+5.2 No business logic
+The experience API should strictly void containing any business logic, ensuring that it remains focused on its core role of data delivery and presentation
+Separation of concerns
+Delegate business logic to process API where it belongs, keeping the experience API free from complex decision-making processes
+Ensure that the API only coordinates data flow between the frontend and the process API, acting as a transparent layer
+5.3 Optimized for UI
+Tailored responses
+Structure API response to match the requirements of the UI, ensuring that data is formatted and delivered in a way that reduces the need for further manipulation on the client side
+Provide endpoints that deliver precisely the data needed for specific views or components, avoiding over-fetching
+Low latency
+Optimize the API for low latency to ensure quick data retrieval
+User-centric data delivery - support adaptive data delivery, where the API can return different levels of details based on the client's capabilities (e.g. mobile vs desktop)
 
-#### **3. Alternative Approach**  
 
-##### **3.1 Network Access Request for COP**  
-- Since the **COP team** does not have direct access to the servers, they will raise a request to **increase the CIDR range** to allow access to the application’s security group.  
 
-##### **3.2 Health Check Metrics & Dashboard**  
-- The **COPS team** is responsible for managing health check metrics.  
-- Once they set up a **dashboard**, further **optimizations** can be made based on our specific monitoring requirements.  
 
----
 
-### **Next Steps**  
-1. **Develop `HealthCheck.jsp`** to return health status codes.  
-2. **Implement regex-based log extraction** to analyze health status from logs.  
-3. **Configure YAML files** for monitoring application health.  
-4. **Raise CIDR range request** for access (if required).  
-5. **Work with the COPS team** to optimize dashboard metrics.  
 
+3. What is Process API
+Process API Acts as an intermediary and abstraction layer, facilitating communication between the Experience API and OLTP systems. This component represents either a business process or data resource and may support operations like data manipulation, aggregation, and orchestration across various systems within its domain.
+
+Process API could be your existing headless system running on your own infrastructure. If you are building a green field project, you could choose service bench Process API running on FaaS platform.
+
+Key characteristics of process API are:
+
+Develop and deploy based on Function as a Service framework
+Out of box common libraries from SC DevKit
+CICD integration with ADO 
+Authentication and authorization leveraging SC-IDP policy enforcement point common library and sidecar
+Automatic integration to COP

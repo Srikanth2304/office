@@ -1,56 +1,28 @@
 import React, { useEffect, useState, useContext } from 'react'; // Added useState and useEffect
-//import formDefinition from '../../data/formdef.js';
+import formDefinition from '../data/formdef.js';
 import '@scdevkit/form/elements/form-viewer.js';
-import { serviceCall,serviceCallwithcontext } from '../../service/apiService.js';
-import  ProcessData  from '../../model/ProcessData.js';
+import { serviceCall } from '../service/apiService';
 import { 
-    NavigationContext, UserContext, GraphQLClientContext
+    NavigationContext
   } from '@scdevkit/service-bench-core/react/context.js';
-import CaseData from '../../model/CaseData.js';
-import CaseTask from '../../model/CaseTask.js';
 
 const HomeContent = (json) => {
     const [data, setData] = useState([]); // State to hold the data
     const [definition, setDefinition] = useState({});
-    const [formDataDefinition, setFormDataDefinition] = useState({});
-    const [toastContent, setToastContent] = useState({});
-    
     
     const navigation = useContext(NavigationContext);
-    const user = useContext(UserContext);
-    const graphQLClient = useContext(GraphQLClientContext);
-    const [caserefno, setCaserefno] = useState(navigation.params.caseId);
     console.log('navigation',navigation);
-    console.log('user',user);
-    //setCaserefno(navigation.params.caseId);
+    const txrefno = navigation.params.caseId
     const process = navigation.params.process
     const step = navigation.params.step
-    const module = navigation.params.module
     useEffect(() => {
         const fetchData = async () => {
-            console.log("Module Click ## " + module);
-
-            if (module !== "Flexi"){
-            const query = "{getForm(processId:\""+process+"\",stepName:\""+step+"\") getCaseData(caseId:\""+caserefno+"\")}";
+            const query = "{FormDefinition(processid:\""+process+"\",stepname:\""+step+"\"){formId formDataJson} FormData(txrefno:\""+txrefno+"\"){txrefno,id,value}}";
             console.log('query', query);
             const response = await serviceCall(query);
-            console.log('data', JSON.parse(response.data.getCaseData));
-            setData(JSON.parse(JSON.parse(response.data.getCaseData).caseFormDataDTO.formData)); // Set the data once the response is received
-            setDefinition(JSON.parse(JSON.parse(response.data.getForm).stepFormMappingDTO.form)); // Convert to JS object
-            }else{
-
-                const processData = new ProcessData('SC','G2',process,'01','A1');
-                console.log("process getdetails## ",processData.getDetails());
-           
-                const query = "{getForm(processId:\""+process+"\",stepName:\""+step+"\") generateTxrefno("+processData.getDetails()+")}";
-                console.log('query', query);
-                const response = await serviceCall(query);
-                console.log('data Flexi', response);
-                //txrefno = response.createCaseId;
-                setCaserefno(JSON.parse(response.data.generateTxrefno).txRefNoDTO.txRefNo);
-                setData([]);
-                setDefinition(JSON.parse(JSON.parse(response.data.getForm).stepFormMappingDTO.form));
-            }
+            console.log('data', response);
+            setData(response.data.FormData); // Set the data once the response is received
+            setDefinition(JSON.parse(response.data.FormDefinition.formDataJson)); // Convert to JS object
         };
 
         fetchData(); // Call the fetch function
@@ -58,49 +30,8 @@ const HomeContent = (json) => {
 
   console.log('data',data);
   console.log('definition',definition);
- // console.log('formDefinition',formDefinition);
+  console.log('formDefinition',formDefinition);
 
-const onValueChange = (event) => {
-    console.log('form value changed----', event.detail);
-    const modifiedData = event.detail.data;
-
-    // Update existing data with modified values
-    const updatedData = modifiedData.map(item => 
-        item.id === data.id ? { ...item, ...modifiedData } : item
-    );
-
-    setData(updatedData); // Set the updated data
-
-    setFormDataDefinition(event.detail)
-    console.log('form value changed updated data == > ', updatedData);
-}
-const onSubmit = async (module) => {
-
-   if(module === 'Flexi'){
-
-    const caseData = new CaseData(caserefno, process, 'G2', data);
-    const atomBody = {ref_no:caserefno,flow_response:"complete",caserefno:caserefno,data:{},version:"2.1"};
-    const caseTask = new CaseTask(user.id, 'G2', 'SB', caserefno, process, JSON.stringify(atomBody));
-    console.log("caseData getdetails## ",caseData.getDetails());
-    console.log("caseTask getdetails## ",caseTask.getDetails());
-
-    const query = "{createCase("+caseTask.getDetails()+") saveCaseData("+caseData.getDetails()+")}";
-    console.log('query', query);
-    const response = await serviceCallwithcontext(query,graphQLClient);
-    console.log('data Flexi', response);
-
-    if(JSON.parse(response.data.createCase).atomStatus === "Success"){
-        setToastContent({
-            open: true,
-            type: 'success',
-            msg: 'Case created successfully',
-            title: 'Success!'
-        });
-        // Inside your component
-        location.href="mercury/home";
-    }
-   }
-}
 
     return (
         <>
@@ -110,14 +41,7 @@ const onSubmit = async (module) => {
                         <sc-breadcrumb-item><sc-back mode="href" label="Go Back" to="mercury/home"></sc-back></sc-breadcrumb-item>
                     </sc-breadcrumb>
                 </div>
-                <div slot="sticky-button"> 
-                { module !== "Flexi" ? (<>
-                <sc-button type="secondary" state="default" size="sm" width="auto" >Save as Draft</sc-button> 
-                <sc-button fill="" onClick={() => onSubmit('CaseForm')}>Complete</sc-button> </> 
-                ): (<sc-button fill="" onClick={() => onSubmit('Flexi')}>Complete</sc-button> )
-                }
-                
-                </div>
+                <div slot="sticky-button"> <sc-button fill="">Save</sc-button> <sc-button fill="">Complete</sc-button> </div>
                 {/* <div slot="additional">
                     <sc-box>
                         <sc-icon-provider>
@@ -135,18 +59,17 @@ const onSubmit = async (module) => {
                     </sc-box>
                 </div>
                 <div slot="left">
-                {Object.keys(definition).length > 0 ? (
+                {data.length > 0 && Object.keys(definition).length > 0 ? (
                     <sc-box height="100%">
                         <div style="position:relative;">
                             <sc-copy mode="default" tooltip-placement="top" help-text="" error-message="" success-message="" feedback-duration="1000" from="copy-el" value="">    
                             </sc-copy>
-                            <span id="copy-el" style="color: var(--sc-copy-display-message)">{caserefno}</span>
+                            <span id="copy-el" style="color: var(--sc-copy-display-message)">{txrefno}</span>
                         </div>
                         <div>
                             <sc-form-viewer
                                 definition={definition}
                                 data={data}
-                                onvalue-changed={(event) => onValueChange(event)}
                             ></sc-form-viewer>
                             <sc-spacer vertical="" size="xs"></sc-spacer>
                         </div>
@@ -158,19 +81,6 @@ const onSubmit = async (module) => {
                     )}
                 </div>
             </sc-column-layout>
-            {toastContent.open ? (
-            <sc-toast 
-                type={toastContent.type}
-                open={toastContent.open} 
-                closable="" 
-                placement="top-right" 
-                duration="3000" 
-                title="">
-                <sc-icon name="clock--line"></sc-icon> {toastContent.msg}
-                <sc-icon name="arrow-ios-forward" slot="title"></sc-icon>
-                <span slot="title" style="margin-left: 4px;">{toastContent.title}</span>
-            </sc-toast>)
-            : null}
 
         </>
     )

@@ -1,16 +1,84 @@
-<sc-button type="primary" state="default" size="sm" width="auto" left-icon="" right-icon="">
-        
+import React, { useRef, useState, useEffect } from 'react';
+import '@scdevkit/form/elements/form-editor.js';
+import '@scdevkit/form/elements/sc-button.js';
+import '@scdevkit/form/elements/sc-text-input.js';
 
-    Default
-  </sc-button>
+const Draft = () => {
+  const formEditorRef = useRef(null);
+  const [processId, setProcessId] = useState('');
+  const [stepName, setStepName] = useState('');
+  const [editorReady, setEditorReady] = useState(false);
 
-<div style="padding: 20px 30px">
-  <sc-text-input label="Business justification" tooltip="" tooltip-placement="top" hint="" hint-placement="right" label-size="" value="" placeholder="" rows="5" resizable="false" prefix-icon="" suffix-icon="" suffix-label="" help-text="" border-type="box" max-length="100" success-message="" error-message="" size="md" icon-size="" text-align="left"> 
-  
-  
-  
-  
-  
-  
-  </sc-text-input>
-</div>
+  useEffect(() => {
+    customElements.whenDefined('sc-form-editor').then(() => {
+      setEditorReady(true);
+    });
+  }, []);
+
+  const handleSubmit = () => {
+    if (!processId || !stepName || !editorReady || !formEditorRef.current) {
+      console.log('Missing required input or form editor is not ready');
+      return;
+    }
+
+    const editor = formEditorRef.current;
+    const code = editor.getCode();
+    const data = editor.getData();
+
+    const combined = { code, data };
+    const escapedForm = JSON.stringify(combined).replace(/"/g, '\\"');
+
+    const query = `mutation {
+      saveStepFormDefinition(
+        processId: "${processId}",
+        stepName: "${stepName}",
+        form: "${escapedForm}"
+      )
+    }`;
+
+    console.log('Payload:', combined);
+    console.log('GraphQL Query:', query);
+  };
+
+  return (
+    <div style={{ padding: '24px' }}>
+      {/* Process ID Input */}
+      <div style={{ padding: '20px 30px' }}>
+        <sc-text-input
+          label="Process ID"
+          placeholder="Enter Process ID"
+          value={processId}
+          onInput={(e) => setProcessId(e.target.value)}
+        ></sc-text-input>
+      </div>
+
+      {/* Step Name Input */}
+      <div style={{ padding: '20px 30px' }}>
+        <sc-text-input
+          label="Step Name"
+          placeholder="Enter Step Name"
+          value={stepName}
+          onInput={(e) => setStepName(e.target.value)}
+        ></sc-text-input>
+      </div>
+
+      {/* Submit Button */}
+      <div style={{ padding: '20px 30px' }}>
+        <sc-button
+          type="primary"
+          state="default"
+          size="sm"
+          width="auto"
+          onClick={handleSubmit}
+        >
+          Submit
+        </sc-button>
+      </div>
+
+      {/* Form Editor */}
+      <sc-form-editor ref={formEditorRef}></sc-form-editor>
+    </div>
+  );
+};
+
+export default Draft;

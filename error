@@ -1,73 +1,217 @@
-import React, { useRef, useState } from 'react';
-import '@scdevkit/form/elements/form-editor.js';
-import { serviceCall } from '../service/apiService'; // adjust path to your API utility
-
-const Draft = () => {
-  const formEditorRef = useRef(null); // Ref to access sc-form-editor
-
-  const [processId, setProcessId] = useState('');
-  const [stepName, setStepName] = useState('');
-
-  const handleSubmit = async () => {
-    if (!formEditorRef.current || !processId || !stepName) {
-      alert('Please enter processId and stepName');
-      return;
-    }
-
-    // Get code and data from <sc-form-editor>
-    const codeJson = formEditorRef.current.getCode(); // Layout JSON
-    const dataJson = formEditorRef.current.getData(); // Data fields JSON
-
-    const combined = {
-      code: codeJson,
-      data: dataJson
-    };
-
-    // Escape JSON for GraphQL
-    const formPayload = JSON.stringify(combined).replace(/"/g, '\\"');
-
-    const query = `
-      mutation {
-        saveStepFormDefinition(processId: "${processId}", stepName: "${stepName}", form: "${formPayload}")
+export default {
+    "layout": {
+      "row": "0b0bc608-e8ba-4658-a65d-2996d57a548e"
+    },
+    "pages": [
+      {
+        "layout": {
+          "row": "70f22a3e-c5c9-4b69-9de2-c2b860e0e259"
+        },
+        "id": "ce5ae244-da8f-4991-9056-e0e83861c233",
+        "type": "form",
+        "name": "Form1",
+        "components": [
+          {
+            "layout": {
+              "row": "ca357195-24da-4091-b920-e1865f4811bd"
+            },
+            "type": "tabs",
+            "template": {
+              "label": "Tabs",
+              "tabs": [
+                {
+                  "id": "PersonalInfo",
+                  "name": "PersonalInfo"
+                },
+                {
+                  "name": "AccountInfo",
+                  "id": "AccountInfo"
+                }
+              ]
+            },
+            "id": "step1",
+            "components": [
+              {
+                "layout": {
+                  "row": "1a8b0f15-cacc-41b8-a670-4f3362349f7b"
+                },
+                "type": "text-field",
+                "template": {
+                  "label": "Customer Name",
+                  "value": "",
+                  "tooltip": "CustomerName",
+                  "placeholder": "ABC",
+                  "required": true,
+                  "maxLength": "20"
+                },
+                "tabId": "PersonalInfo",
+                "id": "CustomerName"
+              },
+              {
+                "layout": {
+                  "row": "532ac8f6-2396-43d2-9758-ff1abfb5a395"
+                },
+                "type": "text-field",
+                "template": {
+                  "label": "Fund Name",
+                  "tooltip": "FundName",
+                  "placeholder": "DEF",
+                  "required": true,
+                  "maxLength": "20",
+                  "showCharacterCount": true
+                },
+                "tabId": "PersonalInfo",
+                "id": "FundName"
+              },
+              {
+                "layout": {
+                  "row": "2c8884a3-e190-462d-bed9-ea33e8fc2e1a"
+                },
+                "type": "date-input",
+                "template": {
+                  "label": "System Date",
+                  "type": "fixed",
+                  "tooltip": "sysdate",
+                  "required": true,
+                  "dynamicDate": {}
+                },
+                "tabId": "PersonalInfo",
+                "id": "sysdate"
+              },
+              
+              {
+                "layout": {
+                  "row": "f63934d4-aad7-4ebd-b1ec-b7ff71ea5360"
+                },
+                "type": "number-input",
+                "template": {
+                  "label": "Rel ID",
+                  "tooltip": "RelID"
+                },
+                "tabId": "PersonalInfo",
+                "id": "RelID"
+              },
+              {
+                "layout": {
+                  "row": "ae1ae950-e3d1-40cd-a198-b1deae70a890"
+                },
+                "type": "dropdown-input",
+                "template": {
+                  "label": "Bank Name",
+                  "tooltip": "bank",
+                  "options": [
+                    {
+                      "value": "Standard Chartered",
+                      "label": "Standard Chartered"
+                    },
+                    {
+                      "value": "SBI",
+                      "label": "SBI"
+                    },
+                    {
+                      "value": "ICICI",
+                      "label": "ICICI"
+                    },
+                    {
+                      "value": "HDFC",
+                      "label": "HDFC"
+                    },
+                    {
+                      "value": "Canara",
+                      "label": "Canara"
+                    }
+                  ]
+                },
+                "id": "bank",
+                "tabId": "AccountInfo"
+              },
+              {
+                "layout": {
+                  "row": "9170d03d-bbfb-4818-8bbd-7fa0f6d0c7db"
+                },
+                "type": "dropdown-input",
+                "template": {
+                  "label": "Account Type",
+                  "tooltip": "acctype",
+                  "options": [
+                    {
+                      "value": "Savings",
+                      "label": "Savings"
+                    },
+                    {
+                      "value": "Current",
+                      "label": "Current"
+                    }
+                  ],
+                  "required": true,
+                  "conditions": [
+                    {
+                      "component": "bank",
+                      "rule": "isNotEmpty"
+                    }
+                  ]
+                },
+                "tabId": "AccountInfo",
+                "id": "acctype"
+              },
+              {
+                "layout": {
+                  "row": "6ad620a1-3c6e-4c91-b714-b6b3b69e3304"
+                },
+                "type": "number-input",
+                "template": {
+                  "label": "Account Number",
+                  "min": "5",
+                  "tooltip": "StmtAccount",
+                  "required": true
+                },
+                "tabId": "AccountInfo",
+                "id": "StmtAccount"
+              },
+              {
+                "layout": {
+                  "row": "12e3c8f0-134d-4cea-9292-29f611f752fe"
+                },
+                "type": "text-field",
+                "template": {
+                  "label": "Account Currency",
+                  "tooltip": "StmtAccCurrency",
+                  "maxLength": "3",
+                  "required": true
+                },
+                "tabId": "AccountInfo",
+                "id": "StmtAccCurrency"
+              },{
+                "layout": {
+                  "row": "b35216d2-3c1c-429a-b5d5-1e17d6797af4"
+                },
+                "type": "number-input",
+                "template": {
+                  "label": "Settlement Amt",
+                  "min": "2",
+                  "tooltip": "SettlementAmt",
+                  "required": true
+                },
+                "tabId": "AccountInfo",
+                "id": "SettlementAmt"
+              }
+            ]
+          }
+        ]
       }
-    `;
-
-    try {
-      const response = await serviceCall(query);
-      console.log('Form saved successfully:', response);
-      alert('Form saved to backend successfully!');
-    } catch (error) {
-      console.error('Error saving form:', error);
-      alert('Error saving form!');
-    }
-  };
-
-  return (
-    <>
-      <div style={{ padding: '20px' }}>
-        <h3>Save Form Definition</h3>
-        <input
-          type="text"
-          placeholder="Process ID"
-          value={processId}
-          onChange={(e) => setProcessId(e.target.value)}
-          style={{ marginBottom: '10px', width: '300px' }}
-        /><br />
-        <input
-          type="text"
-          placeholder="Step Name"
-          value={stepName}
-          onChange={(e) => setStepName(e.target.value)}
-          style={{ marginBottom: '20px', width: '300px' }}
-        /><br />
-        <button onClick={handleSubmit}>Submit Form</button>
-      </div>
-
-      <div style={{ margin: '20px' }}>
-        <sc-form-editor ref={formEditorRef}></sc-form-editor>
-      </div>
-    </>
-  );
-};
-
-export default Draft;
+    ],
+    "version": "1",
+    "id": "27d165d5-d0e6-4c57-a727-8be2d64f3aeb",
+    "customComponents": [
+      {
+        "type": "action",
+        "icon": "button-group",
+        "label": "Button Group",
+        "id": "button-group",
+        "element": {
+          "name": "sc-button-group"
+        },
+        "orgion": "webkit"
+      }
+    ]
+  }

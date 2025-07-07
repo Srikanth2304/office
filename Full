@@ -1,201 +1,25 @@
-import React, { useState } from 'react';
-import '@scdevkit/form/elements/form-editor.js';
+For retracking the data of a transaction , of the 10 years old or more than that 
+if user want to block a credit card then for blocking it we have to open 10 appications , so we have go thorough all these applications for blocking the card
+in order , when he is in the last application session timeout is happening for the remaining application , so main point is why should i login to all these applications
+for doing one thing, then this service bench concept came into picture. plan is all the systems needed for ops user should be onboared to service bench.
 
-/**
- * HomeContent handles:
- *  - Taking Process ID and Step Name from user
- *  - Fetching saved form (design + data) using GraphQL
- *  - Saving form (design + data) using GraphQL
- */
-const HomeContent = () => {
-  const [processId, setProcessId] = useState('H205');
-  const [stepName, setStepName] = useState('test123');
-  const [loading, setLoading] = useState(false);
+so ops user will login single time , in service bench plugin is a applicatin like eops , core banking ,building server . 
 
-  // Fetch saved draft (design + data)
-  const handleFetch = async () => {
-    const editor = document.querySelector('sc-form-editor');
-    console.log('Fetch Clicked');
-    console.log('Process ID:', processId);
-    console.log('Step Name:', stepName);
 
-    if (!processId.trim() || !stepName.trim()) {
-      alert('Please enter both Process ID and Step Name.');
-      return;
-    }
+about graphql
 
-    try {
-      setLoading(true);
+experience api : what is experince , so there is a card blocking system is a feature  , any only can use this feature in bank like epos can use today , other team can use tommorow
+here there are 2 systems , in bank for blocking debit card you should go to euronet , for credit card blocking should go to CCMS. here euro net and ccms are process apis
+euro net system , will desgin there process api , respectivley other systems also create there process apis.
+here you hit my system there oltp (means there DB)  i will expose you one api .this where busness logic will servive for card blocking .
 
-      const query = `
-        query {
-          getStepFormMappingById(processid: "${processId}", stepname: "${stepName}") {
-            form
-          }
-        }
-      `;
+for my application eops if want to block a card i will go euronet -> debit , ccms -> credit , for corebanking they will write there experience api and says either 
+debit or credit card go and hit ccms , so what happens here he will use ccms process api .here major concept is function as a service  
+now what we are doing we are exposing our process api for workflow trigger or some other functionality.this is our expericence api , tommorow we can conncect to 
+to another systems process api. so our plugin is tightly coupled to our experience api , in turn our expericence api can connect to n numbers of process apis , that is 
+waht this design is about .as you can see in image every  experience api is connected all process apis.one of the expericence will be ours and reads the plugin
+. for now card block is a functionality which is desgined as experiecne api , here these should logic for connecting to respective process api and response reading logic 
+only should be there. thats it no other logic should be there only routing logic should be there .process api actual logic.
+now on our eops experience api , if we want data we are taking from eops process api , for workflow we are hitting atom .atom has exposed there separate process api
+for bringing this they desinged service bench.
 
-      const response = await fetch('/graphql', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query }),
-      });
-
-      const result = await response.json();
-      const rawForm = result.data?.getStepFormMappingById?.form;
-
-      console.log('Raw form fetched:', rawForm);
-
-      if (!rawForm || rawForm.includes('No form data')) {
-        editor.setValue({});
-        editor.setFormData([]);
-        alert('No draft found. Loaded empty form.');
-        return;
-      }
-
-      const parsed = JSON.parse(rawForm);
-      editor.setValue(parsed.structure || {});
-      editor.setFormData(parsed.data || []);
-      alert('Draft loaded successfully!');
-    } catch (error) {
-      console.error('Fetch error:', error);
-      alert('Failed to fetch form.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Save form (structure + data)
-  const handleSave = async () => {
-    const editor = document.querySelector('sc-form-editor');
-
-    console.log('Save Clicked');
-    console.log('Process ID:', processId);
-    console.log('Step Name:', stepName);
-    console.log('Editor object:', editor);
-
-    if (!editor || !processId.trim() || !stepName.trim()) {
-      alert('Please enter both Process ID and Step Name.');
-      return;
-    }
-
-    try {
-      const structure = editor.getValue();
-      const data = editor.getFormData();
-      const combined = {
-        structure,
-        data
-      };
-
-      console.log('Form structure:', structure);
-      console.log('Form data:', data);
-      console.log('Combined payload:', combined);
-
-      const formString = JSON.stringify(combined).replace(/"/g, '\\"');
-
-      const mutation = `
-        mutation {
-          saveStepFormDefinition(
-            processId: "${processId}",
-            stepName: "${stepName}",
-            form: """${formString}"""
-          )
-        }
-      `;
-
-      console.log('Final mutation:', mutation);
-
-      const response = await fetch('/graphql', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: mutation }),
-      });
-
-      const result = await response.json();
-      const saved = result.data?.saveStepFormDefinition;
-
-      console.log('Save response:', result);
-
-      if (saved) {
-        alert('Form saved successfully!');
-      } else {
-        alert('Failed to save form.');
-      }
-    } catch (error) {
-      console.error('Save error:', error);
-      alert('Error while saving form. Please try again.');
-    }
-  };
-
-  return (
-    <>
-      {/* Input Fields & Buttons */}
-      <div
-        style={{
-          display: 'flex',
-          padding: '20px 30px',
-          gap: '16px',
-          alignItems: 'flex-end',
-          flexWrap: 'wrap'
-        }}
-      >
-        {/* Process ID */}
-        <div>
-          <sc-text-input
-            label="Process ID"
-            placeholder="Enter Process ID"
-            size="md"
-            border-type="box"
-            value={processId}
-            onInput={(e) => setProcessId(e.target.value)}
-          ></sc-text-input>
-        </div>
-
-        {/* Step Name */}
-        <div>
-          <sc-text-input
-            label="Step Name"
-            placeholder="Enter Step Name"
-            size="md"
-            border-type="box"
-            value={stepName}
-            onInput={(e) => setStepName(e.target.value)}
-          ></sc-text-input>
-        </div>
-
-        {/* Fetch Button */}
-        <div style={{ alignSelf: 'flex-end' }}>
-          <sc-button
-            type="primary"
-            state="default"
-            size="md"
-            width="auto"
-            onClick={handleFetch}
-          >
-            {loading ? 'Fetching...' : 'Fetch'}
-          </sc-button>
-        </div>
-
-        {/* Save Button */}
-        <div style={{ marginLeft: 'auto', alignSelf: 'flex-end' }}>
-          <sc-button
-            type="primary"
-            state="default"
-            size="md"
-            width="auto"
-            onClick={handleSave}
-          >
-            Save
-          </sc-button>
-        </div>
-      </div>
-
-      {/* Form Editor */}
-      <div className="home-content" style={{ padding: '0 30px' }}>
-        <sc-form-editor></sc-form-editor>
-      </div>
-    </>
-  );
-};
-
-export { HomeContent };

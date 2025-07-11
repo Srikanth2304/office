@@ -1,34 +1,64 @@
 import React, { useState } from 'react';
 
 const Enquiry = () => {
-  // State to hold input values
   const [processId, setProcessId] = useState('');
   const [countryCode, setCountryCode] = useState('');
   const [caseId, setCaseId] = useState('');
   const [formData, setFormData] = useState(null);
-  const [isValidated, setIsValidated] = useState(false); // To show caseId input after validation
+  const [isValidated, setIsValidated] = useState(false);
 
-  // Simulated backend table data for validation and data fetching
+  // ✅ Dummy data simulating backend DB
   const dummyDB = [
-    { caseId: 'SCB1234', processId: 'W409', countryCode: 'ID', formData: '{id:name,value:kiran}' },
-    { caseId: '123456', processId: 'W409', countryCode: 'ID', formData: '{"name": "Kiran"}' },
+    {
+      caseId: 'SCB1234',
+      processId: 'W409',
+      countryCode: 'ID',
+      formData: '{"id":"name","value":"kiran"}',
+    },
+    {
+      caseId: '123456',
+      processId: 'W409',
+      countryCode: 'ID',
+      formData: '{"name":"Kiran"}',
+    },
+    {
+      caseId: 'LONG123',
+      processId: 'W409',
+      countryCode: 'ID',
+      formData: JSON.stringify({
+        field1: 'value1',
+        field2: 'value2',
+        field3: 'value3',
+        field4: 'value4',
+        field5: 'value5',
+        field6: 'value6',
+        field7: 'value7',
+        field8: 'value8',
+        field9: 'value9',
+        field10: 'value10',
+        field11: 'value11',
+        field12: 'value12',
+        field13: 'value13',
+        field14: 'value14',
+        field15: 'value15',
+      }),
+    },
   ];
 
-  // Step 1: Validate Process ID and Country Code
-  // If matching record exists in backend (dummyDB here), allow Case ID input
+  // ✅ Validate Process ID and Country Code
   const validateProcess = () => {
     const exists = dummyDB.some(
       (entry) =>
         entry.processId === processId.trim() &&
         entry.countryCode === countryCode.trim()
     );
-    setIsValidated(exists); // Show Case ID input field if valid
+    setIsValidated(exists);
     if (!exists) {
       alert('Invalid Process ID or Country Code');
     }
   };
 
-  // Step 2: Search data after entering valid Case ID
+  // ✅ Search Case ID and parse valid JSON into formData
   const searchData = () => {
     const record = dummyDB.find(
       (entry) =>
@@ -36,8 +66,14 @@ const Enquiry = () => {
         entry.countryCode === countryCode.trim() &&
         entry.caseId === caseId.trim()
     );
+
     if (record) {
-      setFormData(record.formData); // Display FORMDATA result
+      try {
+        const parsed = JSON.parse(record.formData);
+        setFormData(parsed);
+      } catch (e) {
+        alert('Invalid JSON format in formData');
+      }
     } else {
       alert('Case ID not found');
       setFormData(null);
@@ -46,7 +82,7 @@ const Enquiry = () => {
 
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial' }}>
-      {/* Process ID and Country Code Input with Validate Button */}
+      {/* 🔹 Step 1: Input Process ID & Country Code */}
       <div style={{ marginBottom: '10px' }}>
         <label>Process ID: </label>
         <input
@@ -64,13 +100,12 @@ const Enquiry = () => {
           style={{ marginRight: '10px', padding: '5px' }}
         />
 
-        {/* Validate button triggers DB check */}
         <button onClick={validateProcess} style={{ padding: '6px 12px' }}>
           Validate
         </button>
       </div>
 
-      {/* Case ID input and Search button shown only after validation */}
+      {/* 🔹 Step 2: Input Case ID (only after validation) */}
       {isValidated && (
         <div style={{ marginBottom: '10px' }}>
           <label>Case ID: </label>
@@ -80,19 +115,52 @@ const Enquiry = () => {
             onChange={(e) => setCaseId(e.target.value)}
             style={{ marginRight: '10px', padding: '5px' }}
           />
-
-          {/* Search button fetches formData if Case ID matches */}
           <button onClick={searchData} style={{ padding: '6px 12px' }}>
             Search
           </button>
         </div>
       )}
 
-      {/* Form Data Output (Result) */}
+      {/* 🔹 Step 3: Display dynamic formData in table */}
       {formData && (
-        <div style={{ marginTop: '20px' }}>
-          <h4>Form Data:</h4>
-          <pre style={{ background: '#f4f4f4', padding: '10px' }}>{formData}</pre>
+        <div
+          style={{
+            marginTop: '20px',
+            overflowX: 'auto',
+            border: '1px solid #ccc',
+            padding: '10px',
+            maxWidth: '100%',
+          }}
+        >
+          <h4>Form Data Table:</h4>
+          <table style={{ minWidth: '500px', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr>
+                {Object.keys(formData).map((key) => (
+                  <th
+                    key={key}
+                    style={{
+                      border: '1px solid #ccc',
+                      padding: '8px',
+                      backgroundColor: '#f0f0f0',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {key}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                {Object.values(formData).map((value, i) => (
+                  <td key={i} style={{ border: '1px solid #ccc', padding: '8px' }}>
+                    {value}
+                  </td>
+                ))}
+              </tr>
+            </tbody>
+          </table>
         </div>
       )}
     </div>
@@ -100,3 +168,4 @@ const Enquiry = () => {
 };
 
 export default Enquiry;
+

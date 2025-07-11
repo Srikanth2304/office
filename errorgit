@@ -1,9 +1,102 @@
-Insert into JOBDEFINITION (COMPANYCODE,PROCESSID,COUNTRYCODE,JOBID,NAME,INITPOOLSIZE,MAXPOOLSIZE,WORKITEMPOOLCLASS,WORKITEMPOOLSIZE,PARAMETERXML,SLEEPTIME,WORKERCLASS,PRIORITY,STARTTIME,THREADPOOLSIZE,JOBGROUP,TIMEUNIT,SCHDINTERVAL,INITSTARTDATE,RUNINTERVAL,ISFIXEDINTERVAL,FUNCTIONID,PUNITNAME,MARKITEMPARAM,ISBGJOBS,CLONE,READER,ISSERVLETPROCESS,CLUSTERCONFIG,ISNATIVE,CONFIGPATH) values ('SC','D000','AE',404,'MISDataUpload_404',10,10,'eops.hub.job.workitempools.FTDMISDataUploadPool',10,'<QUERIES><QUERY ID=''loadTasks''><![CDATA[SELECT F FROM FTDMIS F  where  F.jobID= ''404'' AND F.statuscode = 1 and F.ftdMasterStatus=2 ]]></QUERY><QUERY ID=''markItemInProgress''><![CDATA[UPDATE FTDMIS SET statuscode=3 ,replicatedtime=sysdate WHERE id =? ]]></QUERY></QUERIES>',2,'eops.hub.job.daemon.FTDMISDataUploadWorker',1,1,5,'404',null,1440,to_timestamp('15-JUN-14 12.30.00.000000000 AM','DD-MON-RR HH.MI.SSXFF AM'),600,'Y',null,'EOPSHUB',null,null,null,null,null,null,null,null);
+import React, { useState } from 'react';
 
-Insert into JOBDEFINITION (COMPANYCODE,PROCESSID,COUNTRYCODE,JOBID,NAME,INITPOOLSIZE,MAXPOOLSIZE,WORKITEMPOOLCLASS,WORKITEMPOOLSIZE,PARAMETERXML,SLEEPTIME,WORKERCLASS,PRIORITY,STARTTIME,THREADPOOLSIZE,JOBGROUP,TIMEUNIT,SCHDINTERVAL,INITSTARTDATE,RUNINTERVAL,ISFIXEDINTERVAL,FUNCTIONID,PUNITNAME,MARKITEMPARAM,ISBGJOBS,CLONE,READER,ISSERVLETPROCESS,CLUSTERCONFIG,ISNATIVE,CONFIGPATH) values ('SC','D000','AE',401,'MISDataUpload_401',5,10,'eops.hub.job.workitempools.FTDMISDataUploadPool',10,'<QUERIES><QUERY ID=''loadTasks''><![CDATA[SELECT F FROM FTDMIS F  where  F.jobID= 401 AND F.statuscode = 1 and F.ftdMasterStatus=2 ORDER BY F.modifiedtime]]></QUERY><QUERY ID=''markItemInProgress''><![CDATA[UPDATE FTDMIS SET statuscode=3 ,replicatedtime=sysdate WHERE id =? ]]></QUERY></QUERIES>',2,'eops.hub.job.daemon.FTDMISDataUploadWorker',1,1,5,'401',null,1440,to_timestamp('15-JUN-14 12.30.00.000000000 AM','DD-MON-RR HH.MI.SSXFF AM'),300,'Y',null,'EOPSHUB',null,null,null,null,null,null,null,null);
+const Enquiry = () => {
+  // State to hold input values
+  const [processId, setProcessId] = useState('');
+  const [countryCode, setCountryCode] = useState('');
+  const [caseId, setCaseId] = useState('');
+  const [formData, setFormData] = useState(null);
+  const [isValidated, setIsValidated] = useState(false); // To show caseId input after validation
 
-Insert into JOBDEFINITION (COMPANYCODE,PROCESSID,COUNTRYCODE,JOBID,NAME,INITPOOLSIZE,MAXPOOLSIZE,WORKITEMPOOLCLASS,WORKITEMPOOLSIZE,PARAMETERXML,SLEEPTIME,WORKERCLASS,PRIORITY,STARTTIME,THREADPOOLSIZE,JOBGROUP,TIMEUNIT,SCHDINTERVAL,INITSTARTDATE,RUNINTERVAL,ISFIXEDINTERVAL,FUNCTIONID,PUNITNAME,MARKITEMPARAM,ISBGJOBS,CLONE,READER,ISSERVLETPROCESS,CLUSTERCONFIG,ISNATIVE,CONFIGPATH) values ('SC','D000','AE',402,'MISDataUpload_402',5,10,'eops.hub.job.workitempools.FTDMISDataUploadPool',10,'<QUERIES><QUERY ID=''loadTasks''><![CDATA[SELECT F FROM FTDMIS F  where  F.jobID= 402 AND F.statuscode = 1 and F.ftdMasterStatus=2 ORDER BY F.modifiedtime]]></QUERY><QUERY ID=''markItemInProgress''> <![CDATA[UPDATE FTDMIS SET statuscode=3 ,replicatedtime=sysdate WHERE id =? ]]></QUERY></QUERIES>',2,'eops.hub.job.daemon.FTDMISDataUploadWorker',1,1,5,'402',null,1440,to_timestamp('15-JUN-14 12.30.00.000000000 AM','DD-MON-RR HH.MI.SSXFF AM'),300,'Y',null,'EOPSHUB',null,null,null,null,null,null,null,null);
+  // Simulated backend table data for validation and data fetching
+  const dummyDB = [
+    { caseId: 'SCB1234', processId: 'W409', countryCode: 'ID', formData: '{id:name,value:kiran}' },
+    { caseId: '123456', processId: 'W409', countryCode: 'ID', formData: '{"name": "Kiran"}' },
+  ];
 
-Insert into JOBDEFINITION (COMPANYCODE,PROCESSID,COUNTRYCODE,JOBID,NAME,INITPOOLSIZE,MAXPOOLSIZE,WORKITEMPOOLCLASS,WORKITEMPOOLSIZE,PARAMETERXML,SLEEPTIME,WORKERCLASS,PRIORITY,STARTTIME,THREADPOOLSIZE,JOBGROUP,TIMEUNIT,SCHDINTERVAL,INITSTARTDATE,RUNINTERVAL,ISFIXEDINTERVAL,FUNCTIONID,PUNITNAME,MARKITEMPARAM,ISBGJOBS,CLONE,READER,ISSERVLETPROCESS,CLUSTERCONFIG,ISNATIVE,CONFIGPATH) values ('SC','D000','AE',405,'MISDataUpload_405',10,10,'eops.hub.job.workitempools.FTDMISDataUploadPool',10,'<QUERIES><QUERY ID=''loadTasks''><![CDATA[SELECT F FROM FTDMIS F  where  F.jobID= ''404'' AND F.statuscode = 1  and F.ftdMasterStatus=7]]></QUERY><QUERY ID=''markItemInProgress''><![CDATA[UPDATE FTDMIS SET statuscode=3 ,replicatedtime=sysdate WHERE id =? ]]></QUERY></QUERIES>',2,'eops.hub.job.daemon.FTDMISDataUploadWorker',1,1,10,'405',null,1440,to_timestamp('15-JUN-14 12.30.00.000000000 AM','DD-MON-RR HH.MI.SSXFF AM'),600,'Y',null,'EOPSHUB',null,null,null,null,null,null,null,null);
+  // Step 1: Validate Process ID and Country Code
+  // If matching record exists in backend (dummyDB here), allow Case ID input
+  const validateProcess = () => {
+    const exists = dummyDB.some(
+      (entry) =>
+        entry.processId === processId.trim() &&
+        entry.countryCode === countryCode.trim()
+    );
+    setIsValidated(exists); // Show Case ID input field if valid
+    if (!exists) {
+      alert('Invalid Process ID or Country Code');
+    }
+  };
 
-Insert into JOBDEFINITION (COMPANYCODE,PROCESSID,COUNTRYCODE,JOBID,NAME,INITPOOLSIZE,MAXPOOLSIZE,WORKITEMPOOLCLASS,WORKITEMPOOLSIZE,PARAMETERXML,SLEEPTIME,WORKERCLASS,PRIORITY,STARTTIME,THREADPOOLSIZE,JOBGROUP,TIMEUNIT,SCHDINTERVAL,INITSTARTDATE,RUNINTERVAL,ISFIXEDINTERVAL,FUNCTIONID,PUNITNAME,MARKITEMPARAM,ISBGJOBS,CLONE,READER,ISSERVLETPROCESS,CLUSTERCONFIG,ISNATIVE,CONFIGPATH) values ('SC','C212','KE',103,'JobManager103',1,10,'eops.hub.job.workitempools.ProcessHeaderPool',10,'<QUERIES><QUERY ID=''loadTasks''><![CDATA[SELECT P  FROM ProcessHeader P WHERE P.statusCode=1 AND P.processId in(''C212'',''C509'',''C631'',''C219'',''C262'',''M033'',''M024'')]]></QUERY><QUERY ID=''markItemInProgress''><![CDATA[UPDATE ProcessHeader SET statusCode=3  WHERE ID =?]]></QUERY></QUERIES>',2,'eops.hub.job.daemon.ProcessLaunch',1,1,5,'103',null,0,null,0,null,null,'EOPSHUB',null,null,null,null,null,null,null,null);
+  // Step 2: Search data after entering valid Case ID
+  const searchData = () => {
+    const record = dummyDB.find(
+      (entry) =>
+        entry.processId === processId.trim() &&
+        entry.countryCode === countryCode.trim() &&
+        entry.caseId === caseId.trim()
+    );
+    if (record) {
+      setFormData(record.formData); // Display FORMDATA result
+    } else {
+      alert('Case ID not found');
+      setFormData(null);
+    }
+  };
+
+  return (
+    <div style={{ padding: '20px', fontFamily: 'Arial' }}>
+      {/* Process ID and Country Code Input with Validate Button */}
+      <div style={{ marginBottom: '10px' }}>
+        <label>Process ID: </label>
+        <input
+          type="text"
+          value={processId}
+          onChange={(e) => setProcessId(e.target.value)}
+          style={{ marginRight: '10px', padding: '5px' }}
+        />
+
+        <label>Country Code: </label>
+        <input
+          type="text"
+          value={countryCode}
+          onChange={(e) => setCountryCode(e.target.value)}
+          style={{ marginRight: '10px', padding: '5px' }}
+        />
+
+        {/* Validate button triggers DB check */}
+        <button onClick={validateProcess} style={{ padding: '6px 12px' }}>
+          Validate
+        </button>
+      </div>
+
+      {/* Case ID input and Search button shown only after validation */}
+      {isValidated && (
+        <div style={{ marginBottom: '10px' }}>
+          <label>Case ID: </label>
+          <input
+            type="text"
+            value={caseId}
+            onChange={(e) => setCaseId(e.target.value)}
+            style={{ marginRight: '10px', padding: '5px' }}
+          />
+
+          {/* Search button fetches formData if Case ID matches */}
+          <button onClick={searchData} style={{ padding: '6px 12px' }}>
+            Search
+          </button>
+        </div>
+      )}
+
+      {/* Form Data Output (Result) */}
+      {formData && (
+        <div style={{ marginTop: '20px' }}>
+          <h4>Form Data:</h4>
+          <pre style={{ background: '#f4f4f4', padding: '10px' }}>{formData}</pre>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Enquiry;

@@ -1,14 +1,82 @@
-spring.application.name=wrb-service
-server.port=6666
-#spring.datasource.url=jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=hklvddapp063.hk.standardchartered.com)(PORT=1621)))(CONNECT_DATA=(SERVICE_NAME=pdbd_eops_rw.hk.standardchartered.com)))
-#spring.datasource.username=EOPSHUB_SIT03
-#spring.datasource.password=Scb#1234
-spring.datasource.url=jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=hklvddapp060.hk.standardchartered.com)(PORT=1621)))(CONNECT_DATA=(SERVICE_NAME=pdbd_eops_rw.hk.standardchartered.com)))
-spring.datasource.username=ATOM_TRAINING
-spring.datasource.password=hcMJ72kgQwqfvDfDtWClO6*5_
-spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
-spring.jpa.database-platform=org.hibernate.dialect.OracleDialect
-#spring.jpa.generate-ddl=true
-spring.jpa.show-sql=true
-#spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.OracleDialect
-#spring.jpa.hibernate.ddl-auto = update
+package com.sc.wrb.model;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "caseformdata", schema = "EOPSHUB_SIT03")
+public class EnquiryData {
+
+    @Id
+    @Column(name = "caseid")
+    private String caseId;
+
+    @Column(name = "processid")
+    private String processId;
+
+    @Column(name = "countrycode")
+    private String countryCode;
+
+    @Column(name = "formdata")
+    private String formData;
+
+
+    public String getCaseId() {
+        return caseId;
+    }
+
+    public void setCaseId(String caseId) {
+        this.caseId = caseId;
+    }
+
+
+    public String getProcessId() {
+        return processId;
+    }
+
+    public void setProcessId(String processId) {
+        this.processId = processId;
+    }
+
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
+
+
+    public String getFormData() {
+        return formData;
+    }
+
+    public void setFormData(String formData) {
+        this.formData = formData;
+    }
+
+
+    public EnquiryData() {
+    }
+
+
+    public EnquiryData(String caseId, String processId, String countryCode, String formData) {
+        this.caseId = caseId;
+        this.processId = processId;
+        this.countryCode = countryCode;
+        this.formData = formData;
+    }
+
+    @Override
+    public String toString() {
+        return "EnquiryData{" +
+                "caseId='" + caseId + '\'' +
+                ", processId='" + processId + '\'' +
+                ", countryCode='" + countryCode + '\'' +
+                ", formData='" + formData + '\'' +
+                '}';
+    }
+}

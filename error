@@ -1,82 +1,57 @@
-package com.sc.wrb.model;
+C:\Users\2013176\SCB\Service_Repo\wrb-service\src\main\java\com\sc\wrb\service\impl\EnquiryDataServiceImpl.java:29:20
+java: constructor EnquiryValidationResponse in class com.sc.wrb.dto.EnquiryValidationResponse cannot be applied to given types;
+  required: no arguments
+  found:    boolean,java.util.List<java.lang.String>
+  reason: actual and formal argument lists differ in length
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+package com.sc.wrb.service.impl;
 
-@Entity
-@Table(name = "caseformdata")
-public class EnquiryData {
 
-    @Id
-    @Column(name = "caseid")
-    private String caseId;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sc.wrb.dto.EnquiryValidationResponse;
+import com.sc.wrb.model.EnquiryData;
+import com.sc.wrb.repository.EnquiryDataRepository;
+import com.sc.wrb.service.inter.EnquiryDataService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-    @Column(name = "processid")
-    private String processId;
+import java.util.*;
+import java.util.stream.Collectors;
 
-    @Column(name = "countrycode")
-    private String countryCode;
+@Service
+public class EnquiryDataServiceImpl implements EnquiryDataService {
 
-    @Column(name = "formdata")
-    private String formData;
+    @Autowired
+    private EnquiryDataRepository repository;
 
-    // ✅ Getter and Setter for caseId
-    public String getCaseId() {
-        return caseId;
-    }
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public void setCaseId(String caseId) {
-        this.caseId = caseId;
-    }
-
-    // ✅ Getter and Setter for processId
-    public String getProcessId() {
-        return processId;
-    }
-
-    public void setProcessId(String processId) {
-        this.processId = processId;
-    }
-
-    // ✅ Getter and Setter for countryCode
-    public String getCountryCode() {
-        return countryCode;
-    }
-
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
-    }
-
-    // ✅ Getter and Setter for formData
-    public String getFormData() {
-        return formData;
-    }
-
-    public void setFormData(String formData) {
-        this.formData = formData;
-    }
-
-    // ✅ Default constructor
-    public EnquiryData() {
-    }
-
-    // ✅ Parameterized constructor
-    public EnquiryData(String caseId, String processId, String countryCode, String formData) {
-        this.caseId = caseId;
-        this.processId = processId;
-        this.countryCode = countryCode;
-        this.formData = formData;
+    @Override
+    public EnquiryValidationResponse validateProcess(String processId, String countryCode) {
+        try {
+            List<EnquiryData> results = repository.findByProcessIdAndCountryCode(processId.trim(), countryCode.trim());
+            boolean valid = !results.isEmpty();
+            List<String> caseIds = results.stream().map(EnquiryData::getCaseId).collect(Collectors.toList());
+            return new EnquiryValidationResponse(valid, caseIds);
+        } catch (Exception e) {
+            throw new RuntimeException("Error validating process: " + e.getMessage(), e);
+        }
     }
 
     @Override
-    public String toString() {
-        return "EnquiryData{" +
-                "caseId='" + caseId + '\'' +
-                ", processId='" + processId + '\'' +
-                ", countryCode='" + countryCode + '\'' +
-                ", formData='" + formData + '\'' +
-                '}';
+    public Map<String, Object> getFormData(String processId, String countryCode, String caseId) {
+        try {
+            Optional<EnquiryData> optional = repository.findByProcessIdAndCountryCodeAndCaseId(
+                    processId.trim(), countryCode.trim(), caseId.trim());
+
+            if (optional.isEmpty()) {
+                throw new RuntimeException("Case not found.");
+            }
+
+            String formDataJson = optional.get().getFormData();
+            return objectMapper.readValue(formDataJson, Map.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Error fetching form data: " + e.getMessage(), e);
+        }
     }
 }

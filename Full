@@ -1,2 +1,2 @@
-GET http://localhost:8080/api/enquiry/validate?processId=W409&countryCode=ID
-GET http://localhost:8080/api/enquiry/form-data?processId=W409&countryCode=ID&caseId=LONG123
+http://localhost:8080/api/enquiry/validate?processId=W409&countryCode=ID
+http://localhost:8080/api/enquiry/formdata?processId=W409&countryCode=ID&caseId=SCB1234

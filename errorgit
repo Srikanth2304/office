@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-// ✅ Tata SCB Web Components
+// ✅ SC Components
 import '@scdevkit/webkit/components/sc-button.js';
 import '@scdevkit/webkit/components/sc-text-input.js';
 import '@scdevkit/webkit/components/sc-data-grid.js';
+import '@scdevkit/webkit/components/sc-card.js'; // For table box
 import '@scdevkit/webkit/styles/ScGridStyle.js';
 
 const Enquiry = () => {
@@ -14,7 +15,6 @@ const Enquiry = () => {
   const [isValidated, setIsValidated] = useState(false);
   const gridRef = useRef(null);
 
-  // ✅ Dummy DB
   const dummyDB = [
     {
       caseId: 'SCB1234',
@@ -105,76 +105,73 @@ const Enquiry = () => {
 
   return (
     <div style={{ padding: '20px 30px', fontFamily: 'Arial' }}>
-      {/* 🔷 Process ID + Country Code + Buttons (aligned) */}
-      <div style={{ display: 'flex', gap: '20px', alignItems: 'center', flexWrap: 'wrap' }}>
-        <sc-text-input
-          label="Process ID"
-          value={processId}
-          placeholder="Enter Process ID"
-          border-type="box"
-          style={{ '--sc-border-color': '#68ABF2', width: '250px' }}
-          onInput={(e) => setProcessId(e.target.value)}
-        ></sc-text-input>
+      {/* 🔹 First row: Process ID, Country Code, Validate, Reset */}
+      <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
+        <div style={{ width: '250px' }}>
+          <sc-text-input
+            label="Process ID"
+            value={processId}
+            border-type="box"
+            style={{ '--sc-border-color': '#68ABF2' }}
+            onInput={(e) => setProcessId(e.target.value)}
+          ></sc-text-input>
+        </div>
 
-        <sc-text-input
-          label="Country Code"
-          value={countryCode}
-          placeholder="Enter Country Code"
-          border-type="box"
-          style={{ '--sc-border-color': '#68ABF2', width: '250px' }}
-          onInput={(e) => setCountryCode(e.target.value)}
-        ></sc-text-input>
+        <div style={{ width: '250px' }}>
+          <sc-text-input
+            label="Country Code"
+            value={countryCode}
+            border-type="box"
+            style={{ '--sc-border-color': '#68ABF2' }}
+            onInput={(e) => setCountryCode(e.target.value)}
+          ></sc-text-input>
+        </div>
 
-        <sc-button
-          type="primary"
-          size="sm"
-          width="auto"
-          onClick={validateProcess}
-        >
+        <sc-button type="primary" size="sm" width="auto" style="margin-top: 8px;" onClick={validateProcess}>
           Validate
         </sc-button>
 
-        <sc-button
-          type="primary"
-          size="sm"
-          width="auto"
-          onClick={resetForm}
-        >
+        <sc-button type="primary" size="sm" width="auto" style="margin-top: 8px;" onClick={resetForm}>
           Reset
         </sc-button>
       </div>
 
-      {/* 🔷 Case ID + Search (aligned) */}
+      {/* 🔹 Second row: Case ID + Search */}
       {isValidated && (
-        <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginTop: '20px', flexWrap: 'wrap' }}>
-          <sc-text-input
-            label="Case ID"
-            value={caseId}
-            placeholder="Enter Case ID"
-            border-type="box"
-            style={{ '--sc-border-color': '#68ABF2', width: '250px' }}
-            onInput={(e) => setCaseId(e.target.value)}
-          ></sc-text-input>
+        <div style={{ display: 'flex', gap: '16px', alignItems: 'center', marginTop: '20px', flexWrap: 'wrap' }}>
+          <div style={{ width: '250px' }}>
+            <sc-text-input
+              label="Case ID"
+              value={caseId}
+              border-type="box"
+              style={{ '--sc-border-color': '#68ABF2' }}
+              onInput={(e) => setCaseId(e.target.value)}
+            ></sc-text-input>
+          </div>
 
-          <sc-button
-            type="primary"
-            size="sm"
-            width="auto"
-            onClick={searchData}
-          >
+          <sc-button type="primary" size="sm" width="auto" style="margin-top: 8px;" onClick={searchData}>
             Search
           </sc-button>
         </div>
       )}
 
-      {/* 🔷 Dynamic Data Table */}
+      {/* 🔹 Table box */}
       {formData && (
-        <div style={{ overflowX: 'auto', marginTop: '20px' }}>
-          <sc-data-grid
-            ref={gridRef}
-            style="width: 100%; min-width: max-content;"
-          ></sc-data-grid>
-        </div>
+        <sc-card
+          style="
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+          "
+        >
+          <div style={{ overflowX: 'auto' }}>
+            <sc-data-grid
+              ref={gridRef}
+              style="width: 100%; min-width: max-content;"
+            ></sc-data-grid>
+          </div>
+        </sc-card>
       )}
     </div>
   );

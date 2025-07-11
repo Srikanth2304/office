@@ -1,74 +1,18 @@
-import React, { useState, useRef, useEffect } from 'react';
-import '@scdevkit/webkit/components/sc-button.js';
-import '@scdevkit/webkit/components/sc-text-input.js';
-import '@scdevkit/webkit/components/sc-data-grid.js';
-import '@scdevkit/webkit/components/sc-card.js';
-import '@scdevkit/webkit/styles/ScGridStyle.js';
+import React, { useState } from 'react';
 
 const Enquiry = () => {
   const [processId, setProcessId] = useState('');
   const [countryCode, setCountryCode] = useState('');
   const [caseId, setCaseId] = useState('');
-  const [formData, setFormData] = useState(null);
   const [isValidated, setIsValidated] = useState(false);
-  const gridRef = useRef(null);
-
-  const dummyDB = [
-    {
-      caseId: 'SCB1234',
-      processId: 'W409',
-      countryCode: 'ID',
-      formData: '{"id":"name","value":"kiran"}',
-    },
-    {
-      caseId: 'LONG123',
-      processId: 'W409',
-      countryCode: 'ID',
-      formData: JSON.stringify({
-        field1: 'value1',
-        field2: 'value2',
-        field3: 'value3',
-        field4: 'value4',
-        field5: 'value5',
-        field6: 'value6',
-        field7: 'value7',
-        field8: 'value8',
-        field9: 'value9',
-        field10: 'value10',
-        field11: 'value11',
-        field12: 'value12',
-        field13: 'value13',
-      }),
-    },
-  ];
+  const [tableData, setTableData] = useState([]);
 
   const validateProcess = () => {
-    const exists = dummyDB.some(
-      (entry) =>
-        entry.processId === processId.trim() &&
-        entry.countryCode === countryCode.trim()
-    );
-    setIsValidated(exists);
-    if (!exists) alert('Invalid Process ID or Country Code');
-  };
-
-  const searchData = () => {
-    const record = dummyDB.find(
-      (entry) =>
-        entry.processId === processId.trim() &&
-        entry.countryCode === countryCode.trim() &&
-        entry.caseId === caseId.trim()
-    );
-    if (record) {
-      try {
-        const parsed = JSON.parse(record.formData);
-        setFormData(parsed);
-      } catch {
-        alert('Invalid JSON in formData');
-      }
+    // Dummy validation: Allow if values exist
+    if (processId && countryCode) {
+      setIsValidated(true);
     } else {
-      alert('Case ID not found');
-      setFormData(null);
+      alert('Please enter Process ID and Country Code');
     }
   };
 
@@ -76,128 +20,168 @@ const Enquiry = () => {
     setProcessId('');
     setCountryCode('');
     setCaseId('');
-    setFormData(null);
     setIsValidated(false);
+    setTableData([]);
   };
 
-  useEffect(() => {
-    if (formData && gridRef.current) {
-      const columns = Object.keys(formData).map((key) => ({
-        property: key,
-        header: key,
-        minSize: Math.max(100, key.length * 10),
-        enableResizing: true,
-      }));
+  const searchData = () => {
+    // Dummy JSON string to simulate database response
+    const formDataJson = `{
+      "field1": "value1",
+      "field2": "value2",
+      "field3": "value3",
+      "field4": "value4",
+      "field5": "value5",
+      "field6": "value6",
+      "field7": "value7",
+      "field8": "value8",
+      "field9": "value9",
+      "field10": "value10",
+      "field11": "value11",
+      "field12": "value12",
+      "field13": "value13"
+    }`;
 
-      gridRef.current.data = [formData];
-      gridRef.current.columns = columns;
+    const data = JSON.parse(formDataJson);
+    const row = {};
+    const columns = [];
+
+    Object.entries(data).forEach(([key, value]) => {
+      row[key] = value;
+      columns.push(key);
+    });
+
+    setTableData([{ ...row }]);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      searchData();
     }
-  }, [formData]);
+  };
 
   return (
-    <form
-      onSubmit={(e) => e.preventDefault()}
-      style={{ padding: '20px 30px', fontFamily: 'Arial' }}
-    >
-      {/* First Row: Process ID, Country Code, Validate, Reset */}
-      <div
-        style={{
-          display: 'flex',
-          gap: '16px',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          marginBottom: '20px',
-        }}
-      >
-        <div style={{ width: '250px', display: 'flex', alignItems: 'center' }}>
-          <sc-text-input
-            label="Process ID"
+    <div style={{ padding: '20px' }}>
+      {/* ProcessID & Country Code Row */}
+      <div style={{ display: 'flex', alignItems: 'flex-end', gap: '16px', flexWrap: 'wrap', marginBottom: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <label>Process ID</label>
+          <input
+            type="text"
             value={processId}
-            border-type="box"
-            style={{
-              '--sc-border-color': '#68ABF2',
-              height: '40px',
-              background: 'white',
-            }}
-            onInput={(e) => setProcessId(e.target.value)}
-          ></sc-text-input>
+            onChange={(e) => setProcessId(e.target.value)}
+            style={{ width: '250px', padding: '8px', border: '1px solid #68ABF2', borderRadius: '4px' }}
+          />
         </div>
 
-        <div style={{ width: '250px', display: 'flex', alignItems: 'center' }}>
-          <sc-text-input
-            label="Country Code"
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <label>Country Code</label>
+          <input
+            type="text"
             value={countryCode}
-            border-type="box"
-            style={{
-              '--sc-border-color': '#68ABF2',
-              height: '40px',
-              background: 'white',
-            }}
-            onInput={(e) => setCountryCode(e.target.value)}
-          ></sc-text-input>
+            onChange={(e) => setCountryCode(e.target.value)}
+            style={{ width: '250px', padding: '8px', border: '1px solid #68ABF2', borderRadius: '4px' }}
+          />
         </div>
 
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-          <sc-button type="primary" size="sm" width="auto" onClick={validateProcess}>
-            Validate
-          </sc-button>
-          <sc-button type="primary" size="sm" width="auto" onClick={resetForm}>
-            Reset
-          </sc-button>
-        </div>
-      </div>
-
-      {/* Second Row: Case ID & Search */}
-      {isValidated && (
-        <div
+        <button
+          onClick={validateProcess}
           style={{
-            display: 'flex',
-            gap: '16px',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            marginBottom: '20px',
+            padding: '8px 16px',
+            backgroundColor: '#007BFF',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            height: '38px',
           }}
         >
-          <div style={{ width: '250px', display: 'flex', alignItems: 'center' }}>
-            <sc-text-input
-              label="Case ID"
+          Validate
+        </button>
+
+        <button
+          onClick={resetForm}
+          style={{
+            padding: '8px 16px',
+            backgroundColor: '#007BFF',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            height: '38px',
+          }}
+        >
+          Reset
+        </button>
+      </div>
+
+      {/* Case ID Row */}
+      {isValidated && (
+        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '16px', flexWrap: 'wrap', marginBottom: '20px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <label>Case ID</label>
+            <input
+              type="text"
               value={caseId}
-              border-type="box"
-              style={{
-                '--sc-border-color': '#68ABF2',
-                height: '40px',
-                background: 'white',
-              }}
-              onInput={(e) => setCaseId(e.target.value)}
-            ></sc-text-input>
+              onChange={(e) => setCaseId(e.target.value)}
+              onKeyDown={handleKeyDown}
+              style={{ width: '250px', padding: '8px', border: '1px solid #68ABF2', borderRadius: '4px' }}
+            />
           </div>
 
-          <sc-button type="primary" size="sm" width="auto" onClick={searchData}>
+          <button
+            onClick={searchData}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#007BFF',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              height: '38px',
+            }}
+          >
             Search
-          </sc-button>
+          </button>
         </div>
       )}
 
-      {/* Data Table in Box */}
-      {formData && (
-        <sc-card
-          style="
-            margin-top: 10px;
-            padding: 20px;
-            background-color: white;
-            border: 1px solid #ddd;
-            box-shadow: none;
-          "
-        >
-          <div style={{ overflowX: 'auto' }}>
-            <sc-data-grid
-              ref={gridRef}
-              style="width: 100%; min-width: max-content;"
-            ></sc-data-grid>
-          </div>
-        </sc-card>
+      {/* Table */}
+      {tableData.length > 0 && (
+        <div style={{ border: '1px solid #ddd', padding: '10px', borderRadius: '6px', overflowX: 'auto' }}>
+          <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+            <thead>
+              <tr>
+                {Object.keys(tableData[0]).map((key) => (
+                  <th
+                    key={key}
+                    style={{
+                      textAlign: 'left',
+                      padding: '8px',
+                      borderBottom: '1px solid #ccc',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {key}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {tableData.map((row, index) => (
+                <tr key={index}>
+                  {Object.entries(row).map(([_, value], i) => (
+                    <td key={i} style={{ padding: '8px', whiteSpace: 'nowrap' }}>
+                      {value}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
-    </form>
+    </div>
   );
 };
 

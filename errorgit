@@ -1,54 +1,76 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
-const dummyDB = [
-  {
-    caseId: 'SCB1234',
-    processId: 'W409',
-    countryCode: 'ID',
-    formData: '{"id":"name","value":"kiran"}',
-  },
-  {
-    caseId: '123456',
-    processId: 'W409',
-    countryCode: 'ID',
-    formData: '{"name":"Kiran"}',
-  },
-  {
-    caseId: 'LONG123',
-    processId: 'W409',
-    countryCode: 'ID',
-    formData: JSON.stringify({
-      field1: 'value1',
-      field2: 'value2',
-      field3: 'value3',
-      field4: 'value4',
-      field5: 'value5',
-      field6: 'value6',
-      field7: 'value7',
-      field8: 'value8',
-      field9: 'value9',
-      field10: 'value10',
-      field11: 'value11',
-      field12: 'value12',
-      field13: 'value13',
-      field14: 'value14',
-      field15: 'value15',
-    }),
-  },
-];
+
 
 const Enquiry = () => {
   const [processId, setProcessId] = useState('');
   const [countryCode, setCountryCode] = useState('');
   const [caseId, setCaseId] = useState('');
+  const [formData, setFormData] = useState(null);
   const [isValidated, setIsValidated] = useState(false);
-  const dataGridRef = useRef(null);
+  const gridRef = useRef(null);
+
+  const dummyDB = [
+    {
+      caseId: 'SCB1234',
+      processId: 'W409',
+      countryCode: 'ID',
+      formData: '{"id":"name","value":"kiran"}',
+    },
+    {
+      caseId: 'LONG123',
+      processId: 'W409',
+      countryCode: 'ID',
+      formData: JSON.stringify({
+        field1: 'value1',
+        field2: 'value2',
+        field3: 'value3',
+        field4: 'value4',
+        field5: 'value5',
+        field6: 'value6',
+        field7: 'value7',
+        field8: 'value8',
+        field9: 'value9',
+        field10: 'value10',
+        field11: 'value11',
+        field12: 'value12',
+        field13: 'value13',
+        field14: 'value14',
+        field15: 'value15',
+      }),
+    },
+  ];
 
   const validateProcess = () => {
-    if (processId.trim() !== '' && countryCode.trim() !== '') {
-      setIsValidated(true);
+    const exists = dummyDB.some(
+      (entry) =>
+        entry.processId === processId.trim() &&
+        entry.countryCode === countryCode.trim()
+    );
+    setIsValidated(exists);
+    if (!exists) {
+      alert('Invalid Process ID or Country Code');
+    }
+  };
+
+  const searchData = () => {
+    const record = dummyDB.find(
+      (entry) =>
+        entry.processId === processId.trim() &&
+        entry.countryCode === countryCode.trim() &&
+        entry.caseId === caseId.trim()
+    );
+
+    if (record) {
+      try {
+        const parsed = JSON.parse(record.formData);
+        setFormData(parsed);
+      } catch {
+        alert('Invalid JSON in formData');
+      }
     } else {
-      alert('Please enter both Process ID and Country Code.');
+      alert('Case ID not found');
+      setFormData(null);
     }
   };
 
@@ -56,123 +78,96 @@ const Enquiry = () => {
     setProcessId('');
     setCountryCode('');
     setCaseId('');
+    setFormData(null);
     setIsValidated(false);
-    if (dataGridRef.current) {
-      dataGridRef.current.data = [];
-      dataGridRef.current.columns = [];
-    }
   };
 
-  const searchData = () => {
-    const result = dummyDB.find(
-      (entry) =>
-        entry.processId === processId &&
-        entry.countryCode === countryCode &&
-        entry.caseId === caseId
-    );
-
-    if (!result) {
-      alert('No matching record found.');
-      return;
-    }
-
-    try {
-      const parsedData = JSON.parse(result.formData);
-      const columnDefs = Object.keys(parsedData).map((key) => ({
+  useEffect(() => {
+    if (formData && gridRef.current) {
+      const columns = Object.keys(formData).map((key) => ({
         property: key,
         header: key,
-        minSize: 100,
+        minSize: Math.max(100, key.length * 10),
+        enableResizing: true,
       }));
 
-      if (dataGridRef.current) {
-        dataGridRef.current.data = [parsedData];
-        dataGridRef.current.columns = columnDefs;
-      }
-    } catch (err) {
-      alert('Invalid JSON in formData.');
-    }
-  };
+      const row = { ...formData };
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      searchData();
+      gridRef.current.data = [row];
+      gridRef.current.columns = columns;
     }
-  };
+  }, [formData]);
 
   return (
-    <div style={{ padding: '20px' }}>
-      {/* Process ID + Country Code + Buttons */}
-      <div style={{ display: 'flex', alignItems: 'flex-end', gap: '16px', marginBottom: '20px', flexWrap: 'wrap' }}>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <label>Process ID</label>
-          <input
-            type="text"
+    <div style={{ padding: '20px 30px', fontFamily: 'Arial' }}>
+      {/* 🔹 First row: Process ID, Country Code, Validate, Reset */}
+      <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
+        <div style={{ width: '250px' }}>
+          <sc-text-input
+            label="Process ID"
             value={processId}
-            onChange={(e) => setProcessId(e.target.value)}
-            style={{
-              width: '200px',
-              padding: '8px',
-              border: '1px solid #68ABF2',
-              borderRadius: '6px'
-            }}
-          />
+            border-type="box"
+            style={{ '--sc-border-color': '#68ABF2' }}
+            onInput={(e) => setProcessId(e.target.value)}
+          ></sc-text-input>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <label>Country Code</label>
-          <input
-            type="text"
+        <div style={{ width: '250px' }}>
+          <sc-text-input
+            label="Country Code"
             value={countryCode}
-            onChange={(e) => setCountryCode(e.target.value)}
-            style={{
-              width: '200px',
-              padding: '8px',
-              border: '1px solid #68ABF2',
-              borderRadius: '6px'
-            }}
-          />
+            border-type="box"
+            style={{ '--sc-border-color': '#68ABF2' }}
+            onInput={(e) => setCountryCode(e.target.value)}
+          ></sc-text-input>
         </div>
 
-        <sc-button onClick={validateProcess} type="primary" size="sm">Validate</sc-button>
-        <sc-button onClick={resetForm} type="primary" size="sm">Reset</sc-button>
+        <sc-button type="primary" size="sm" width="auto" style="margin-top: 8px;" onClick={validateProcess}>
+          Validate
+        </sc-button>
+
+        <sc-button type="primary" size="sm" width="auto" style="margin-top: 8px;" onClick={resetForm}>
+          Reset
+        </sc-button>
       </div>
 
-      {/* Case ID + Search */}
+      {/* 🔹 Second row: Case ID + Search */}
       {isValidated && (
-        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '16px', marginBottom: '20px', flexWrap: 'wrap' }}>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <label>Case ID</label>
-            <input
-              type="text"
+        <div style={{ display: 'flex', gap: '16px', alignItems: 'center', marginTop: '20px', flexWrap: 'wrap' }}>
+          <div style={{ width: '250px' }}>
+            <sc-text-input
+              label="Case ID"
               value={caseId}
-              onChange={(e) => setCaseId(e.target.value)}
-              onKeyDown={handleKeyDown}
-              style={{
-                width: '200px',
-                padding: '8px',
-                border: '1px solid #68ABF2',
-                borderRadius: '6px'
-              }}
-            />
+              border-type="box"
+              style={{ '--sc-border-color': '#68ABF2' }}
+              onInput={(e) => setCaseId(e.target.value)}
+            ></sc-text-input>
           </div>
 
-          <sc-button onClick={searchData} type="primary" size="sm">Search</sc-button>
+          <sc-button type="primary" size="sm" width="auto" style="margin-top: 8px;" onClick={searchData}>
+            Search
+          </sc-button>
         </div>
       )}
 
-      {/* Data Table Box */}
-      <div style={{
-        border: '1px solid #ccc',
-        borderRadius: '8px',
-        padding: '10px',
-        overflowX: 'auto',
-        maxWidth: '100%'
-      }}>
-        <sc-data-grid
-          ref={dataGridRef}
-          style="width: 100%; overflow-x: auto"
-        ></sc-data-grid>
-      </div>
+      {/* 🔹 Table box */}
+      {formData && (
+        <sc-card
+          style="
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+          "
+        >
+          <div style={{ overflowX: 'auto' }}>
+            <sc-data-grid
+              ref={gridRef}
+              style="width: 100%; min-width: max-content;"
+            ></sc-data-grid>
+          </div>
+        </sc-card>
+      )}
     </div>
   );
 };

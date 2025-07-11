@@ -8,11 +8,10 @@ const Enquiry = () => {
   const [tableData, setTableData] = useState([]);
 
   const validateProcess = () => {
-    // Dummy validation: Allow if values exist
     if (processId && countryCode) {
       setIsValidated(true);
     } else {
-      alert('Please enter Process ID and Country Code');
+      alert('Please enter both Process ID and Country Code.');
     }
   };
 
@@ -25,7 +24,7 @@ const Enquiry = () => {
   };
 
   const searchData = () => {
-    // Dummy JSON string to simulate database response
+    // Dummy JSON data simulation
     const formDataJson = `{
       "field1": "value1",
       "field2": "value2",
@@ -43,15 +42,7 @@ const Enquiry = () => {
     }`;
 
     const data = JSON.parse(formDataJson);
-    const row = {};
-    const columns = [];
-
-    Object.entries(data).forEach(([key, value]) => {
-      row[key] = value;
-      columns.push(key);
-    });
-
-    setTableData([{ ...row }]);
+    setTableData([data]);
   };
 
   const handleKeyDown = (e) => {
@@ -62,15 +53,20 @@ const Enquiry = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-      {/* ProcessID & Country Code Row */}
-      <div style={{ display: 'flex', alignItems: 'flex-end', gap: '16px', flexWrap: 'wrap', marginBottom: '20px' }}>
+      {/* Process ID and Country Code Row */}
+      <div style={{ display: 'flex', alignItems: 'flex-end', gap: '16px', marginBottom: '20px', flexWrap: 'wrap' }}>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <label>Process ID</label>
           <input
             type="text"
             value={processId}
             onChange={(e) => setProcessId(e.target.value)}
-            style={{ width: '250px', padding: '8px', border: '1px solid #68ABF2', borderRadius: '4px' }}
+            style={{
+              width: '200px',
+              padding: '8px',
+              border: '1px solid #68ABF2',
+              borderRadius: '6px'
+            }}
           />
         </div>
 
@@ -80,44 +76,22 @@ const Enquiry = () => {
             type="text"
             value={countryCode}
             onChange={(e) => setCountryCode(e.target.value)}
-            style={{ width: '250px', padding: '8px', border: '1px solid #68ABF2', borderRadius: '4px' }}
+            style={{
+              width: '200px',
+              padding: '8px',
+              border: '1px solid #68ABF2',
+              borderRadius: '6px'
+            }}
           />
         </div>
 
-        <button
-          onClick={validateProcess}
-          style={{
-            padding: '8px 16px',
-            backgroundColor: '#007BFF',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            height: '38px',
-          }}
-        >
-          Validate
-        </button>
-
-        <button
-          onClick={resetForm}
-          style={{
-            padding: '8px 16px',
-            backgroundColor: '#007BFF',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            height: '38px',
-          }}
-        >
-          Reset
-        </button>
+        <sc-button onClick={validateProcess} type="primary" size="sm">Validate</sc-button>
+        <sc-button onClick={resetForm} type="primary" size="sm">Reset</sc-button>
       </div>
 
-      {/* Case ID Row */}
+      {/* Case ID and Search Row */}
       {isValidated && (
-        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '16px', flexWrap: 'wrap', marginBottom: '20px' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '16px', marginBottom: '20px', flexWrap: 'wrap' }}>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <label>Case ID</label>
             <input
@@ -125,58 +99,44 @@ const Enquiry = () => {
               value={caseId}
               onChange={(e) => setCaseId(e.target.value)}
               onKeyDown={handleKeyDown}
-              style={{ width: '250px', padding: '8px', border: '1px solid #68ABF2', borderRadius: '4px' }}
+              style={{
+                width: '200px',
+                padding: '8px',
+                border: '1px solid #68ABF2',
+                borderRadius: '6px'
+              }}
             />
           </div>
 
-          <button
-            onClick={searchData}
-            style={{
-              padding: '8px 16px',
-              backgroundColor: '#007BFF',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              height: '38px',
-            }}
-          >
-            Search
-          </button>
+          <sc-button onClick={searchData} type="primary" size="sm">Search</sc-button>
         </div>
       )}
 
-      {/* Table */}
+      {/* Data Table */}
       {tableData.length > 0 && (
-        <div style={{ border: '1px solid #ddd', padding: '10px', borderRadius: '6px', overflowX: 'auto' }}>
+        <div style={{
+          border: '1px solid #ccc',
+          borderRadius: '8px',
+          padding: '10px',
+          overflowX: 'auto',
+          maxWidth: '100%'
+        }}>
           <table style={{ borderCollapse: 'collapse', width: '100%' }}>
             <thead>
               <tr>
-                {Object.keys(tableData[0]).map((key) => (
-                  <th
-                    key={key}
-                    style={{
-                      textAlign: 'left',
-                      padding: '8px',
-                      borderBottom: '1px solid #ccc',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
+                {Object.keys(tableData[0]).map((key, index) => (
+                  <th key={index} style={{ padding: '8px', textAlign: 'left', whiteSpace: 'nowrap', borderBottom: '1px solid #ccc' }}>
                     {key}
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {tableData.map((row, index) => (
-                <tr key={index}>
-                  {Object.entries(row).map(([_, value], i) => (
-                    <td key={i} style={{ padding: '8px', whiteSpace: 'nowrap' }}>
-                      {value}
-                    </td>
-                  ))}
-                </tr>
-              ))}
+              <tr>
+                {Object.values(tableData[0]).map((value, index) => (
+                  <td key={index} style={{ padding: '8px', whiteSpace: 'nowrap' }}>{value}</td>
+                ))}
+              </tr>
             </tbody>
           </table>
         </div>

@@ -7,11 +7,12 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "caseformdata")
-public class CaseFormData {
+public class EnquiryData {
 
     @Id
     @Column(name = "caseid")
     private String caseId;
+
     @Column(name = "processid")
     private String processId;
 
@@ -21,6 +22,7 @@ public class CaseFormData {
     @Column(name = "formdata")
     private String formData;
 
+    // ✅ Getter and Setter for caseId
     public String getCaseId() {
         return caseId;
     }
@@ -29,6 +31,7 @@ public class CaseFormData {
         this.caseId = caseId;
     }
 
+    // ✅ Getter and Setter for processId
     public String getProcessId() {
         return processId;
     }
@@ -37,6 +40,7 @@ public class CaseFormData {
         this.processId = processId;
     }
 
+    // ✅ Getter and Setter for countryCode
     public String getCountryCode() {
         return countryCode;
     }
@@ -45,6 +49,7 @@ public class CaseFormData {
         this.countryCode = countryCode;
     }
 
+    // ✅ Getter and Setter for formData
     public String getFormData() {
         return formData;
     }
@@ -53,11 +58,12 @@ public class CaseFormData {
         this.formData = formData;
     }
 
-    public CaseFormData() {
-        // Default constructor
+    // ✅ Default constructor
+    public EnquiryData() {
     }
 
-    public CaseFormData(String caseId, String processId, String countryCode, String formData) {
+    // ✅ Parameterized constructor
+    public EnquiryData(String caseId, String processId, String countryCode, String formData) {
         this.caseId = caseId;
         this.processId = processId;
         this.countryCode = countryCode;
@@ -66,7 +72,7 @@ public class CaseFormData {
 
     @Override
     public String toString() {
-        return "CaseFormData{" +
+        return "EnquiryData{" +
                 "caseId='" + caseId + '\'' +
                 ", processId='" + processId + '\'' +
                 ", countryCode='" + countryCode + '\'' +

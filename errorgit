@@ -6,6 +6,7 @@ const Enquiry = () => {
   const [caseId, setCaseId] = useState('');
   const [isValidated, setIsValidated] = useState(false);
   const [tableData, setTableData] = useState([]);
+  const [columns, setColumns] = useState([]);
 
   const validateProcess = () => {
     if (processId && countryCode) {
@@ -21,10 +22,10 @@ const Enquiry = () => {
     setCaseId('');
     setIsValidated(false);
     setTableData([]);
+    setColumns([]);
   };
 
   const searchData = () => {
-    // Dummy JSON data simulation
     const formDataJson = `{
       "field1": "value1",
       "field2": "value2",
@@ -42,7 +43,15 @@ const Enquiry = () => {
     }`;
 
     const data = JSON.parse(formDataJson);
-    setTableData([data]);
+    const dataArray = [data];
+    const columnDefs = Object.keys(data).map(key => ({
+      property: key,
+      header: key,
+      minSize: 100
+    }));
+
+    setTableData(dataArray);
+    setColumns(columnDefs);
   };
 
   const handleKeyDown = (e) => {
@@ -53,16 +62,16 @@ const Enquiry = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-      {/* Process ID and Country Code Row */}
-      <div style={{ display: 'flex', alignItems: 'flex-end', gap: '16px', marginBottom: '20px', flexWrap: 'wrap' }}>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <label>Process ID</label>
+      {/* Process ID & Country Code Row */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px', flexWrap: 'wrap' }}>
+        <div>
+          <label>Process ID</label><br />
           <input
             type="text"
             value={processId}
             onChange={(e) => setProcessId(e.target.value)}
             style={{
-              width: '200px',
+              width: '180px',
               padding: '8px',
               border: '1px solid #68ABF2',
               borderRadius: '6px'
@@ -70,14 +79,14 @@ const Enquiry = () => {
           />
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <label>Country Code</label>
+        <div>
+          <label>Country Code</label><br />
           <input
             type="text"
             value={countryCode}
             onChange={(e) => setCountryCode(e.target.value)}
             style={{
-              width: '200px',
+              width: '180px',
               padding: '8px',
               border: '1px solid #68ABF2',
               borderRadius: '6px'
@@ -89,18 +98,18 @@ const Enquiry = () => {
         <sc-button onClick={resetForm} type="primary" size="sm">Reset</sc-button>
       </div>
 
-      {/* Case ID and Search Row */}
+      {/* Case ID Row */}
       {isValidated && (
-        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '16px', marginBottom: '20px', flexWrap: 'wrap' }}>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <label>Case ID</label>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px', flexWrap: 'wrap' }}>
+          <div>
+            <label>Case ID</label><br />
             <input
               type="text"
               value={caseId}
               onChange={(e) => setCaseId(e.target.value)}
               onKeyDown={handleKeyDown}
               style={{
-                width: '200px',
+                width: '180px',
                 padding: '8px',
                 border: '1px solid #68ABF2',
                 borderRadius: '6px'
@@ -112,33 +121,19 @@ const Enquiry = () => {
         </div>
       )}
 
-      {/* Data Table */}
+      {/* Data Grid Box */}
       {tableData.length > 0 && (
         <div style={{
           border: '1px solid #ccc',
-          borderRadius: '8px',
+          borderRadius: '6px',
           padding: '10px',
-          overflowX: 'auto',
-          maxWidth: '100%'
+          overflowX: 'auto'
         }}>
-          <table style={{ borderCollapse: 'collapse', width: '100%' }}>
-            <thead>
-              <tr>
-                {Object.keys(tableData[0]).map((key, index) => (
-                  <th key={index} style={{ padding: '8px', textAlign: 'left', whiteSpace: 'nowrap', borderBottom: '1px solid #ccc' }}>
-                    {key}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                {Object.values(tableData[0]).map((value, index) => (
-                  <td key={index} style={{ padding: '8px', whiteSpace: 'nowrap' }}>{value}</td>
-                ))}
-              </tr>
-            </tbody>
-          </table>
+          <sc-data-grid
+            .data={tableData}
+            .columns={columns}
+            style="width: 100%; overflow-x: auto"
+          ></sc-data-grid>
         </div>
       )}
     </div>

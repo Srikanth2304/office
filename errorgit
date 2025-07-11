@@ -1,7 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-
-
 const Enquiry = () => {
   const [processId, setProcessId] = useState('');
   const [countryCode, setCountryCode] = useState('');
@@ -91,17 +89,15 @@ const Enquiry = () => {
         enableResizing: true,
       }));
 
-      const row = { ...formData };
-
-      gridRef.current.data = [row];
+      gridRef.current.data = [formData];
       gridRef.current.columns = columns;
     }
   }, [formData]);
 
   return (
     <div style={{ padding: '20px 30px', fontFamily: 'Arial' }}>
-      {/* 🔹 First row: Process ID, Country Code, Validate, Reset */}
-      <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
+      {/* 🔹 Process ID + Country Code + Validate + Reset */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap', marginBottom: '20px' }}>
         <div style={{ width: '250px' }}>
           <sc-text-input
             label="Process ID"
@@ -122,18 +118,19 @@ const Enquiry = () => {
           ></sc-text-input>
         </div>
 
-        <sc-button type="primary" size="sm" width="auto" style="margin-top: 8px;" onClick={validateProcess}>
-          Validate
-        </sc-button>
-
-        <sc-button type="primary" size="sm" width="auto" style="margin-top: 8px;" onClick={resetForm}>
-          Reset
-        </sc-button>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <sc-button type="primary" size="sm" width="auto" onClick={validateProcess}>
+            Validate
+          </sc-button>
+          <sc-button type="primary" size="sm" width="auto" onClick={resetForm}>
+            Reset
+          </sc-button>
+        </div>
       </div>
 
-      {/* 🔹 Second row: Case ID + Search */}
+      {/* 🔹 Case ID + Search */}
       {isValidated && (
-        <div style={{ display: 'flex', gap: '16px', alignItems: 'center', marginTop: '20px', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap', marginBottom: '20px' }}>
           <div style={{ width: '250px' }}>
             <sc-text-input
               label="Case ID"
@@ -144,13 +141,13 @@ const Enquiry = () => {
             ></sc-text-input>
           </div>
 
-          <sc-button type="primary" size="sm" width="auto" style="margin-top: 8px;" onClick={searchData}>
+          <sc-button type="primary" size="sm" width="auto" onClick={searchData}>
             Search
           </sc-button>
         </div>
       )}
 
-      {/* 🔹 Table box */}
+      {/* 🔹 SCB Table inside Box */}
       {formData && (
         <sc-card
           style="

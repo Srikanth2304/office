@@ -1,13 +1,10 @@
-package com.example.dto;
+package com.example.service;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.example.dto.EnquiryValidationResponse;
 
-import java.util.List;
+import java.util.Map;
 
-@Data
-@AllArgsConstructor
-public class EnquiryValidationResponse {
-    private boolean valid;
-    private List<String> caseIds;
+public interface EnquiryDataService {
+    EnquiryValidationResponse validateProcess(String processId, String countryCode);
+    Map<String, Object> getFormData(String processId, String countryCode, String caseId);
 }

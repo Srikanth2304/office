@@ -8,7 +8,6 @@ const Enquiry = () => {
   const [isValidated, setIsValidated] = useState(false);
   const gridRef = useRef(null);
 
-  // Validate processId and countryCode against backend
   const validateProcess = async () => {
     const url = `http://localhost:8080/api/enquiry/validate?processId=${processId}&countryCode=${countryCode}`;
     try {
@@ -25,7 +24,6 @@ const Enquiry = () => {
     }
   };
 
-  // Fetch form data from backend
   const searchData = async () => {
     try {
       const response = await fetch(
@@ -39,7 +37,6 @@ const Enquiry = () => {
     }
   };
 
-  // Reset all form inputs
   const resetForm = () => {
     setProcessId('');
     setCountryCode('');
@@ -48,7 +45,6 @@ const Enquiry = () => {
     setIsValidated(false);
   };
 
-  // Dynamically populate grid based on formData
   useEffect(() => {
     if (formData && gridRef.current) {
       const columns = Object.keys(formData).map((key) => ({
@@ -56,6 +52,7 @@ const Enquiry = () => {
         header: key,
         minSize: Math.max(100, key.length * 10),
         enableResizing: true,
+        style: 'font-weight: bold', // 🔹 Makes header bold
       }));
 
       const row = { ...formData };
@@ -67,7 +64,7 @@ const Enquiry = () => {
 
   return (
     <div style={{ padding: '20px 30px', fontFamily: 'Arial' }}>
-      {/* Process ID and Country Code Input Section */}
+      {/* Section 1: Process ID & Country Code */}
       <div
         style={{
           border: '1px solid #ccc',
@@ -112,7 +109,7 @@ const Enquiry = () => {
         </div>
       </div>
 
-      {/* Case ID Input Section */}
+      {/* Section 2: Case ID */}
       {isValidated && (
         <div
           style={{
@@ -145,23 +142,23 @@ const Enquiry = () => {
         </div>
       )}
 
-      {/* Form Data Display Section */}
+      {/* Section 3: Result Table */}
       {formData && (
-        <sc-card
-          style="
-            margin: 0;
-            padding: 20px;
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
-          "
+        <div
+          style={{
+            margin: '0',
+            padding: '0',
+            backgroundColor: '#f9f9f9',
+            border: '1px solid #ccc',
+            borderRadius: '8px',
+            overflowX: 'auto',
+          }}
         >
-          <div style={{ overflowX: 'auto' }}>
-            <sc-data-grid
-              ref={gridRef}
-              style="width: 100%; min-width: max-content;"
-            ></sc-data-grid>
-          </div>
-        </sc-card>
+          <sc-data-grid
+            ref={gridRef}
+            style="width: 100%; border: none; padding: 16px 0;"
+          ></sc-data-grid>
+        </div>
       )}
     </div>
   );

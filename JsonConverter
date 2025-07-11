@@ -1,2 +1,195 @@
-GET http://localhost:6666/api/enquiry/validate?processId=W409&countryCode=ID
-GET http://localhost:6666/api/enquiry/form-data?processId=W409&countryCode=ID&caseId=123456
+import React, { useState, useRef, useEffect } from 'react';
+
+const Enquiry = () => {
+  const [processId, setProcessId] = useState('');
+  const [countryCode, setCountryCode] = useState('');
+  const [caseId, setCaseId] = useState('');
+  const [formData, setFormData] = useState(null);
+  const [isValidated, setIsValidated] = useState(false);
+  const gridRef = useRef(null);
+
+  const validateProcess = async () => {
+    const url = `http://localhost:8080/api/enquiry/validate?processId=${processId}&countryCode=${countryCode}`;
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (data.valid) {
+        setIsValidated(true);
+      } else {
+        alert('Invalid Process ID or Country Code');
+      }
+    } catch (error) {
+      alert('Validation failed.');
+    }
+  };
+
+  const searchData = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/enquiry/form-data?processId=${processId}&countryCode=${countryCode}&caseId=${caseId}`
+      );
+      const data = await response.json();
+      setFormData(data);
+    } catch (error) {
+      alert('Error fetching form data.');
+      setFormData(null);
+    }
+  };
+
+  const resetForm = () => {
+    setProcessId('');
+    setCountryCode('');
+    setCaseId('');
+    setFormData(null);
+    setIsValidated(false);
+  };
+
+  useEffect(() => {
+    if (formData && gridRef.current) {
+      const columns = Object.keys(formData).map((key) => ({
+        property: key,
+        header: key,
+        minSize: Math.max(100, key.length * 10),
+        enableResizing: true,
+      }));
+
+      const row = { ...formData };
+
+      gridRef.current.data = [row];
+      gridRef.current.columns = columns;
+
+      // Apply custom styling to the shadow DOM of sc-data-grid
+      setTimeout(() => {
+        const shadowRoot = gridRef.current.shadowRoot;
+        if (shadowRoot) {
+          const headers = shadowRoot.querySelectorAll('.header-cell');
+          headers.forEach((header) => {
+            header.style.backgroundColor = '#007AFF';
+            header.style.color = 'white';
+            header.style.fontWeight = 'bold';
+            header.style.border = '1px solid #ccc';
+          });
+
+          const cells = shadowRoot.querySelectorAll('.body-cell');
+          cells.forEach((cell) => {
+            cell.style.border = '1px solid #ddd';
+          });
+
+          const grid = shadowRoot.querySelector('.main-grid');
+          if (grid) {
+            grid.style.border = 'none';
+          }
+
+          const leftSlots = shadowRoot.querySelectorAll('.left');
+          leftSlots.forEach((el) => {
+            el.style.display = 'none';
+          });
+        }
+      }, 100);
+    }
+  }, [formData]);
+
+  return (
+    <div style={{ padding: '20px 30px', fontFamily: 'Arial' }}>
+      {/* Section 1: Process ID & Country Code */}
+      <div
+        style={{
+          border: '1px solid #ccc',
+          borderRadius: '8px',
+          padding: '16px',
+          marginBottom: '20px',
+          backgroundColor: '#fff',
+          display: 'flex',
+          alignItems: 'flex-end',
+          gap: '16px',
+          flexWrap: 'wrap',
+        }}
+      >
+        <div style={{ width: '250px' }}>
+          <sc-text-input
+            label="Process ID"
+            value={processId}
+            border-type="box"
+            style={{ '--sc-border-color': '#68ABF2' }}
+            onInput={(e) => setProcessId(e.target.value)}
+          ></sc-text-input>
+        </div>
+
+        <div style={{ width: '250px' }}>
+          <sc-text-input
+            label="Country Code"
+            value={countryCode}
+            border-type="box"
+            style={{ '--sc-border-color': '#68ABF2' }}
+            onInput={(e) => setCountryCode(e.target.value)}
+          ></sc-text-input>
+        </div>
+
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center', paddingBottom: '4px' }}>
+          <sc-button type="primary" size="sm" width="auto" onClick={validateProcess}>
+            Validate
+          </sc-button>
+
+          <sc-button type="primary" size="sm" width="auto" onClick={resetForm}>
+            Reset
+          </sc-button>
+        </div>
+      </div>
+
+      {/* Section 2: Case ID */}
+      {isValidated && (
+        <div
+          style={{
+            border: '1px solid #ccc',
+            borderRadius: '8px',
+            padding: '16px',
+            marginBottom: '20px',
+            backgroundColor: '#fff',
+            display: 'flex',
+            alignItems: 'flex-end',
+            gap: '16px',
+            flexWrap: 'wrap',
+          }}
+        >
+          <div style={{ width: '250px' }}>
+            <sc-text-input
+              label="Case ID"
+              value={caseId}
+              border-type="box"
+              style={{ '--sc-border-color': '#68ABF2' }}
+              onInput={(e) => setCaseId(e.target.value)}
+            ></sc-text-input>
+          </div>
+
+          <div style={{ paddingBottom: '4px' }}>
+            <sc-button type="primary" size="sm" width="auto" onClick={searchData}>
+              Search
+            </sc-button>
+          </div>
+        </div>
+      )}
+
+      {/* Section 3: Result Table */}
+      {formData && (
+        <div
+          style={{
+            margin: '0',
+            padding: '0',
+            backgroundColor: '#f9f9f9',
+            border: '1px solid #ccc',
+            borderRadius: '8px',
+            overflowX: 'auto',
+          }}
+        >
+          <sc-data-grid
+            ref={gridRef}
+            style="width: 100%; border: none; padding: 0;"
+          ></sc-data-grid>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Enquiry;

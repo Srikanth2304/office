@@ -5,7 +5,16 @@
   </sc-button>
 
 
-
+<div style="padding: 20px 30px">
+  <sc-text-input label="Business justification" tooltip="" tooltip-placement="top" hint="" hint-placement="right" label-size="" value="" placeholder="" rows="5" resizable="false" prefix-icon="" suffix-icon="" suffix-label="" help-text="" border-type="box" max-length="100" success-message="" error-message="" size="md" icon-size="" text-align="left"> 
+  
+  
+  
+  
+  
+  
+  </sc-text-input>
+</div>
 
 
 

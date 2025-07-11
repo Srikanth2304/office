@@ -1,2 +1,15 @@
 http://localhost:6666/api/enquiry/validate?processId=W409&countryCode=ID
 http://localhost:6666/api/enquiry/formdata?processId=W409&countryCode=ID&caseId=SCB1234
+-- Update for CASEID = 'SCB1234'
+UPDATE EOPSHUB_SIT03.caseformdata
+SET PROCESSID = 'W409',
+    COUNTRYCODE = 'ID',
+    FORMDATA = '{"id":"name","value":"kiran"}'
+WHERE CASEID = 'SCB1234';
+
+-- Update for CASEID = '123456'
+UPDATE EOPSHUB_SIT03.caseformdata
+SET PROCESSID = 'W409',
+    COUNTRYCODE = 'ID',
+    FORMDATA = '{"name":"Kiran"}'
+WHERE CASEID = '123456';

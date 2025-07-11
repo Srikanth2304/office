@@ -1,2 +1,201 @@
-http://localhost:6666/api/enquiry/validate?processId=W409&countryCode=ID
-http://localhost:6666/api/enquiry/form-data?processId=W409&countryCode=ID&caseId=SCB1234
+import React, { useState, useRef, useEffect } from 'react';
+
+const Enquiry = () => {
+  const [processId, setProcessId] = useState('');
+  const [countryCode, setCountryCode] = useState('');
+  const [caseId, setCaseId] = useState('');
+  const [formData, setFormData] = useState(null);
+  const [isValidated, setIsValidated] = useState(false);
+  const gridRef = useRef(null);
+
+  const dummyDB = [
+    {
+      caseId: 'SCB1234',
+      processId: 'W409',
+      countryCode: 'ID',
+      formData: '{"id":"name","value":"kiran"}',
+    },
+    {
+      caseId: 'LONG123',
+      processId: 'W409',
+      countryCode: 'ID',
+      formData: JSON.stringify({
+        field1: 'value1',
+        field2: 'value2',
+        field3: 'value3',
+        field4: 'value4',
+        field5: 'value5',
+        field6: 'value6',
+        field7: 'value7',
+        field8: 'value8',
+        field9: 'value9',
+        field10: 'value10',
+        field11: 'value11',
+        field12: 'value12',
+        field13: 'value13',
+        field14: 'value14',
+        field15: 'value15',
+      }),
+    },
+  ];
+
+  const validateProcess = () => {
+    const exists = dummyDB.some(
+      (entry) =>
+        entry.processId === processId.trim() &&
+        entry.countryCode === countryCode.trim()
+    );
+    setIsValidated(exists);
+    if (!exists) {
+      alert('Invalid Process ID or Country Code');
+    }
+  };
+
+  const searchData = () => {
+    const record = dummyDB.find(
+      (entry) =>
+        entry.processId === processId.trim() &&
+        entry.countryCode === countryCode.trim() &&
+        entry.caseId === caseId.trim()
+    );
+
+    if (record) {
+      try {
+        const parsed = JSON.parse(record.formData);
+        setFormData(parsed);
+      } catch {
+        alert('Invalid JSON in formData');
+      }
+    } else {
+      alert('Case ID not found');
+      setFormData(null);
+    }
+  };
+
+  const resetForm = () => {
+    setProcessId('');
+    setCountryCode('');
+    setCaseId('');
+    setFormData(null);
+    setIsValidated(false);
+  };
+
+  useEffect(() => {
+    if (formData && gridRef.current) {
+      const columns = Object.keys(formData).map((key) => ({
+        property: key,
+        header: key,
+        minSize: Math.max(100, key.length * 10),
+        enableResizing: true,
+      }));
+
+      const row = { ...formData };
+
+      gridRef.current.data = [row];
+      gridRef.current.columns = columns;
+    }
+  }, [formData]);
+
+  return (
+    <div style={{ padding: '20px 30px', fontFamily: 'Arial' }}>
+      {/* 🔹 Process ID and Country Code */}
+      <div
+        style={{
+          border: '1px solid #ccc',
+          borderRadius: '8px',
+          padding: '16px',
+          marginBottom: '20px',
+          backgroundColor: '#fff',
+          display: 'flex',
+          alignItems: 'flex-end',
+          gap: '16px',
+          flexWrap: 'wrap',
+        }}
+      >
+        <div style={{ width: '250px' }}>
+          <sc-text-input
+            label="Process ID"
+            value={processId}
+            border-type="box"
+            style={{ '--sc-border-color': '#68ABF2' }}
+            onInput={(e) => setProcessId(e.target.value)}
+          ></sc-text-input>
+        </div>
+
+        <div style={{ width: '250px' }}>
+          <sc-text-input
+            label="Country Code"
+            value={countryCode}
+            border-type="box"
+            style={{ '--sc-border-color': '#68ABF2' }}
+            onInput={(e) => setCountryCode(e.target.value)}
+          ></sc-text-input>
+        </div>
+
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center', paddingBottom: '4px' }}>
+          <sc-button type="primary" size="sm" width="auto" onClick={validateProcess}>
+            Validate
+          </sc-button>
+
+          <sc-button type="primary" size="sm" width="auto" onClick={resetForm}>
+            Reset
+          </sc-button>
+        </div>
+      </div>
+
+      {/* 🔹 Case ID and Search */}
+      {isValidated && (
+        <div
+          style={{
+            border: '1px solid #ccc',
+            borderRadius: '8px',
+            padding: '16px',
+            marginBottom: '20px',
+            backgroundColor: '#fff',
+            display: 'flex',
+            alignItems: 'flex-end',
+            gap: '16px',
+            flexWrap: 'wrap',
+          }}
+        >
+          <div style={{ width: '250px' }}>
+            <sc-text-input
+              label="Case ID"
+              value={caseId}
+              border-type="box"
+              style={{ '--sc-border-color': '#68ABF2' }}
+              onInput={(e) => setCaseId(e.target.value)}
+            ></sc-text-input>
+          </div>
+
+          <div style={{ paddingBottom: '4px' }}>
+            <sc-button type="primary" size="sm" width="auto" onClick={searchData}>
+              Search
+            </sc-button>
+          </div>
+        </div>
+      )}
+
+      {/* 🔹 Data Grid Table */}
+      {formData && (
+        <sc-card
+          style="
+            margin: 0;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+          "
+        >
+          <div style={{ overflowX: 'auto' }}>
+            <sc-data-grid
+              ref={gridRef}
+              style="width: 100%; min-width: max-content;"
+            ></sc-data-grid>
+          </div>
+        </sc-card>
+      )}
+    </div>
+  );
+};
+
+export default Enquiry;

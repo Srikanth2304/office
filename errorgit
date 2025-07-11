@@ -1,171 +1,95 @@
-import React, { useState } from 'react';
+<sc-button type="primary" state="default" size="sm" width="auto" left-icon="" right-icon="">
+        
 
-const Enquiry = () => {
-  const [processId, setProcessId] = useState('');
-  const [countryCode, setCountryCode] = useState('');
-  const [caseId, setCaseId] = useState('');
-  const [formData, setFormData] = useState(null);
-  const [isValidated, setIsValidated] = useState(false);
+    Default
+  </sc-button>
 
-  // ✅ Dummy data simulating backend DB
-  const dummyDB = [
-    {
-      caseId: 'SCB1234',
-      processId: 'W409',
-      countryCode: 'ID',
-      formData: '{"id":"name","value":"kiran"}',
-    },
-    {
-      caseId: '123456',
-      processId: 'W409',
-      countryCode: 'ID',
-      formData: '{"name":"Kiran"}',
-    },
-    {
-      caseId: 'LONG123',
-      processId: 'W409',
-      countryCode: 'ID',
-      formData: JSON.stringify({
-        field1: 'value1',
-        field2: 'value2',
-        field3: 'value3',
-        field4: 'value4',
-        field5: 'value5',
-        field6: 'value6',
-        field7: 'value7',
-        field8: 'value8',
-        field9: 'value9',
-        field10: 'value10',
-        field11: 'value11',
-        field12: 'value12',
-        field13: 'value13',
-        field14: 'value14',
-        field15: 'value15',
-      }),
-    },
-  ];
 
-  // ✅ Validate Process ID and Country Code
-  const validateProcess = () => {
-    const exists = dummyDB.some(
-      (entry) =>
-        entry.processId === processId.trim() &&
-        entry.countryCode === countryCode.trim()
-    );
-    setIsValidated(exists);
-    if (!exists) {
-      alert('Invalid Process ID or Country Code');
-    }
-  };
 
-  // ✅ Search Case ID and parse valid JSON into formData
-  const searchData = () => {
-    const record = dummyDB.find(
-      (entry) =>
-        entry.processId === processId.trim() &&
-        entry.countryCode === countryCode.trim() &&
-        entry.caseId === caseId.trim()
-    );
 
-    if (record) {
-      try {
-        const parsed = JSON.parse(record.formData);
-        setFormData(parsed);
-      } catch (e) {
-        alert('Invalid JSON format in formData');
-      }
-    } else {
-      alert('Case ID not found');
-      setFormData(null);
-    }
-  };
 
-  return (
-    <div style={{ padding: '20px', fontFamily: 'Arial' }}>
-      {/* 🔹 Step 1: Input Process ID & Country Code */}
-      <div style={{ marginBottom: '10px' }}>
-        <label>Process ID: </label>
-        <input
-          type="text"
-          value={processId}
-          onChange={(e) => setProcessId(e.target.value)}
-          style={{ marginRight: '10px', padding: '5px' }}
-        />
 
-        <label>Country Code: </label>
-        <input
-          type="text"
-          value={countryCode}
-          onChange={(e) => setCountryCode(e.target.value)}
-          style={{ marginRight: '10px', padding: '5px' }}
-        />
+#68ABF2
 
-        <button onClick={validateProcess} style={{ padding: '6px 12px' }}>
-          Validate
-        </button>
-      </div>
-
-      {/* 🔹 Step 2: Input Case ID (only after validation) */}
-      {isValidated && (
-        <div style={{ marginBottom: '10px' }}>
-          <label>Case ID: </label>
-          <input
-            type="text"
-            value={caseId}
-            onChange={(e) => setCaseId(e.target.value)}
-            style={{ marginRight: '10px', padding: '5px' }}
-          />
-          <button onClick={searchData} style={{ padding: '6px 12px' }}>
-            Search
-          </button>
-        </div>
-      )}
-
-      {/* 🔹 Step 3: Display dynamic formData in table */}
-      {formData && (
-        <div
-          style={{
-            marginTop: '20px',
-            overflowX: 'auto',
-            border: '1px solid #ccc',
-            padding: '10px',
-            maxWidth: '100%',
-          }}
-        >
-          <h4>Form Data Table:</h4>
-          <table style={{ minWidth: '500px', borderCollapse: 'collapse' }}>
-            <thead>
-              <tr>
-                {Object.keys(formData).map((key) => (
-                  <th
-                    key={key}
-                    style={{
-                      border: '1px solid #ccc',
-                      padding: '8px',
-                      backgroundColor: '#f0f0f0',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {key}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                {Object.values(formData).map((value, i) => (
-                  <td key={i} style={{ border: '1px solid #ccc', padding: '8px' }}>
-                    {value}
-                  </td>
-                ))}
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default Enquiry;
-
+<sc-data-grid
+  .data=${[
+          {
+                    "uuid": "0.4643980012055603",
+                    "firstName": "Yasmeen",
+                    "lastName": "Davis-Sanford",
+                    "age": 1,
+                    "visits": 17,
+                    "progress": 58,
+                    "date": new Date("2025-04-23T17:46:17.033Z"),
+                    "isAdult": false,
+                    "object": {
+                              "value": "traveler, model, traveler 🥈"
+                    },
+                    "status": "status"
+          },
+          {
+                    "uuid": "0.9889133372662728",
+                    "firstName": "Cesar",
+                    "lastName": "Hermann",
+                    "age": 5,
+                    "visits": 20,
+                    "progress": 7,
+                    "date": new Date("2026-01-12T11:10:35.219Z"),
+                    "isAdult": true,
+                    "object": {
+                              "value": "model, inventor"
+                    },
+                    "status": "status"
+          },
+          {
+                    "uuid": "0.5681042795270687",
+                    "firstName": "Kaycee",
+                    "lastName": "Kunde",
+                    "age": 2,
+                    "visits": 2,
+                    "progress": 53,
+                    "date": new Date("2025-08-22T11:31:28.851Z"),
+                    "isAdult": false,
+                    "object": {
+                              "value": "scripture devotee"
+                    },
+                    "status": "status"
+          },
+          {
+                    "uuid": "0.6209326920568649",
+                    "firstName": "Ceasar",
+                    "lastName": "Bergstrom",
+                    "age": 2,
+                    "visits": 11,
+                    "progress": 97,
+                    "date": new Date("2024-10-20T03:10:38.613Z"),
+                    "isAdult": true,
+                    "object": {
+                              "value": "gamer, engineer, public speaker"
+                    },
+                    "status": "status"
+          }
+]}
+  .columns=${[
+          {
+                    "property": "firstName",
+                    "header": "First name",
+                    "flex": 1,
+                    "enableResizing": true
+          },
+          {
+                    "property": "lastName",
+                    "header": "Last name",
+                    "minSize": 60,
+                    "flex": 2
+          },
+          {
+                    "property": "age",
+                    "minSize": 40
+          },
+          {
+                    "property": "visits"
+          }
+]}
+>
+</sc-data-grid>

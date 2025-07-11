@@ -1,57 +1,34 @@
-C:\Users\2013176\SCB\Service_Repo\wrb-service\src\main\java\com\sc\wrb\service\impl\EnquiryDataServiceImpl.java:29:20
-java: constructor EnquiryValidationResponse in class com.sc.wrb.dto.EnquiryValidationResponse cannot be applied to given types;
-  required: no arguments
-  found:    boolean,java.util.List<java.lang.String>
-  reason: actual and formal argument lists differ in length
+package com.sc.wrb.dto;
 
-package com.sc.wrb.service.impl;
+import java.util.List;
 
+public class EnquiryValidationResponse {
+    private boolean valid;
+    private List<String> caseIds;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sc.wrb.dto.EnquiryValidationResponse;
-import com.sc.wrb.model.EnquiryData;
-import com.sc.wrb.repository.EnquiryDataRepository;
-import com.sc.wrb.service.inter.EnquiryDataService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+    // ✅ No-args constructor (required by Spring)
+    public EnquiryValidationResponse() {}
 
-import java.util.*;
-import java.util.stream.Collectors;
-
-@Service
-public class EnquiryDataServiceImpl implements EnquiryDataService {
-
-    @Autowired
-    private EnquiryDataRepository repository;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    @Override
-    public EnquiryValidationResponse validateProcess(String processId, String countryCode) {
-        try {
-            List<EnquiryData> results = repository.findByProcessIdAndCountryCode(processId.trim(), countryCode.trim());
-            boolean valid = !results.isEmpty();
-            List<String> caseIds = results.stream().map(EnquiryData::getCaseId).collect(Collectors.toList());
-            return new EnquiryValidationResponse(valid, caseIds);
-        } catch (Exception e) {
-            throw new RuntimeException("Error validating process: " + e.getMessage(), e);
-        }
+    // ✅ All-args constructor
+    public EnquiryValidationResponse(boolean valid, List<String> caseIds) {
+        this.valid = valid;
+        this.caseIds = caseIds;
     }
 
-    @Override
-    public Map<String, Object> getFormData(String processId, String countryCode, String caseId) {
-        try {
-            Optional<EnquiryData> optional = repository.findByProcessIdAndCountryCodeAndCaseId(
-                    processId.trim(), countryCode.trim(), caseId.trim());
+    // ✅ Getters and setters
+    public boolean isValid() {
+        return valid;
+    }
 
-            if (optional.isEmpty()) {
-                throw new RuntimeException("Case not found.");
-            }
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
 
-            String formDataJson = optional.get().getFormData();
-            return objectMapper.readValue(formDataJson, Map.class);
-        } catch (Exception e) {
-            throw new RuntimeException("Error fetching form data: " + e.getMessage(), e);
-        }
+    public List<String> getCaseIds() {
+        return caseIds;
+    }
+
+    public void setCaseIds(List<String> caseIds) {
+        this.caseIds = caseIds;
     }
 }

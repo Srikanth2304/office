@@ -1,5 +1,76 @@
-C:\Users\2013176\SCB\Service_Repo\wrb-service\src\main\java\com\sc\wrb\service\impl\EnquiryDataServiceImpl.java:28:57
-java: invalid method reference
-  cannot find symbol
-    symbol:   method getCaseId()
-    location: class com.sc.wrb.model.EnquiryData
+package com.sc.wrb.model;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "caseformdata")
+public class CaseFormData {
+
+    @Id
+    @Column(name = "caseid")
+    private String caseId;
+    @Column(name = "processid")
+    private String processId;
+
+    @Column(name = "countrycode")
+    private String countryCode;
+
+    @Column(name = "formdata")
+    private String formData;
+
+    public String getCaseId() {
+        return caseId;
+    }
+
+    public void setCaseId(String caseId) {
+        this.caseId = caseId;
+    }
+
+    public String getProcessId() {
+        return processId;
+    }
+
+    public void setProcessId(String processId) {
+        this.processId = processId;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
+
+    public String getFormData() {
+        return formData;
+    }
+
+    public void setFormData(String formData) {
+        this.formData = formData;
+    }
+
+    public CaseFormData() {
+        // Default constructor
+    }
+
+    public CaseFormData(String caseId, String processId, String countryCode, String formData) {
+        this.caseId = caseId;
+        this.processId = processId;
+        this.countryCode = countryCode;
+        this.formData = formData;
+    }
+
+    @Override
+    public String toString() {
+        return "CaseFormData{" +
+                "caseId='" + caseId + '\'' +
+                ", processId='" + processId + '\'' +
+                ", countryCode='" + countryCode + '\'' +
+                ", formData='" + formData + '\'' +
+                '}';
+    }
+}

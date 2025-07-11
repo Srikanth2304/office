@@ -1,104 +1,155 @@
-<sc-button type="primary" state="default" size="sm" width="auto" left-icon="" right-icon="">
-        
+import React, { useState } from 'react';
 
-    Default
-  </sc-button>
+const Enquiry = () => {
+  const [processId, setProcessId] = useState('');
+  const [countryCode, setCountryCode] = useState('');
+  const [caseId, setCaseId] = useState('');
+  const [formData, setFormData] = useState(null);
+  const [isValidated, setIsValidated] = useState(false);
 
+  const dummyDB = [
+    {
+      caseId: 'SCB1234',
+      processId: 'W409',
+      countryCode: 'ID',
+      formData: '{"id":"name","value":"kiran"}',
+    },
+    {
+      caseId: 'LONG123',
+      processId: 'W409',
+      countryCode: 'ID',
+      formData: JSON.stringify({
+        field1: 'value1',
+        field2: 'value2',
+        field3: 'value3',
+        field4: 'value4',
+        field5: 'value5',
+        field6: 'value6',
+        field7: 'value7',
+        field8: 'value8',
+        field9: 'value9',
+        field10: 'value10',
+        field11: 'value11',
+        field12: 'value12',
+        field13: 'value13',
+        field14: 'value14',
+        field15: 'value15',
+      }),
+    },
+  ];
 
-<div style="padding: 20px 30px">
-  <sc-text-input label="Business justification" tooltip="" tooltip-placement="top" hint="" hint-placement="right" label-size="" value="" placeholder="" rows="5" resizable="false" prefix-icon="" suffix-icon="" suffix-label="" help-text="" border-type="box" max-length="100" success-message="" error-message="" size="md" icon-size="" text-align="left"> 
-  
-  
-  
-  
-  
-  
-  </sc-text-input>
-</div>
+  const validateProcess = () => {
+    const exists = dummyDB.some(
+      (entry) =>
+        entry.processId === processId.trim() &&
+        entry.countryCode === countryCode.trim()
+    );
+    setIsValidated(exists);
+    if (!exists) alert('Invalid Process ID or Country Code');
+  };
 
+  const searchData = () => {
+    const record = dummyDB.find(
+      (entry) =>
+        entry.processId === processId.trim() &&
+        entry.countryCode === countryCode.trim() &&
+        entry.caseId === caseId.trim()
+    );
+    if (record) {
+      try {
+        const parsed = JSON.parse(record.formData);
+        setFormData(parsed);
+      } catch {
+        alert('Invalid JSON in formData');
+      }
+    } else {
+      alert('Case ID not found');
+      setFormData(null);
+    }
+  };
 
+  const renderDataGrid = () => {
+    const columns = Object.keys(formData).map((key) => ({
+      property: key,
+      header: key,
+      flex: 1,
+    }));
+    const row = {
+      ...formData,
+    };
+    return (
+      <sc-data-grid
+        .data=${[row]}
+        .columns=${columns}
+        style="margin-top: 20px; width: 100%; overflow-x: auto"
+      ></sc-data-grid>
+    );
+  };
 
-#68ABF2
+  return (
+    <div style={{ padding: '20px', fontFamily: 'Arial' }}>
+      {/* Process ID */}
+      <div style={{ padding: '10px 30px' }}>
+        <sc-text-input
+          label="Process ID"
+          value={processId}
+          placeholder="Enter Process ID"
+          border-type="box"
+          max-length="20"
+          style={{ marginBottom: '10px', '--sc-border-color': '#68ABF2' }}
+          onInput={(e) => setProcessId(e.target.value)}
+        ></sc-text-input>
 
-<sc-data-grid
-  .data=${[
-          {
-                    "uuid": "0.4643980012055603",
-                    "firstName": "Yasmeen",
-                    "lastName": "Davis-Sanford",
-                    "age": 1,
-                    "visits": 17,
-                    "progress": 58,
-                    "date": new Date("2025-04-23T17:46:17.033Z"),
-                    "isAdult": false,
-                    "object": {
-                              "value": "traveler, model, traveler 🥈"
-                    },
-                    "status": "status"
-          },
-          {
-                    "uuid": "0.9889133372662728",
-                    "firstName": "Cesar",
-                    "lastName": "Hermann",
-                    "age": 5,
-                    "visits": 20,
-                    "progress": 7,
-                    "date": new Date("2026-01-12T11:10:35.219Z"),
-                    "isAdult": true,
-                    "object": {
-                              "value": "model, inventor"
-                    },
-                    "status": "status"
-          },
-          {
-                    "uuid": "0.5681042795270687",
-                    "firstName": "Kaycee",
-                    "lastName": "Kunde",
-                    "age": 2,
-                    "visits": 2,
-                    "progress": 53,
-                    "date": new Date("2025-08-22T11:31:28.851Z"),
-                    "isAdult": false,
-                    "object": {
-                              "value": "scripture devotee"
-                    },
-                    "status": "status"
-          },
-          {
-                    "uuid": "0.6209326920568649",
-                    "firstName": "Ceasar",
-                    "lastName": "Bergstrom",
-                    "age": 2,
-                    "visits": 11,
-                    "progress": 97,
-                    "date": new Date("2024-10-20T03:10:38.613Z"),
-                    "isAdult": true,
-                    "object": {
-                              "value": "gamer, engineer, public speaker"
-                    },
-                    "status": "status"
-          }
-]}
-  .columns=${[
-          {
-                    "property": "firstName",
-                    "header": "First name",
-                    "flex": 1,
-                    "enableResizing": true
-          },
-          {
-                    "property": "lastName",
-                    "header": "Last name",
-                    "minSize": 60,
-                    "flex": 2
-          },
-          {
-                    "property": "age",
-                    "minSize": 40
-          },
-          {
-                    "property": "visits"
-          }
-]}
->
-</sc-data-grid>
+        <sc-text-input
+          label="Country Code"
+          value={countryCode}
+          placeholder="Enter Country Code"
+          border-type="box"
+          max-length="10"
+          style={{ marginBottom: '10px', '--sc-border-color': '#68ABF2' }}
+          onInput={(e) => setCountryCode(e.target.value)}
+        ></sc-text-input>
+
+        <sc-button
+          type="primary"
+          size="sm"
+          width="auto"
+          style="margin-bottom: 20px;"
+          onClick={validateProcess}
+        >
+          Validate
+        </sc-button>
+      </div>
+
+      {/* Case ID */}
+      {isValidated && (
+        <div style={{ padding: '10px 30px' }}>
+          <sc-text-input
+            label="Case ID"
+            value={caseId}
+            placeholder="Enter Case ID"
+            border-type="box"
+            max-length="20"
+            style={{ marginBottom: '10px', '--sc-border-color': '#68ABF2' }}
+            onInput={(e) => setCaseId(e.target.value)}
+          ></sc-text-input>
+
+          <sc-button
+            type="primary"
+            size="sm"
+            width="auto"
+            style="margin-bottom: 20px;"
+            onClick={searchData}
+          >
+            Search
+          </sc-button>
+        </div>
+      )}
+
+      {/* Data Grid Output */}
+      {formData && renderDataGrid()}
+    </div>
+  );
+};
+
+export default Enquiry;

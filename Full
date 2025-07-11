@@ -1,24 +1,12 @@
-package com.example.model;
+package com.example.repository;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import com.example.model.EnquiryData;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Entity
-@Table(name = "caseformdata", schema = "EOPSHUB_SIT03")
-@Getter
-@Setter
-public class EnquiryData {
+import java.util.List;
+import java.util.Optional;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String processId;
-    private String countryCode;
-    private String caseId;
-
-    @Lob
-    @Column(name = "formData")
-    private String formData;
+public interface EnquiryDataRepository extends JpaRepository<EnquiryData, Long> {
+    List<EnquiryData> findByProcessIdAndCountryCode(String processId, String countryCode);
+    Optional<EnquiryData> findByProcessIdAndCountryCodeAndCaseId(String processId, String countryCode, String caseId);
 }

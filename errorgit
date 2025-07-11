@@ -1,140 +1,36 @@
-import React, { useState } from 'react';
+Error while transforming src\components\Enquiry.jsx: Expected ">" but found "."
 
-const Enquiry = () => {
-  const [processId, setProcessId] = useState('');
-  const [countryCode, setCountryCode] = useState('');
-  const [caseId, setCaseId] = useState('');
-  const [isValidated, setIsValidated] = useState(false);
-  const [tableData, setTableData] = useState([]);
+  131 |         }}>
+  132 |           <sc-data-grid
+> 133 |             .data={tableData}
+      |            ^
+  134 |             .columns={columns}
+  135 |             style="width: 100%; overflow-x: auto"
+  136 |           ></sc-data-grid>
 
-  const validateProcess = () => {
-    if (processId && countryCode) {
-      setIsValidated(true);
-    } else {
-      alert('Please enter both Process ID and Country Code.');
-    }
-  };
+Error while transforming src\components\Enquiry.jsx: Expected ">" but found "."
+Web Dev Server started...
 
-  const resetForm = () => {
-    setProcessId('');
-    setCountryCode('');
-    setCaseId('');
-    setIsValidated(false);
-    setTableData([]);
-  };
+  Root dir: C:\Users\2013176\SCB\Service_Repo\55313-00-wealth
+  Local:    http://localhost:11001/mercury/
+  Network:  http://10.128.169.107:11001/mercury/
 
-  const searchData = () => {
-    const formDataJson = `{
-      "field1": "value1",
-      "field2": "value2",
-      "field3": "value3",
-      "field4": "value4",
-      "field5": "value5",
-      "field6": "value6",
-      "field7": "value7",
-      "field8": "value8",
-      "field9": "value9",
-      "field10": "value10",
-      "field11": "value11",
-      "field12": "value12",
-      "field13": "value13"
-    }`;
+Error while transforming src\components\Enquiry.jsx: Expected ">" but found "."
 
-    const data = JSON.parse(formDataJson);
-    setTableData([data]);
-  };
+  122 |         }}>
+  123 |           <sc-data-grid
+> 124 |             .data={tableData}
+      |            ^
+  125 |             .columns={
+  126 |               Object.keys(tableData[0]).map((key) => ({
+  127 |                 property: key,
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      searchData();
-    }
-  };
+Error while transforming src\components\Enquiry.jsx: Expected ">" but found "."
 
-  return (
-    <div style={{ padding: '20px' }}>
-      {/* Process ID and Country Code Row */}
-      <div style={{ display: 'flex', alignItems: 'flex-end', gap: '16px', marginBottom: '20px', flexWrap: 'wrap' }}>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <label>Process ID</label>
-          <input
-            type="text"
-            value={processId}
-            onChange={(e) => setProcessId(e.target.value)}
-            style={{
-              width: '200px',
-              padding: '8px',
-              border: '1px solid #68ABF2',
-              borderRadius: '6px'
-            }}
-          />
-        </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <label>Country Code</label>
-          <input
-            type="text"
-            value={countryCode}
-            onChange={(e) => setCountryCode(e.target.value)}
-            style={{
-              width: '200px',
-              padding: '8px',
-              border: '1px solid #68ABF2',
-              borderRadius: '6px'
-            }}
-          />
-        </div>
-
-        <sc-button onClick={validateProcess} type="primary" size="sm">Validate</sc-button>
-        <sc-button onClick={resetForm} type="primary" size="sm">Reset</sc-button>
-      </div>
-
-      {/* Case ID and Search Row */}
-      {isValidated && (
-        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '16px', marginBottom: '20px', flexWrap: 'wrap' }}>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <label>Case ID</label>
-            <input
-              type="text"
-              value={caseId}
-              onChange={(e) => setCaseId(e.target.value)}
-              onKeyDown={handleKeyDown}
-              style={{
-                width: '200px',
-                padding: '8px',
-                border: '1px solid #68ABF2',
-                borderRadius: '6px'
-              }}
-            />
-          </div>
-
-          <sc-button onClick={searchData} type="primary" size="sm">Search</sc-button>
-        </div>
-      )}
-
-      {/* SCB Data Grid Table */}
-      {tableData.length > 0 && (
-        <div style={{
-          border: '1px solid #ccc',
-          borderRadius: '8px',
-          padding: '10px',
-          overflowX: 'auto',
-          maxWidth: '100%'
-        }}>
-          <sc-data-grid
-            .data={tableData}
-            .columns={
-              Object.keys(tableData[0]).map((key) => ({
-                property: key,
-                header: key,
-                minSize: 100
-              }))
-            }
-            style="width: 100%; overflow-x: auto"
-          ></sc-data-grid>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default Enquiry;
+  122 |         }}>
+  123 |           <sc-data-grid
+> 124 |             .data={tableData}
+      |            ^
+  125 |             .columns={
+  126 |               Object.keys(tableData[0]).map((key) => ({
+  127 |                 property: key,

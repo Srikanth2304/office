@@ -13,13 +13,12 @@ const Enquiry = () => {
     try {
       const response = await fetch(url);
       const data = await response.json();
-
       if (data.valid) {
         setIsValidated(true);
       } else {
         alert('Invalid Process ID or Country Code');
       }
-    } catch (error) {
+    } catch {
       alert('Validation failed.');
     }
   };
@@ -31,7 +30,7 @@ const Enquiry = () => {
       );
       const data = await response.json();
       setFormData(data);
-    } catch (error) {
+    } catch {
       alert('Error fetching form data.');
       setFormData(null);
     }
@@ -52,13 +51,22 @@ const Enquiry = () => {
         header: key,
         minSize: Math.max(100, key.length * 10),
         enableResizing: true,
-        style: 'font-weight: bold', // 🔹 Makes header bold
       }));
 
       const row = { ...formData };
 
       gridRef.current.data = [row];
       gridRef.current.columns = columns;
+
+      // Apply header styles after the grid is populated
+      setTimeout(() => {
+        const headers = gridRef.current.shadowRoot?.querySelectorAll('.header-cell');
+        headers?.forEach((el) => {
+          el.style.backgroundColor = '#007AFF';
+          el.style.color = 'white';
+          el.style.fontWeight = 'bold';
+        });
+      }, 100);
     }
   }, [formData]);
 

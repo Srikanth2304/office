@@ -1,11 +1,2 @@
-{
-    "error": "Validation failed: JDBC exception executing SQL [select ed1_0.caseid,ed1_0.countrycode,ed1_0.formdata,ed1_0.processid from eopshub_sit03.caseformdata ed1_0 where ed1_0.processid=? and ed1_0.countrycode=?] [ORA-00942: table or view does not exist\n\r\nhttps://docs.oracle.com/error-help/db/ora-00942/] [n/a]; SQL [n/a]"
-}
-
-
-2025-07-11T15:50:50.514+05:30  INFO 20120 --- [wrb-service] [nio-6666-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2025-07-11T15:50:50.514+05:30  INFO 20120 --- [wrb-service] [nio-6666-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2025-07-11T15:50:50.516+05:30  INFO 20120 --- [wrb-service] [nio-6666-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
-Hibernate: select ed1_0.caseid,ed1_0.countrycode,ed1_0.formdata,ed1_0.processid from eopshub_sit03.caseformdata ed1_0 where ed1_0.processid=? and ed1_0.countrycode=?
-2025-07-11T15:50:51.087+05:30  WARN 20120 --- [wrb-service] [nio-6666-exec-1] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 942, SQLState: 42000
-2025-07-11T15:50:51.088+05:30 ERROR 20120 --- [wrb-service] [nio-6666-exec-1] o.h.engine.jdbc.spi.SqlExceptionHelper   : ORA-00942: table or view does not exist
+GET http://localhost:6666/api/enquiry/validate?processId=W409&countryCode=ID
+GET http://localhost:6666/api/enquiry/form-data?processId=W409&countryCode=ID&caseId=123456

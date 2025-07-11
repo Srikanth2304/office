@@ -1,15 +1,80 @@
-Web Dev Server started...
+import React, { useEffect, useState, useContext } from 'react'; // Added useState and useEffect
 
-  Root dir: C:\Users\2013176\SCB\Service_Repo\55313-00-wealth
-  Local:    http://localhost:11001/mercury/
-  Network:  http://10.128.169.107:11001/mercury/
 
-Error while transforming src\components\Enquiry.jsx: Expected ">" but found "."
+import { 
+    NavigationContext
+  } from '@scdevkit/service-bench-core/react/context.js';
 
-  80 |     return (
-  81 |       <sc-data-grid
-> 82 |         .data=${[row]}
-     |        ^
-  83 |         .columns=${columns}
-  84 |         style="margin-top: 20px; width: 100%; overflow-x: auto"
-  85 |       ></sc-data-grid>
+import '@scdevkit/webkit/styles/ScGridStyle.js';
+import { InboxContent } from '../caselist/InboxContent';
+import Enquiry from '../Enquiry';
+
+const Discover = () => {
+
+useEffect(() => {
+  const styleSheet = document.createElement('style');
+  styleSheet.innerText = '@scdevkit/webkit/styles/ScGridStyle.js';
+  document.head.appendChild(styleSheet);
+}, []);
+
+return (
+    <>
+
+<sc-tab-group class="sc-tabs" type="filled">
+      <sc-tab slot="nav" panel="Dashboard"  active=""> Dashboard </sc-tab>
+      <sc-tab slot="nav" panel="Cases" > My Case Worklist </sc-tab>
+      <sc-tab slot="nav" panel="Enquiry"> Enquiry </sc-tab>
+      <sc-tab slot="nav" panel="Reports"> Reports </sc-tab>
+      {/* <sc-tab slot="nav" panel="CaseInit"> Case Initiation </sc-tab> */}
+      <sc-tab-panel name="Dashboard">Tab1 content</sc-tab-panel>
+      <sc-tab-panel name="Cases">
+        <InboxContent/>
+      </sc-tab-panel>
+      <sc-tab-panel name="Enquiry">
+      <Enquiry/>
+      </sc-tab-panel>
+      <sc-tab-panel name="Reports">Tab4 content</sc-tab-panel>
+      {/* <sc-tab-panel name="CaseInit">Tab4 content</sc-tab-panel> */}
+    </sc-tab-group>
+{/* 
+<sc-landing-layout height="auto" banner-text-alignment="left" banner-image-src="" banner-image-position="right">
+
+
+      <div slot="content">
+    {/* <sc-card class="test" width="100%" height="140px" hover-highlight="" vertical-align="middle" direction="horizontal">
+      <div slot="title">test title</div>
+    </sc-card>
+    <sc-card class="test" width="100%" height="140px" hover-highlight="" vertical-align="middle" direction="vertical">
+      <div slot="title">test title</div>
+    </sc-card> 
+    <sc-grid-container>
+    <sc-grid-row>
+      <sc-grid-column style="border:1px solid #0473EA;" auto="" col-1="false" col-2="false" xs="" sm="" md="" lg="" xl="" xxl="">
+      <sc-card
+              title-size="md"
+              sub-title-size="sm"
+              body-size="sm"
+              space-size="sm"
+              text-align="left"
+              vertical-align="middle"
+              width="30%"
+              height="auto"
+              icon=""
+              icon-size="md"
+              icon-vertical-align="middle"
+            >Column</sc-card>
+      </sc-grid-column>
+      <sc-grid-column style="border:1px solid #0473EA;background-color:#E5E5E5;" auto="">Auto column</sc-grid-column>
+    </sc-grid-row>
+  </sc-grid-container>
+    
+     
+      </div>
+      
+    </sc-landing-layout>
+     */}
+    </>
+)
+}
+
+export { Discover };

@@ -16,6 +16,12 @@ const Enquiry = () => {
       formData: '{"id":"name","value":"kiran"}',
     },
     {
+      caseId: '123456',
+      processId: 'W409',
+      countryCode: 'ID',
+      formData: '{"name":"Kiran"}',
+    },
+    {
       caseId: 'LONG123',
       processId: 'W409',
       countryCode: 'ID',
@@ -98,20 +104,8 @@ const Enquiry = () => {
 
   return (
     <div style={{ padding: '20px 30px', fontFamily: 'Arial' }}>
-      {/* 🔹 Process ID and Country Code */}
-      <div
-        style={{
-          border: '1px solid #ccc',
-          borderRadius: '8px',
-          padding: '16px',
-          marginBottom: '20px',
-          backgroundColor: '#fff',
-          display: 'flex',
-          alignItems: 'flex-end',
-          gap: '16px',
-          flexWrap: 'wrap',
-        }}
-      >
+      {/* 🔹 First Row: Process ID / Country Code / Validate / Reset */}
+      <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-end', flexWrap: 'wrap', marginBottom: '16px' }}>
         <div style={{ width: '250px' }}>
           <sc-text-input
             label="Process ID"
@@ -132,32 +126,18 @@ const Enquiry = () => {
           ></sc-text-input>
         </div>
 
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'center', paddingBottom: '4px' }}>
-          <sc-button type="primary" size="sm" width="auto" onClick={validateProcess}>
-            Validate
-          </sc-button>
+        <sc-button type="primary" size="sm" width="auto" onClick={validateProcess}>
+          Validate
+        </sc-button>
 
-          <sc-button type="primary" size="sm" width="auto" onClick={resetForm}>
-            Reset
-          </sc-button>
-        </div>
+        <sc-button type="primary" size="sm" width="auto" onClick={resetForm}>
+          Reset
+        </sc-button>
       </div>
 
-      {/* 🔹 Case ID and Search */}
+      {/* 🔹 Second Row: Case ID / Search */}
       {isValidated && (
-        <div
-          style={{
-            border: '1px solid #ccc',
-            borderRadius: '8px',
-            padding: '16px',
-            marginBottom: '20px',
-            backgroundColor: '#fff',
-            display: 'flex',
-            alignItems: 'flex-end',
-            gap: '16px',
-            flexWrap: 'wrap',
-          }}
-        >
+        <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-end', flexWrap: 'wrap', marginBottom: '0' }}>
           <div style={{ width: '250px' }}>
             <sc-text-input
               label="Case ID"
@@ -168,31 +148,32 @@ const Enquiry = () => {
             ></sc-text-input>
           </div>
 
-          <div style={{ paddingBottom: '4px' }}>
-            <sc-button type="primary" size="sm" width="auto" onClick={searchData}>
-              Search
-            </sc-button>
-          </div>
+          <sc-button type="primary" size="sm" width="auto" onClick={searchData}>
+            Search
+          </sc-button>
         </div>
       )}
 
-      {/* 🔹 Data Grid Table */}
+      {/* 🔹 Data Table (SCB Table with scrollbar) */}
       {formData && (
-        <sc-card
-          style="
-            margin: 0;
-            padding: 20px;
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
-          "
-        >
-          <div style={{ overflowX: 'auto' }}>
-            <sc-data-grid
-              ref={gridRef}
-              style="width: 100%; min-width: max-content;"
-            ></sc-data-grid>
-          </div>
-        </sc-card>
+        <div style={{ marginTop: '24px' }}>
+          <sc-card
+            style="
+              padding: 16px;
+              background-color: #f9f9f9;
+              border: 1px solid #ccc;
+              border-radius: 6px;
+              box-shadow: none;
+            "
+          >
+            <div style={{ overflowX: 'auto', margin: 0 }}>
+              <sc-data-grid
+                ref={gridRef}
+                style="width: 100%; min-width: max-content; margin: 0; padding: 0;"
+              ></sc-data-grid>
+            </div>
+          </sc-card>
+        </div>
       )}
     </div>
   );

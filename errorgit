@@ -1,80 +1,168 @@
-import React, { useEffect, useState, useContext } from 'react'; // Added useState and useEffect
+import React, { useState, useRef, useEffect } from 'react';
 
+// ✅ Tata SCB Web Components
+import '@scdevkit/webkit/components/sc-button.js';
+import '@scdevkit/webkit/components/sc-text-input.js';
+import '@scdevkit/webkit/components/sc-data-grid.js';
+import '@scdevkit/webkit/styles/ScGridStyle.js'; // for consistent styling
 
-import { 
-    NavigationContext
-  } from '@scdevkit/service-bench-core/react/context.js';
+const Enquiry = () => {
+  const [processId, setProcessId] = useState('');
+  const [countryCode, setCountryCode] = useState('');
+  const [caseId, setCaseId] = useState('');
+  const [formData, setFormData] = useState(null);
+  const [isValidated, setIsValidated] = useState(false);
+  const gridRef = useRef(null);
 
-import '@scdevkit/webkit/styles/ScGridStyle.js';
-import { InboxContent } from '../caselist/InboxContent';
-import Enquiry from '../Enquiry';
+  // ✅ Dummy Data Simulating DB
+  const dummyDB = [
+    {
+      caseId: 'SCB1234',
+      processId: 'W409',
+      countryCode: 'ID',
+      formData: '{"id":"name","value":"kiran"}',
+    },
+    {
+      caseId: 'LONG123',
+      processId: 'W409',
+      countryCode: 'ID',
+      formData: JSON.stringify({
+        field1: 'value1',
+        field2: 'value2',
+        field3: 'value3',
+        field4: 'value4',
+        field5: 'value5',
+        field6: 'value6',
+        field7: 'value7',
+        field8: 'value8',
+        field9: 'value9',
+        field10: 'value10',
+        field11: 'value11',
+        field12: 'value12',
+        field13: 'value13',
+        field14: 'value14',
+        field15: 'value15',
+      }),
+    },
+  ];
 
-const Discover = () => {
+  // ✅ Validate Process ID + Country Code
+  const validateProcess = () => {
+    const exists = dummyDB.some(
+      (entry) =>
+        entry.processId === processId.trim() &&
+        entry.countryCode === countryCode.trim()
+    );
+    setIsValidated(exists);
+    if (!exists) {
+      alert('Invalid Process ID or Country Code');
+    }
+  };
 
-useEffect(() => {
-  const styleSheet = document.createElement('style');
-  styleSheet.innerText = '@scdevkit/webkit/styles/ScGridStyle.js';
-  document.head.appendChild(styleSheet);
-}, []);
+  // ✅ Search Case ID
+  const searchData = () => {
+    const record = dummyDB.find(
+      (entry) =>
+        entry.processId === processId.trim() &&
+        entry.countryCode === countryCode.trim() &&
+        entry.caseId === caseId.trim()
+    );
 
-return (
-    <>
+    if (record) {
+      try {
+        const parsed = JSON.parse(record.formData);
+        setFormData(parsed);
+      } catch {
+        alert('Invalid JSON in formData');
+      }
+    } else {
+      alert('Case ID not found');
+      setFormData(null);
+    }
+  };
 
-<sc-tab-group class="sc-tabs" type="filled">
-      <sc-tab slot="nav" panel="Dashboard"  active=""> Dashboard </sc-tab>
-      <sc-tab slot="nav" panel="Cases" > My Case Worklist </sc-tab>
-      <sc-tab slot="nav" panel="Enquiry"> Enquiry </sc-tab>
-      <sc-tab slot="nav" panel="Reports"> Reports </sc-tab>
-      {/* <sc-tab slot="nav" panel="CaseInit"> Case Initiation </sc-tab> */}
-      <sc-tab-panel name="Dashboard">Tab1 content</sc-tab-panel>
-      <sc-tab-panel name="Cases">
-        <InboxContent/>
-      </sc-tab-panel>
-      <sc-tab-panel name="Enquiry">
-      <Enquiry/>
-      </sc-tab-panel>
-      <sc-tab-panel name="Reports">Tab4 content</sc-tab-panel>
-      {/* <sc-tab-panel name="CaseInit">Tab4 content</sc-tab-panel> */}
-    </sc-tab-group>
-{/* 
-<sc-landing-layout height="auto" banner-text-alignment="left" banner-image-src="" banner-image-position="right">
+  // ✅ Set data & columns into sc-data-grid
+  useEffect(() => {
+    if (formData && gridRef.current) {
+      const columns = Object.keys(formData).map((key) => ({
+        property: key,
+        header: key,
+        flex: 1,
+      }));
 
+      const row = { ...formData };
 
-      <div slot="content">
-    {/* <sc-card class="test" width="100%" height="140px" hover-highlight="" vertical-align="middle" direction="horizontal">
-      <div slot="title">test title</div>
-    </sc-card>
-    <sc-card class="test" width="100%" height="140px" hover-highlight="" vertical-align="middle" direction="vertical">
-      <div slot="title">test title</div>
-    </sc-card> 
-    <sc-grid-container>
-    <sc-grid-row>
-      <sc-grid-column style="border:1px solid #0473EA;" auto="" col-1="false" col-2="false" xs="" sm="" md="" lg="" xl="" xxl="">
-      <sc-card
-              title-size="md"
-              sub-title-size="sm"
-              body-size="sm"
-              space-size="sm"
-              text-align="left"
-              vertical-align="middle"
-              width="30%"
-              height="auto"
-              icon=""
-              icon-size="md"
-              icon-vertical-align="middle"
-            >Column</sc-card>
-      </sc-grid-column>
-      <sc-grid-column style="border:1px solid #0473EA;background-color:#E5E5E5;" auto="">Auto column</sc-grid-column>
-    </sc-grid-row>
-  </sc-grid-container>
-    
-     
-      </div>
-      
-    </sc-landing-layout>
-     */}
-    </>
-)
-}
+      gridRef.current.data = [row];
+      gridRef.current.columns = columns;
+    }
+  }, [formData]);
 
-export { Discover };
+  return (
+    <div style={{ padding: '20px 30px', fontFamily: 'Arial' }}>
+      {/* 🔷 Process ID Input */}
+      <sc-text-input
+        label="Process ID"
+        value={processId}
+        placeholder="Enter Process ID"
+        border-type="box"
+        style={{ marginBottom: '12px', '--sc-border-color': '#68ABF2' }}
+        onInput={(e) => setProcessId(e.target.value)}
+      ></sc-text-input>
+
+      {/* 🔷 Country Code Input */}
+      <sc-text-input
+        label="Country Code"
+        value={countryCode}
+        placeholder="Enter Country Code"
+        border-type="box"
+        style={{ marginBottom: '12px', '--sc-border-color': '#68ABF2' }}
+        onInput={(e) => setCountryCode(e.target.value)}
+      ></sc-text-input>
+
+      {/* 🔷 Validate Button */}
+      <sc-button
+        type="primary"
+        size="sm"
+        width="auto"
+        style="margin-bottom: 20px;"
+        onClick={validateProcess}
+      >
+        Validate
+      </sc-button>
+
+      {/* 🔷 Case ID Section */}
+      {isValidated && (
+        <>
+          <sc-text-input
+            label="Case ID"
+            value={caseId}
+            placeholder="Enter Case ID"
+            border-type="box"
+            style={{ marginBottom: '12px', '--sc-border-color': '#68ABF2' }}
+            onInput={(e) => setCaseId(e.target.value)}
+          ></sc-text-input>
+
+          <sc-button
+            type="primary"
+            size="sm"
+            width="auto"
+            style="margin-bottom: 20px;"
+            onClick={searchData}
+          >
+            Search
+          </sc-button>
+        </>
+      )}
+
+      {/* 🔷 Dynamic Grid Section */}
+      {formData && (
+        <sc-data-grid
+          ref={gridRef}
+          style="margin-top: 20px; width: 100%; overflow-x: auto"
+        ></sc-data-grid>
+      )}
+    </div>
+  );
+};
+
+export default Enquiry;

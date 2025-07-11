@@ -1,12 +1,13 @@
-package com.example.repository;
+package com.example.dto;
 
-import com.example.model.EnquiryData;
-import org.springframework.data.jpa.repository.JpaRepository;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface EnquiryDataRepository extends JpaRepository<EnquiryData, Long> {
-    List<EnquiryData> findByProcessIdAndCountryCode(String processId, String countryCode);
-    Optional<EnquiryData> findByProcessIdAndCountryCodeAndCaseId(String processId, String countryCode, String caseId);
+@Data
+@AllArgsConstructor
+public class EnquiryValidationResponse {
+    private boolean valid;
+    private List<String> caseIds;
 }

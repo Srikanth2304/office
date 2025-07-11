@@ -105,14 +105,14 @@ const Enquiry = () => {
 
   return (
     <div style={{ padding: '20px 30px', fontFamily: 'Arial' }}>
-      {/* 🔷 Process ID + Country Code + Validate */}
-      <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-end', flexWrap: 'wrap' }}>
+      {/* 🔷 Process ID + Country Code + Buttons (aligned) */}
+      <div style={{ display: 'flex', gap: '20px', alignItems: 'center', flexWrap: 'wrap' }}>
         <sc-text-input
           label="Process ID"
           value={processId}
           placeholder="Enter Process ID"
           border-type="box"
-          style={{ '--sc-border-color': '#68ABF2', flex: 1 }}
+          style={{ '--sc-border-color': '#68ABF2', width: '250px' }}
           onInput={(e) => setProcessId(e.target.value)}
         ></sc-text-input>
 
@@ -121,7 +121,7 @@ const Enquiry = () => {
           value={countryCode}
           placeholder="Enter Country Code"
           border-type="box"
-          style={{ '--sc-border-color': '#68ABF2', flex: 1 }}
+          style={{ '--sc-border-color': '#68ABF2', width: '250px' }}
           onInput={(e) => setCountryCode(e.target.value)}
         ></sc-text-input>
 
@@ -138,16 +138,15 @@ const Enquiry = () => {
           type="primary"
           size="sm"
           width="auto"
-          style="background-color: #ccc; color: black;"
           onClick={resetForm}
         >
           Reset
         </sc-button>
       </div>
 
-      {/* 🔷 Case ID + Search in One Row */}
+      {/* 🔷 Case ID + Search (aligned) */}
       {isValidated && (
-        <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-end', marginTop: '20px', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginTop: '20px', flexWrap: 'wrap' }}>
           <sc-text-input
             label="Case ID"
             value={caseId}
@@ -168,7 +167,7 @@ const Enquiry = () => {
         </div>
       )}
 
-      {/* 🔷 Data Table */}
+      {/* 🔷 Dynamic Data Table */}
       {formData && (
         <div style={{ overflowX: 'auto', marginTop: '20px' }}>
           <sc-data-grid

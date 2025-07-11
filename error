@@ -1,18 +1,66 @@
-return (
-    <>
+import React, { useState } from 'react';
 
-<sc-tab-group class="sc-tabs" type="filled">
-      <sc-tab slot="nav" panel="Dashboard"  active=""> Dashboard </sc-tab>
-      <sc-tab slot="nav" panel="Cases" > My Case Worklist </sc-tab>
-      <sc-tab slot="nav" panel="Enquiry"> Enquiry </sc-tab>
-      <sc-tab slot="nav" panel="Reports"> Reports </sc-tab>
-      {/* <sc-tab slot="nav" panel="CaseInit"> Case Initiation </sc-tab> */}
-      <sc-tab-panel name="Dashboard">Tab1 content</sc-tab-panel>
-      <sc-tab-panel name="Cases">
-        <InboxContent/>
-      </sc-tab-panel>
-      <sc-tab-panel name="Enquiry">Tab3 content</sc-tab-panel>
-      <sc-tab-panel name="Reports">Tab4 content</sc-tab-panel>
-      {/* <sc-tab-panel name="CaseInit">Tab4 content</sc-tab-panel> */}
-    </sc-tab-group>
-{/* 
+const Enquiry = () => {
+  const [selectedOption, setSelectedOption] = useState('Select');
+  const [inputValue, setInputValue] = useState('');
+
+  const handleDropdownChange = (e) => {
+    setSelectedOption(e.target.value);
+  };
+
+  const handleReset = () => {
+    setInputValue('');
+    setSelectedOption('Select');
+  };
+
+  return (
+    <div style={{ padding: '20px', fontFamily: 'Arial' }}>
+      <div style={{ marginBottom: '10px' }}>
+        <label htmlFor="enquirySelect"><strong>Enquiry on </strong></label>
+        <select
+          id="enquirySelect"
+          value={selectedOption}
+          onChange={handleDropdownChange}
+          style={{ marginLeft: '10px', padding: '5px' }}
+        >
+          <option value="Select">Select</option>
+          <option value="SystemGeneratedNumber">SystemGeneratedNumber</option>
+        </select>
+      </div>
+
+      {selectedOption === 'SystemGeneratedNumber' && (
+        <div
+          style={{
+            marginTop: '10px',
+            padding: '10px',
+            border: '1px solid #ccc',
+            borderRadius: '5px',
+            maxWidth: '500px',
+            transition: 'all 0.3s ease-in-out'
+          }}
+        >
+          <div style={{ marginBottom: '10px' }}>
+            <label htmlFor="sysGenNo">SystemGeneratedNumber: </label>
+            <input
+              id="sysGenNo"
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              style={{ marginLeft: '10px', padding: '5px', width: '250px' }}
+            />
+          </div>
+
+          <button style={{ marginRight: '10px', padding: '6px 12px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '4px' }}>
+            Search
+          </button>
+
+          <button onClick={handleReset} style={{ padding: '6px 12px', backgroundColor: '#f44336', color: 'white', border: 'none', borderRadius: '4px' }}>
+            Reset
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Enquiry;

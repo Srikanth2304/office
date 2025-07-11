@@ -1,120 +1,18 @@
+return (
+    <>
 
-import React, { useRef, useState, useEffect, useContext } from 'react';
-import '@scdevkit/form/elements/form-editor.js';
-import '@scdevkit/form/elements/text-input.js';
-import '@scdevkit/form/elements/button.js';
-import { serviceCall } from '../service/apiService';
-import { GraphQLClientContext } from '@scdevkit/service-bench-core/react/context.js';
-
-const Draft = () => {
-  const formEditorRef = useRef(null);
-  const processIdRef = useRef(null);
-  const stepNameRef = useRef(null);
-  const [processId, setProcessId] = useState('');
-  const [stepName, setStepName] = useState('');
-  const [editorReady, setEditorReady] = useState(false);
-  const graphQLClient = useContext(GraphQLClientContext);
-
-  useEffect(() => {
-    customElements.whenDefined('sc-form-editor').then(() => {
-      setEditorReady(true);
-    });
-  }, []);
-
-  const handleSubmit = async () => {
-    if (!processId || !stepName || !editorReady || !formEditorRef.current) {
-      console.log('Input missing or editor not ready');
-      return;
-    }
-
-    const editor = formEditorRef.current;
-    const code = await editor.getCode();
-    const data = await editor.getData();
-
-    const form = { code, data };
-    const escapedForm = JSON.stringify(form).replace(/"/g, '\\"');
-
-    const query = `mutation {
-      saveStepFormDefinition(
-        processId: "${processId}",
-        stepName: "${stepName}",
-        form: "${escapedForm}"
-      )
-    }`;
-
-    await serviceCall(query);
-    console.log('Submitted form:', form);
-  };
-
-  const handleFetch = async () => {
-    if (!processId || !stepName || !editorReady || !formEditorRef.current) {
-      console.log('Input missing or editor not ready');
-      return;
-    }
-
-    const query = `{
-      getForm(processId: "${processId}", stepName: "${stepName}") {
-        stepFormMappingDTO {
-          form
-        }
-      }
-    }`;
-
-    const result = await serviceCall(query);
-    const rawForm = result?.data?.getForm?.stepFormMappingDTO?.form;
-
-    if (rawForm) {
-      const parsed = JSON.parse(rawForm);
-      await formEditorRef.current.setCode(parsed.code || parsed);
-      console.log('Loaded form into editor');
-    }
-  };
-
-  const handleProcessIdChange = (e) => {
-    setProcessId(e.target.value);
-  };
-
-  const handleStepNameChange = (e) => {
-    setStepName(e.target.value);
-  };
-
-  return (
-    <div style={{ padding: '24px' }}>
-      {/* Custom Inputs and Buttons */}
-      <div style={{ marginBottom: '16px', display: 'flex', gap: '16px', alignItems: 'center' }}>
-        <sc-text-input
-          ref={processIdRef}
-          label="Process ID"
-          value={processId}
-          placeholder="Enter Process ID"
-          onInput={handleProcessIdChange}
-          border-type="box"
-          max-length="100"
-        ></sc-text-input>
-
-        <sc-text-input
-          ref={stepNameRef}
-          label="Step Name"
-          value={stepName}
-          placeholder="Enter Step Name"
-          onInput={handleStepNameChange}
-          border-type="box"
-          max-length="100"
-        ></sc-text-input>
-
-        <sc-button type="primary" size="sm" onClick={handleSubmit}>
-          Submit
-        </sc-button>
-
-        <sc-button type="primary" size="sm" onClick={handleFetch}>
-          Fetch
-        </sc-button>
-      </div>
-
-      {/* Editor */}
-      <sc-form-editor ref={formEditorRef}></sc-form-editor>
-    </div>
-  );
-};
-
-export default Draft;
+<sc-tab-group class="sc-tabs" type="filled">
+      <sc-tab slot="nav" panel="Dashboard"  active=""> Dashboard </sc-tab>
+      <sc-tab slot="nav" panel="Cases" > My Case Worklist </sc-tab>
+      <sc-tab slot="nav" panel="Enquiry"> Enquiry </sc-tab>
+      <sc-tab slot="nav" panel="Reports"> Reports </sc-tab>
+      {/* <sc-tab slot="nav" panel="CaseInit"> Case Initiation </sc-tab> */}
+      <sc-tab-panel name="Dashboard">Tab1 content</sc-tab-panel>
+      <sc-tab-panel name="Cases">
+        <InboxContent/>
+      </sc-tab-panel>
+      <sc-tab-panel name="Enquiry">Tab3 content</sc-tab-panel>
+      <sc-tab-panel name="Reports">Tab4 content</sc-tab-panel>
+      {/* <sc-tab-panel name="CaseInit">Tab4 content</sc-tab-panel> */}
+    </sc-tab-group>
+{/* 

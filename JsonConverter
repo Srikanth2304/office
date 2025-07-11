@@ -13,7 +13,6 @@ const Enquiry = () => {
     try {
       const response = await fetch(url);
       const data = await response.json();
-
       if (data.valid) {
         setIsValidated(true);
       } else {
@@ -55,17 +54,15 @@ const Enquiry = () => {
       }));
 
       const row = { ...formData };
-
       gridRef.current.data = [row];
       gridRef.current.columns = columns;
 
-      // Apply custom styling to the shadow DOM of sc-data-grid
       setTimeout(() => {
         const shadowRoot = gridRef.current.shadowRoot;
         if (shadowRoot) {
           const headers = shadowRoot.querySelectorAll('.header-cell');
           headers.forEach((header) => {
-            header.style.backgroundColor = '#007AFF';
+            header.style.backgroundColor = '#368FEE';
             header.style.color = 'white';
             header.style.fontWeight = 'bold';
             header.style.border = '1px solid #ccc';
@@ -77,9 +74,7 @@ const Enquiry = () => {
           });
 
           const grid = shadowRoot.querySelector('.main-grid');
-          if (grid) {
-            grid.style.border = 'none';
-          }
+          if (grid) grid.style.border = 'none';
 
           const leftSlots = shadowRoot.querySelectorAll('.left');
           leftSlots.forEach((el) => {

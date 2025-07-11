@@ -8,66 +8,37 @@ const Enquiry = () => {
   const [isValidated, setIsValidated] = useState(false);
   const gridRef = useRef(null);
 
-  const dummyDB = [
-    {
-      caseId: 'SCB1234',
-      processId: 'W409',
-      countryCode: 'ID',
-      formData: '{"id":"name","value":"kiran"}',
-    },
-    {
-      caseId: 'LONG123',
-      processId: 'W409',
-      countryCode: 'ID',
-      formData: JSON.stringify({
-        field1: 'value1',
-        field2: 'value2',
-        field3: 'value3',
-        field4: 'value4',
-        field5: 'value5',
-        field6: 'value6',
-        field7: 'value7',
-        field8: 'value8',
-        field9: 'value9',
-        field10: 'value10',
-        field11: 'value11',
-        field12: 'value12',
-        field13: 'value13',
-        field14: 'value14',
-        field15: 'value15',
-      }),
-    },
-  ];
+  const validateProcess = async () => {
+    try {
+      const res = await fetch(`http://localhost:6666/api/enquiry/validate?processId=${processId}&countryCode=${countryCode}`);
+      const data = await res.json();
 
-  const validateProcess = () => {
-    const exists = dummyDB.some(
-      (entry) =>
-        entry.processId === processId.trim() &&
-        entry.countryCode === countryCode.trim()
-    );
-    setIsValidated(exists);
-    if (!exists) {
-      alert('Invalid Process ID or Country Code');
+      if (data.valid) {
+        setIsValidated(true);
+      } else {
+        alert('Invalid Process ID or Country Code');
+        setIsValidated(false);
+      }
+    } catch (error) {
+      console.error('Validation error:', error);
+      alert('Error validating process');
     }
   };
 
-  const searchData = () => {
-    const record = dummyDB.find(
-      (entry) =>
-        entry.processId === processId.trim() &&
-        entry.countryCode === countryCode.trim() &&
-        entry.caseId === caseId.trim()
-    );
+  const searchData = async () => {
+    try {
+      const res = await fetch(`http://localhost:6666/api/enquiry/form-data?processId=${processId}&countryCode=${countryCode}&caseId=${caseId}`);
+      const data = await res.json();
 
-    if (record) {
-      try {
-        const parsed = JSON.parse(record.formData);
-        setFormData(parsed);
-      } catch {
-        alert('Invalid JSON in formData');
+      if (data && typeof data === 'object') {
+        setFormData(data);
+      } else {
+        alert('Invalid or empty form data');
+        setFormData(null);
       }
-    } else {
-      alert('Case ID not found');
+    } catch (error) {
+      console.error('Search error:', error);
+      alert('Case ID not found or error fetching data');
       setFormData(null);
     }
   };
@@ -179,12 +150,7 @@ const Enquiry = () => {
       {/* 🔹 Data Grid Table */}
       {formData && (
         <sc-card
-          style="
-            margin: 0;
-            padding: 20px;
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
-          "
+          style="margin: 0; padding: 20px; border: 1px solid #ccc; background-color: #f9f9f9;"
         >
           <div style={{ overflowX: 'auto' }}>
             <sc-data-grid

@@ -96,8 +96,18 @@ const Enquiry = () => {
 
   return (
     <div style={{ padding: '20px 30px', fontFamily: 'Arial' }}>
-      {/* 🔹 Process ID + Country Code + Validate + Reset */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap', marginBottom: '20px' }}>
+      {/* 🟦 Box for Process ID + Country Code + Buttons */}
+      <div style={{
+        border: '1px solid #ccc',
+        borderRadius: '8px',
+        padding: '16px',
+        marginBottom: '20px',
+        backgroundColor: '#fff',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '16px',
+        flexWrap: 'wrap'
+      }}>
         <div style={{ width: '250px' }}>
           <sc-text-input
             label="Process ID"
@@ -118,19 +128,28 @@ const Enquiry = () => {
           ></sc-text-input>
         </div>
 
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <sc-button type="primary" size="sm" width="auto" onClick={validateProcess}>
-            Validate
-          </sc-button>
-          <sc-button type="primary" size="sm" width="auto" onClick={resetForm}>
-            Reset
-          </sc-button>
-        </div>
+        <sc-button type="primary" size="sm" width="auto" onClick={validateProcess}>
+          Validate
+        </sc-button>
+
+        <sc-button type="primary" size="sm" width="auto" onClick={resetForm}>
+          Reset
+        </sc-button>
       </div>
 
-      {/* 🔹 Case ID + Search */}
+      {/* 🟦 Box for Case ID + Search */}
       {isValidated && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap', marginBottom: '20px' }}>
+        <div style={{
+          border: '1px solid #ccc',
+          borderRadius: '8px',
+          padding: '16px',
+          marginBottom: '20px',
+          backgroundColor: '#fff',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '16px',
+          flexWrap: 'wrap'
+        }}>
           <div style={{ width: '250px' }}>
             <sc-text-input
               label="Case ID"
@@ -147,11 +166,11 @@ const Enquiry = () => {
         </div>
       )}
 
-      {/* 🔹 SCB Table inside Box */}
+      {/* 🟦 Table box (scrollable) */}
       {formData && (
         <sc-card
           style="
-            margin-top: 30px;
+            margin-top: 10px;
             padding: 20px;
             border: 1px solid #ccc;
             background-color: #f9f9f9;

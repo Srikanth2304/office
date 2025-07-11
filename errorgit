@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import '@scdevkit/webkit/components/sc-button.js';
 import '@scdevkit/webkit/components/sc-text-input.js';
 import '@scdevkit/webkit/components/sc-data-grid.js';
-import '@scdevkit/webkit/styles/ScGridStyle.js'; // for consistent styling
+import '@scdevkit/webkit/styles/ScGridStyle.js';
 
 const Enquiry = () => {
   const [processId, setProcessId] = useState('');
@@ -14,7 +14,7 @@ const Enquiry = () => {
   const [isValidated, setIsValidated] = useState(false);
   const gridRef = useRef(null);
 
-  // ✅ Dummy Data Simulating DB
+  // ✅ Dummy DB
   const dummyDB = [
     {
       caseId: 'SCB1234',
@@ -46,7 +46,6 @@ const Enquiry = () => {
     },
   ];
 
-  // ✅ Validate Process ID + Country Code
   const validateProcess = () => {
     const exists = dummyDB.some(
       (entry) =>
@@ -59,7 +58,6 @@ const Enquiry = () => {
     }
   };
 
-  // ✅ Search Case ID
   const searchData = () => {
     const record = dummyDB.find(
       (entry) =>
@@ -81,13 +79,21 @@ const Enquiry = () => {
     }
   };
 
-  // ✅ Set data & columns into sc-data-grid
+  const resetForm = () => {
+    setProcessId('');
+    setCountryCode('');
+    setCaseId('');
+    setFormData(null);
+    setIsValidated(false);
+  };
+
   useEffect(() => {
     if (formData && gridRef.current) {
       const columns = Object.keys(formData).map((key) => ({
         property: key,
         header: key,
-        flex: 1,
+        minSize: Math.max(100, key.length * 10),
+        enableResizing: true,
       }));
 
       const row = { ...formData };
@@ -99,46 +105,55 @@ const Enquiry = () => {
 
   return (
     <div style={{ padding: '20px 30px', fontFamily: 'Arial' }}>
-      {/* 🔷 Process ID Input */}
-      <sc-text-input
-        label="Process ID"
-        value={processId}
-        placeholder="Enter Process ID"
-        border-type="box"
-        style={{ marginBottom: '12px', '--sc-border-color': '#68ABF2' }}
-        onInput={(e) => setProcessId(e.target.value)}
-      ></sc-text-input>
+      {/* 🔷 Process ID + Country Code + Validate */}
+      <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-end', flexWrap: 'wrap' }}>
+        <sc-text-input
+          label="Process ID"
+          value={processId}
+          placeholder="Enter Process ID"
+          border-type="box"
+          style={{ '--sc-border-color': '#68ABF2', flex: 1 }}
+          onInput={(e) => setProcessId(e.target.value)}
+        ></sc-text-input>
 
-      {/* 🔷 Country Code Input */}
-      <sc-text-input
-        label="Country Code"
-        value={countryCode}
-        placeholder="Enter Country Code"
-        border-type="box"
-        style={{ marginBottom: '12px', '--sc-border-color': '#68ABF2' }}
-        onInput={(e) => setCountryCode(e.target.value)}
-      ></sc-text-input>
+        <sc-text-input
+          label="Country Code"
+          value={countryCode}
+          placeholder="Enter Country Code"
+          border-type="box"
+          style={{ '--sc-border-color': '#68ABF2', flex: 1 }}
+          onInput={(e) => setCountryCode(e.target.value)}
+        ></sc-text-input>
 
-      {/* 🔷 Validate Button */}
-      <sc-button
-        type="primary"
-        size="sm"
-        width="auto"
-        style="margin-bottom: 20px;"
-        onClick={validateProcess}
-      >
-        Validate
-      </sc-button>
+        <sc-button
+          type="primary"
+          size="sm"
+          width="auto"
+          onClick={validateProcess}
+        >
+          Validate
+        </sc-button>
 
-      {/* 🔷 Case ID Section */}
+        <sc-button
+          type="primary"
+          size="sm"
+          width="auto"
+          style="background-color: #ccc; color: black;"
+          onClick={resetForm}
+        >
+          Reset
+        </sc-button>
+      </div>
+
+      {/* 🔷 Case ID + Search in One Row */}
       {isValidated && (
-        <>
+        <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-end', marginTop: '20px', flexWrap: 'wrap' }}>
           <sc-text-input
             label="Case ID"
             value={caseId}
             placeholder="Enter Case ID"
             border-type="box"
-            style={{ marginBottom: '12px', '--sc-border-color': '#68ABF2' }}
+            style={{ '--sc-border-color': '#68ABF2', width: '250px' }}
             onInput={(e) => setCaseId(e.target.value)}
           ></sc-text-input>
 
@@ -146,20 +161,21 @@ const Enquiry = () => {
             type="primary"
             size="sm"
             width="auto"
-            style="margin-bottom: 20px;"
             onClick={searchData}
           >
             Search
           </sc-button>
-        </>
+        </div>
       )}
 
-      {/* 🔷 Dynamic Grid Section */}
+      {/* 🔷 Data Table */}
       {formData && (
-        <sc-data-grid
-          ref={gridRef}
-          style="margin-top: 20px; width: 100%; overflow-x: auto"
-        ></sc-data-grid>
+        <div style={{ overflowX: 'auto', marginTop: '20px' }}>
+          <sc-data-grid
+            ref={gridRef}
+            style="width: 100%; min-width: max-content;"
+          ></sc-data-grid>
+        </div>
       )}
     </div>
   );
